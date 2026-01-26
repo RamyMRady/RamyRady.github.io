@@ -844,8 +844,7 @@ body {
     .project-card,
     .resume-card,
     .timeline-entry,
-    .contact-method,
-    * {
+    .contact-method {
         animation: none !important;
         transition: none !important;
     }
