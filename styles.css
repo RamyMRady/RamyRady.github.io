@@ -565,13 +565,290 @@ body {
 
 .fade-in {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), 
+                transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Card hover micro-interactions */
+.project-card,
+.resume-card,
+.timeline-entry {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-card:hover,
+.resume-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================
+   Resume Card
+   ============================================ */
+
+.resume-card {
+    background-color: var(--background-alt);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    max-width: 400px;
+    margin: 40px auto;
+}
+
+.resume-icon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.resume-card h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--primary-color);
+}
+
+.resume-date {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 24px;
+}
+
+/* Resume button in nav */
+.btn-resume {
+    background-color: var(--accent);
+    color: white !important;
+    padding: 6px 16px;
+    border-radius: 980px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-resume:hover {
+    background-color: #0077ed;
+    transform: scale(1.05);
+}
+
+/* ============================================
+   Hero Description
+   ============================================ */
+
+.hero-description {
+    font-size: 21px;
+    font-weight: 400;
+    color: var(--text-secondary);
+    letter-spacing: -0.3px;
+    max-width: 800px;
+    margin: 16px auto 0;
+    line-height: 1.5;
+}
+
+/* ============================================
+   Contact Buttons & Methods
+   ============================================ */
+
+.contact-buttons {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    margin-top: 32px;
+    flex-wrap: wrap;
+}
+
+.btn-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin: 32px 0;
+}
+
+.contact-method {
+    padding: 24px;
+    background-color: var(--background-alt);
+    border-radius: 12px;
+    text-align: center;
+    transition: var(--transition);
+}
+
+.contact-method:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+}
+
+.contact-method h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: var(--primary-color);
+}
+
+.contact-method a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 15px;
+    transition: opacity 0.3s;
+}
+
+.contact-method a:hover {
+    opacity: 0.7;
+}
+
+/* ============================================
+   Timeline
+   ============================================ */
+
+.timeline {
+    position: relative;
+    padding-left: 40px;
+    margin-top: 48px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, var(--accent) 0%, var(--border-color) 100%);
+}
+
+.timeline-entry {
+    position: relative;
+    margin-bottom: 48px;
+    padding-left: 32px;
+}
+
+.timeline-entry::before {
+    content: '';
+    position: absolute;
+    left: -46px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    border: 2px solid var(--background);
+}
+
+.timeline-entry h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.timeline-entry .role {
+    font-size: 17px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    font-weight: 500;
+}
+
+.timeline-entry .date {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.timeline-entry ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.timeline-entry li {
+    font-size: 15px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.6;
+}
+
+.timeline-entry li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+}
+
+/* ============================================
+   Impact Metrics
+   ============================================ */
+
+.project-metrics {
+    background-color: var(--background-alt);
+    padding: 16px;
+    border-radius: 8px;
+    margin: 16px 0;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--accent);
+}
+
+/* ============================================
+   Publications List
+   ============================================ */
+
+.publications-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.publications-list li {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+.publications-list li:last-child {
+    border-bottom: none;
+}
+
+.publications-list strong {
+    color: var(--primary-color);
+}
+
+.publications-list a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.3s;
+    font-weight: 500;
+}
+
+.publications-list a:hover {
+    opacity: 0.7;
+}
+
+/* ============================================
+   Accessibility
+   ============================================ */
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+    .fade-in,
+    .project-card,
+    .resume-card,
+    .timeline-entry,
+    .contact-method,
+    * {
+        animation: none !important;
+        transition: none !important;
+    }
 }
 
 /* ============================================
@@ -677,6 +954,31 @@ body {
 
     .skills-grid {
         grid-template-columns: 1fr;
+    }
+
+    .timeline {
+        padding-left: 24px;
+    }
+
+    .timeline-entry {
+        padding-left: 24px;
+    }
+
+    .timeline-entry::before {
+        left: -33px;
+    }
+
+    .contact-methods {
+        grid-template-columns: 1fr;
+    }
+
+    .resume-card {
+        padding: 32px 24px;
+        margin: 32px auto;
+    }
+
+    .hero-description {
+        font-size: 17px;
     }
 }
 
