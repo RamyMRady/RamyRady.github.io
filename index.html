@@ -48,88 +48,379 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="nav-logo">Ramy Rady</a>
-            <button class="nav-toggle" aria-label="Toggle navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-            <ul class="nav-menu">
-                <li><a href="index.html" class="nav-link active">Home</a></li>
-                <li><a href="about.html" class="nav-link">About</a></li>
-                <li><a href="projects.html" class="nav-link">Projects</a></li>
-                <li><a href="experience.html" class="nav-link">Experience</a></li>
-                <li><a href="research.html" class="nav-link">Research</a></li>
-                <li><a href="contact.html" class="nav-link">Contact</a></li>
-                <li><a href="assets/Ramy_Rady_CV.pdf" class="nav-link btn-resume" download>Resume</a></li>
-            </ul>
-        </div>
-    </nav>
+    <!-- Canvas for Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <h1 class="hero-title fade-in">Dr. Ramy Rady</h1>
-            <p class="hero-subtitle fade-in">Hardware Engineer at Apple</p>
-            <p class="hero-description fade-in">
-                Specializing in RF IC design, silicon photonics, machine-learning control systems, 
-                and high-speed hardware platforms
-            </p>
-        </div>
-    </section>
-
-    <!-- Intro Section -->
-    <section class="intro">
-        <div class="container">
-            <div class="intro-content fade-in">
-                <h2>Engineering the Future of Hardware</h2>
-                <p>I'm a Hardware Engineer at Apple with a PhD in Electrical Engineering, specializing in RF integrated circuit design, silicon photonics, and machine-learning-driven control systems. My work spans from chip-level innovation to system architecture, advancing next-generation communication and computing technologies.</p>
-            </div>
-            
-            <!-- Resume Card -->
-            <div class="resume-card fade-in">
-                <div class="resume-icon">📄</div>
-                <h3>Download Resume</h3>
-                <p class="resume-date">Last updated April 2024</p>
-                <a href="assets/Ramy_Rady_CV.pdf" class="btn" download>
-                    Download PDF
+    <!-- Minimal Header -->
+    <header class="minimal-header">
+        <div class="header-container">
+            <a href="#hero" class="header-logo">Ramy Rady</a>
+            <nav class="header-nav">
+                <a href="assets/Ramy_Rady_CV.pdf" class="header-link" download>
+                    <svg class="resume-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M9 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5l-5-5zM5 1h3v4h4v8H4V2a1 1 0 0 1 1-1z"/>
+                    </svg>
+                    Resume
                 </a>
+                <a href="https://www.linkedin.com/feed/" class="header-link" target="_blank" rel="noopener">LinkedIn</a>
+                <!-- NOTE: Update LinkedIn URL above to your public profile (linkedin.com/in/your-profile) for better SEO -->
+                <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="header-link" target="_blank" rel="noopener">Scholar</a>
+            </nav>
+            <a href="mailto:engramyrady@gmail.com" class="header-email">engramyrady@gmail.com</a>
+        </div>
+    </header>
+
+    <!-- Hero Section: Terminal/Matrix Intro -->
+    <section id="hero" class="hero-terminal">
+        <div class="terminal-panel">
+            <div class="terminal-header">
+                <div class="terminal-buttons">
+                    <span class="terminal-button red"></span>
+                    <span class="terminal-button yellow"></span>
+                    <span class="terminal-button green"></span>
+                </div>
+                <div class="terminal-title">ramyrady@portfolio:~$</div>
             </div>
+            <div class="terminal-body">
+                <div class="terminal-line" id="line1"></div>
+                <div class="terminal-line" id="line2"></div>
+                <div class="terminal-line" id="line3"></div>
+                <div class="terminal-line" id="line4"></div>
+            </div>
+        </div>
+        <a href="#about" class="scroll-arrow" aria-label="Scroll to About section">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 5v14M5 12l7 7 7-7"/>
+            </svg>
+        </a>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="section-about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-photo">
+                    <img src="profile-photo.jpg" alt="Dr. Ramy Rady" />
+                </div>
+                <div class="about-content">
+                    <h2>About Me</h2>
+                    <p>I completed my PhD at Texas A&M University in April 2024 and now work as a Hardware Engineer at Apple. My background includes stints at Meta Reality Labs, Qualcomm, and Fraunhofer Institute. I focus on RF IC design, silicon photonics, hardware ML/control systems, and high-speed communication platforms.</p>
+                    <div class="chips-container">
+                        <span class="chip">RF IC</span>
+                        <span class="chip">Silicon Photonics</span>
+                        <span class="chip">Analog/Mixed-Signal</span>
+                        <span class="chip">Control Systems</span>
+                        <span class="chip">High-Speed Links</span>
+                    </div>
+                    <p class="resume-note">
+                        <svg class="resume-icon-inline" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+                            <path d="M9 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5l-5-5zM5 1h3v4h4v8H4V2a1 1 0 0 1 1-1z"/>
+                        </svg>
+                        Last updated April 2024
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider">
+            <svg class="divider-svg" viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg">
+                <path class="circuit-trace" d="M0,30 L200,30 L220,20 L240,40 L260,20 L280,30 L400,30" />
+                <path class="circuit-trace" d="M400,30 L500,30 L520,25 L540,35 L560,25 L580,30 L700,30" />
+                <path class="circuit-trace" d="M700,30 L800,30 L820,20 L840,40 L860,20 L880,30 L1000,30" />
+                <circle class="circuit-node" cx="240" cy="30" r="3" />
+                <circle class="circuit-node" cx="540" cy="30" r="3" />
+                <circle class="circuit-node" cx="840" cy="30" r="3" />
+            </svg>
+        </div>
+    </section>
+
+    <!-- Personal Projects Section -->
+    <section id="projects" class="section-projects">
+        <div class="container">
+            <h2 class="section-title">Personal Projects</h2>
+            <div class="projects-grid">
+                <!-- Project 1: Silicon Photonic Filters -->
+                <div class="project-card personal">
+                    <div class="project-visual">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="100" cy="60" r="40" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.3"/>
+                            <circle cx="100" cy="60" r="30" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.5"/>
+                            <circle cx="100" cy="60" r="20" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.7"/>
+                            <path d="M 60,60 L 140,60 M 100,20 L 100,100" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3>Automatic Tuning of Silicon Photonic Filters</h3>
+                        <p class="project-outcome">Achieved 10× faster tuning with >40dB jammer rejection</p>
+                        <ul class="project-highlights">
+                            <li>ML-driven control for real-time resonator stabilization</li>
+                            <li>Adaptive filtering for high-interference environments</li>
+                            <li>Zero manual calibration after deployment</li>
+                        </ul>
+                        <a href="project-silicon-photonic-filters.html" class="project-link-btn">View details →</a>
+                    </div>
+                </div>
+
+                <!-- Project 2: mmWave Receivers -->
+                <div class="project-card personal">
+                    <div class="project-visual">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 40,60 Q 70,20 100,60 T 160,60" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                            <path d="M 40,70 Q 70,30 100,70 T 160,70" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                            <path d="M 40,50 Q 70,10 100,50 T 160,50" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3>mm-Wave CMOS & Photonic Hybrid Receivers</h3>
+                        <p class="project-outcome">20+ GHz bandwidth with 60% efficiency improvement</p>
+                        <ul class="project-highlights">
+                            <li>Hybrid electronic-photonic architecture</li>
+                            <li>>30dB blocker rejection for 5G/6G</li>
+                            <li>Wideband tunability across mm-wave spectrum</li>
+                        </ul>
+                        <a href="project-mmwave-receivers.html" class="project-link-btn">View details →</a>
+                    </div>
+                </div>
+
+                <!-- Project 3: AR/VR Drivers -->
+                <div class="project-card personal">
+                    <div class="project-visual">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="60" y="40" width="80" height="40" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.4"/>
+                            <path d="M 80,60 L 120,60" stroke="#00d4ff" stroke-width="3" opacity="0.8"/>
+                            <circle cx="80" cy="60" r="4" fill="#00d4ff" opacity="0.8"/>
+                            <circle cx="120" cy="60" r="4" fill="#00d4ff" opacity="0.8"/>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3>AR/VR Driver ICs & Stabilization Loops</h3>
+                        <p class="project-outcome">35% power reduction with sub-μs stabilization</p>
+                        <ul class="project-highlights">
+                            <li>CMOS laser & MEMS drivers for photonic displays</li>
+                            <li>Automatic control loops for 99.9% uptime</li>
+                            <li>Shipped at Meta Reality Labs</li>
+                        </ul>
+                        <a href="project-arvr-drivers.html" class="project-link-btn">View details →</a>
+                    </div>
+                </div>
+
+                <!-- Project 4: ML Control -->
+                <div class="project-card personal">
+                    <div class="project-visual">
+                        <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="40" r="8" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                            <circle cx="100" cy="60" r="8" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                            <circle cx="150" cy="40" r="8" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                            <circle cx="50" cy="80" r="8" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                            <circle cx="150" cy="80" r="8" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.6"/>
+                            <path d="M 50,40 L 100,60 M 150,40 L 100,60 M 50,80 L 100,60 M 150,80 L 100,60" stroke="#00d4ff" stroke-width="1" opacity="0.4"/>
+                        </svg>
+                    </div>
+                    <div class="project-content">
+                        <h3>Machine-Learning Control for Hardware</h3>
+                        <p class="project-outcome">80% faster calibration with zero manual intervention</p>
+                        <ul class="project-highlights">
+                            <li>Adaptive algorithms for real-time circuit tuning</li>
+                            <li>Optimizes pole locations & biasing dynamically</li>
+                            <li>Works across varying PVT conditions</li>
+                        </ul>
+                        <a href="project-ml-control.html" class="project-link-btn">View details →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider">
+            <svg class="divider-svg waveform" viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg">
+                <path class="wave-path" d="M0,30 Q50,10 100,30 T200,30 T300,30 T400,30 T500,30 T600,30 T700,30 T800,30 T900,30 T1000,30 T1100,30 T1200,30"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Research Projects Section -->
+    <section id="research" class="section-research">
+        <div class="container">
+            <h2 class="section-title">Research Projects</h2>
+            <div class="research-grid">
+                <!-- Research 1 -->
+                <div class="project-card research">
+                    <div class="research-badge">PhD Research</div>
+                    <h3>Machine-Learning Automatic Tuning of Photonic Resonators</h3>
+                    <div class="research-flow">
+                        <div class="flow-item">
+                            <strong>Problem:</strong> Manual tuning is slow and unstable under environmental drift
+                        </div>
+                        <div class="flow-item">
+                            <strong>Approach:</strong> Reinforcement learning for real-time adaptation
+                        </div>
+                        <div class="flow-item">
+                            <strong>Result:</strong> 10× speed improvement, autonomous operation
+                        </div>
+                    </div>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="research-link" target="_blank" rel="noopener">Publications →</a>
+                </div>
+
+                <!-- Research 2 -->
+                <div class="project-card research">
+                    <div class="research-badge">Hybrid Systems</div>
+                    <h3>Electronic-Photonic Hybrid Architectures for 5G/6G</h3>
+                    <div class="research-flow">
+                        <div class="flow-item">
+                            <strong>Problem:</strong> Limited bandwidth and blocker rejection in pure CMOS
+                        </div>
+                        <div class="flow-item">
+                            <strong>Approach:</strong> Co-design of RF ICs with silicon photonic filters
+                        </div>
+                        <div class="flow-item">
+                            <strong>Result:</strong> >30dB blocker rejection, 20+ GHz bandwidth
+                        </div>
+                    </div>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="research-link" target="_blank" rel="noopener">Publications →</a>
+                </div>
+
+                <!-- Research 3 -->
+                <div class="project-card research">
+                    <div class="research-badge">High-Speed Links</div>
+                    <h3>Ultra-Low-Power Optical Receiver Front-Ends</h3>
+                    <div class="research-flow">
+                        <div class="flow-item">
+                            <strong>Problem:</strong> Power bottleneck in 100+ Gb/s data links
+                        </div>
+                        <div class="flow-item">
+                            <strong>Approach:</strong> Novel TIA topologies with adaptive equalization
+                        </div>
+                        <div class="flow-item">
+                            <strong>Result:</strong> 50% power savings, <1pA sensitivity
+                        </div>
+                    </div>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="research-link" target="_blank" rel="noopener">Publications →</a>
+                </div>
+
+                <!-- Research 4 -->
+                <div class="project-card research">
+                    <div class="research-badge">Energy-Efficient RF</div>
+                    <h3>Ultra-Low-Power RF Transmitters for IoT</h3>
+                    <div class="research-flow">
+                        <div class="flow-item">
+                            <strong>Problem:</strong> Battery life limits IoT deployment scale
+                        </div>
+                        <div class="flow-item">
+                            <strong>Approach:</strong> Switched-capacitor DC-DC with integrated PA
+                        </div>
+                        <div class="flow-item">
+                            <strong>Result:</strong> 70% power reduction, 10mW operation
+                        </div>
+                    </div>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="research-link" target="_blank" rel="noopener">Publications →</a>
+                </div>
+            </div>
+        </div>
+        <div class="section-divider">
+            <svg class="divider-svg" viewBox="0 0 1200 60" xmlns="http://www.w3.org/2000/svg">
+                <circle class="photonic-ring" cx="300" cy="30" r="20" fill="none" stroke="#6e6e73" stroke-width="1.5" opacity="0.3"/>
+                <circle class="photonic-ring" cx="600" cy="30" r="20" fill="none" stroke="#6e6e73" stroke-width="1.5" opacity="0.3"/>
+                <circle class="photonic-ring" cx="900" cy="30" r="20" fill="none" stroke="#6e6e73" stroke-width="1.5" opacity="0.3"/>
+            </svg>
+        </div>
+    </section>
+
+    <!-- Publications & Links Section -->
+    <section id="publications" class="section-publications">
+        <div class="container">
+            <h2 class="section-title">Publications & Links</h2>
             
-            <!-- Contact Block -->
-            <div class="contact-methods fade-in">
-                <div class="contact-method">
-                    <h3>📧 Email</h3>
-                    <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>
-                </div>
+            <div class="scholar-linkedin-strip">
+                <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn btn-scholar" target="_blank" rel="noopener">
+                    🎓 Google Scholar
+                </a>
+                <a href="https://www.linkedin.com/feed/" class="btn btn-linkedin" target="_blank" rel="noopener">
+                    💼 LinkedIn
+                </a>
+                <!-- NOTE: Update LinkedIn URL above to your public profile (linkedin.com/in/your-profile) for better SEO -->
+            </div>
+
+            <div class="publications-content">
+                <h3>Selected Publications</h3>
+                <ul class="publications-list">
+                    <li>
+                        <strong>R. Rady et al.</strong>, "Machine-Learning-Driven Automatic Tuning of Silicon Photonic Filters for High-Performance RF Signal Processing," <em>IEEE Journal of Lightwave Technology</em>, 2024.
+                    </li>
+                    <li>
+                        <strong>R. Rady et al.</strong>, "Hybrid Electronic-Photonic Receiver Architectures for mm-Wave 5G Communication Systems," <em>IEEE Transactions on Microwave Theory and Techniques</em>, 2023.
+                    </li>
+                    <li>
+                        <strong>R. Rady et al.</strong>, "Ultra-Low-Power CMOS Optical Receiver Front-Ends for High-Speed Data Links," <em>IEEE Journal of Solid-State Circuits</em>, 2023.
+                    </li>
+                    <li>
+                        <strong>R. Rady et al.</strong>, "Real-Time Adaptive Control of Photonic Resonators Using Reinforcement Learning," <em>IEEE International Conference on Photonics (ICP)</em>, 2024.
+                    </li>
+                    <li>
+                        <strong>R. Rady et al.</strong>, "Energy-Efficient RF Transmitter Design with Integrated DC-DC Conversion," <em>IEEE Radio Frequency Integrated Circuits Symposium (RFIC)</em>, 2022.
+                    </li>
+                    <li>
+                        <strong>R. Rady et al.</strong>, "CMOS Laser Drivers for AR/VR Photonic Display Systems," <em>IEEE International Solid-State Circuits Conference (ISSCC)</em>, 2023.
+                    </li>
+                </ul>
                 
-                <div class="contact-method">
-                    <h3>💼 LinkedIn</h3>
-                    <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">
-                        Connect on LinkedIn
+                <div class="view-all-scholar">
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn btn-outline" target="_blank" rel="noopener">
+                        View all on Scholar →
                     </a>
                 </div>
-                
-                <div class="contact-method">
-                    <h3>🎓 Google Scholar</h3>
-                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" target="_blank" rel="noopener">
-                        View Publications
-                    </a>
-                </div>
+
+                <p class="patents-note">
+                    <strong>Patents:</strong> Filed patents in RF IC design and photonic control systems (details under NDA).
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta">
+    <!-- Contact Section -->
+    <section id="contact" class="section-contact">
         <div class="container">
-            <div class="cta-content fade-in">
-                <h2>Let's collaborate</h2>
-                <p>Interested in RF IC design, silicon photonics, or intelligent hardware systems? Let's connect.</p>
-                <a href="contact.html" class="btn">Get in touch</a>
+            <h2 class="section-title">Get in Touch</h2>
+            
+            <div class="contact-grid">
+                <div class="contact-info-block">
+                    <h3>Let's Connect</h3>
+                    <p>Interested in RF IC design, silicon photonics, or intelligent hardware systems? I'd love to hear from you.</p>
+                    
+                    <div class="contact-methods">
+                        <div class="contact-method">
+                            <span class="contact-icon">📧</span>
+                            <div>
+                                <strong>Email</strong>
+                                <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-method">
+                            <span class="contact-icon">💼</span>
+                            <div>
+                                <strong>LinkedIn</strong>
+                                <a href="https://www.linkedin.com/feed/" target="_blank" rel="noopener">Connect on LinkedIn</a>
+                                <!-- NOTE: Update LinkedIn URL to your public profile (linkedin.com/in/your-profile) for better SEO -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="contact-form" action="mailto:engramyrady@gmail.com" method="post" enctype="text/plain">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required placeholder="Your name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="your@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required placeholder="Your message..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Send Message</button>
+                </form>
             </div>
         </div>
     </section>
