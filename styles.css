@@ -412,6 +412,62 @@ body {
 }
 
 /* ============================================
+   Research Section
+   ============================================ */
+
+.research-content {
+    margin-bottom: 80px;
+}
+
+.research-content h2 {
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 32px;
+    color: var(--primary-color);
+}
+
+.research-subsection {
+    margin-bottom: 32px;
+}
+
+.research-subsection h3 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--primary-color);
+}
+
+.publications-list {
+    list-style: none;
+    padding-left: 0;
+}
+
+.publications-list li {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    padding-left: 24px;
+    position: relative;
+}
+
+.publications-list li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.research-subsection p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-secondary);
+}
+
+/* ============================================
    Contact Section
    ============================================ */
 
