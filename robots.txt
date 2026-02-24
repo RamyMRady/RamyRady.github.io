@@ -1,0 +1,9 @@
+# robots.txt for www.ramyrady.com
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://www.ramyrady.com/sitemap.xml
+
+# Disallow access to temporary or development files (if any)
+Disallow: /index-old.html

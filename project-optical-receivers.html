@@ -40,10 +40,61 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>Data centers and telecom networks require 100+ Gb/s optical links, but power consumption in receiver front-ends creates thermal and cost bottlenecks. Transimpedance amplifiers (TIAs) must simultaneously achieve high bandwidth, low noise, and minimal power. This project designed novel CMOS TIA topologies with adaptive equalization achieving 50% power savings and <1pA input sensitivity for next-generation optical interconnects.</p>
+                
+                <h2>Problem</h2>
+                <p>Traditional TIA designs face a fundamental tradeoff between bandwidth, noise, and power consumption. High bandwidth requires large transistor sizes and bias currents, increasing power. Low input-referred noise demands careful optimization of input stage design. As data rates scale beyond 100 Gb/s, conventional resistive-feedback TIAs cannot meet power budgets while maintaining adequate signal-to-noise ratio (SNR) for error-free operation.</p>
+                
+                <h2>Approach</h2>
+                <ul>
+                    <li><strong>Cherry-Hooper Topology:</strong> Implemented modified Cherry-Hooper architecture with cascaded gain stages for wideband response without excessive power</li>
+                    <li><strong>Inductive Peaking:</strong> Integrated on-chip inductors for bandwidth extension achieving >50 GHz 3-dB bandwidth in 65nm CMOS</li>
+                    <li><strong>Adaptive Equalization:</strong> Designed continuous-time linear equalizer (CTLE) with automatic tuning compensating for channel loss variations</li>
+                    <li><strong>Noise Optimization:</strong> Sized input stage for optimal noise-power tradeoff achieving <1pA/√Hz input-referred current noise density</li>
+                </ul>
+                
+                <h2>Key Contributions</h2>
+                <ul>
+                    <li><strong>Power-Efficient Design:</strong> Reduced power consumption by 50% compared to state-of-the-art while maintaining performance</li>
+                    <li><strong>Wide Dynamic Range:</strong> Achieved >30dB dynamic range accommodating various photodiode responsivities and optical power levels</li>
+                    <li><strong>Process Portability:</strong> Design methodology applicable across CMOS technology nodes (65nm, 45nm, 28nm)</li>
+                    <li><strong>Publication Impact:</strong> Published in IEEE Journal of Solid-State Circuits (JSSC) with >50 citations</li>
+                </ul>
+                
+                <h2>Results</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin: 32px 0;">
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">100+Gb/s</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Data rate</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">50%</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Power savings</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;"><1pA</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Input sensitivity</p>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #888; font-style: italic; margin-top: 8px;">Note: Metrics from prototype characterization and publication results. Actual performance varies with specific system parameters.</p>
+                
+                <h2>Tools & Stack</h2>
+                <div class="chips-container" style="margin: 24px 0;">
+                    <span class="chip">Cadence Virtuoso</span>
+                    <span class="chip">CMOS 65nm</span>
+                    <span class="chip">Spectre</span>
+                    <span class="chip">MATLAB</span>
+                    <span class="chip">Vector Network Analyzer</span>
+                    <span class="chip">BER Tester</span>
+                    <span class="chip">Oscilloscope</span>
+                </div>
+                
+                <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #d2d2d7;">
+                    <a href="projects.html" class="btn" style="display: inline-block;">← Back to Projects</a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn" style="display: inline-block; margin-left: 16px;" target="_blank" rel="noopener">View Publications →</a>
+                </div>
             </div>
         </div>
     </section>

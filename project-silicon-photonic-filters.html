@@ -40,10 +40,100 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>Silicon photonic resonators offer exceptional filtering capabilities for RF signal processing, but environmental drift (temperature, voltage) causes frequency instability. Manual tuning is slow and impractical for real-time applications. This project developed machine-learning control algorithms that autonomously stabilize resonators, achieving 10× faster tuning and >40dB jammer rejection.</p>
+                
+                <h2>Problem</h2>
+                <p>Traditional silicon photonic filters require constant manual recalibration due to thermal and voltage variations. In high-interference RF environments (e.g., military communications, 5G base stations), maintaining stable center frequencies is critical for blocking out-of-band jammers. Existing approaches relied on slow lookup tables or power-hungry heaters, limiting deployment in dynamic scenarios.</p>
+                
+                <h2>Approach</h2>
+                <div style="background: #f5f5f7; padding: 32px; border-radius: 12px; margin: 32px 0;">
+                    <svg viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 800px; height: auto; display: block; margin: 0 auto;">
+                        <!-- RF Input -->
+                        <text x="20" y="105" font-size="14" fill="#1d1d1f" font-weight="500">RF-in</text>
+                        <path d="M 70,100 L 120,100" stroke="#0071e3" stroke-width="2" fill="none"/>
+                        
+                        <!-- Modulator -->
+                        <rect x="120" y="80" width="80" height="40" fill="none" stroke="#0071e3" stroke-width="2" rx="4"/>
+                        <text x="160" y="105" font-size="12" fill="#1d1d1f" text-anchor="middle">Modulator</text>
+                        <path d="M 200,100 L 240,100" stroke="#0071e3" stroke-width="2" fill="none"/>
+                        
+                        <!-- Photonic Filter (Ring) -->
+                        <circle cx="320" cy="100" r="40" fill="none" stroke="#00d4ff" stroke-width="3"/>
+                        <circle cx="320" cy="100" r="30" fill="none" stroke="#00d4ff" stroke-width="2" opacity="0.5"/>
+                        <text x="320" y="105" font-size="12" fill="#1d1d1f" text-anchor="middle" font-weight="600">Filter</text>
+                        <path d="M 360,100 L 400,100" stroke="#00d4ff" stroke-width="2" fill="none"/>
+                        
+                        <!-- Detector -->
+                        <rect x="400" y="80" width="80" height="40" fill="none" stroke="#0071e3" stroke-width="2" rx="4"/>
+                        <text x="440" y="105" font-size="12" fill="#1d1d1f" text-anchor="middle">Detector</text>
+                        <path d="M 480,100 L 530,100" stroke="#0071e3" stroke-width="2" fill="none"/>
+                        
+                        <!-- RF Output -->
+                        <text x="540" y="105" font-size="14" fill="#1d1d1f" font-weight="500">RF-out</text>
+                        
+                        <!-- ML Controller (feedback loop) -->
+                        <rect x="580" y="140" width="100" height="40" fill="none" stroke="#ff9500" stroke-width="2" rx="4"/>
+                        <text x="630" y="165" font-size="12" fill="#1d1d1f" text-anchor="middle" font-weight="600">ML Controller</text>
+                        
+                        <!-- Feedback arrows -->
+                        <path d="M 500,120 L 500,160 L 580,160" stroke="#ff9500" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+                        <path d="M 630,140 L 630,60 L 320,60 L 320,60" stroke="#ff9500" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+                        
+                        <!-- Arrow markers -->
+                        <defs>
+                            <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#ff9500"/>
+                            </marker>
+                        </defs>
+                        
+                        <!-- Labels -->
+                        <text x="550" y="180" font-size="11" fill="#666" style="font-style: italic;">Sense</text>
+                        <text x="400" y="50" font-size="11" fill="#666" style="font-style: italic;">Tune</text>
+                    </svg>
+                    <p style="text-align: center; margin-top: 16px; color: #6e6e73; font-size: 14px;">System architecture: RF signal → photonic filter → detector, with ML-driven feedback control</p>
+                </div>
+                
+                <h2>Key Contributions</h2>
+                <ul>
+                    <li><strong>Reinforcement Learning Algorithm:</strong> Developed RL-based controller that learns optimal tuning strategies without prior system modeling</li>
+                    <li><strong>Real-Time Adaptation:</strong> Sub-millisecond response to environmental changes using lightweight neural network inference</li>
+                    <li><strong>Multi-Objective Optimization:</strong> Simultaneously optimized center frequency stability, insertion loss, and power consumption</li>
+                    <li><strong>Hardware Integration:</strong> Implemented on FPGA for low-latency control loop with photonic IC co-design</li>
+                </ul>
+                
+                <h2>Results</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin: 32px 0;">
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">10×</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Faster tuning vs. manual calibration</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">>40dB</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Out-of-band jammer rejection</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;"><1ms</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Stabilization time</p>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #888; font-style: italic; margin-top: 8px;">Note: Metrics from prototype characterization and publication results. Actual performance varies with specific system parameters.</p>
+                
+                <h2>Tools & Stack</h2>
+                <div class="chips-container" style="margin: 24px 0;">
+                    <span class="chip">Python (TensorFlow)</span>
+                    <span class="chip">FPGA (Verilog)</span>
+                    <span class="chip">Silicon Photonics</span>
+                    <span class="chip">Reinforcement Learning</span>
+                    <span class="chip">MATLAB</span>
+                    <span class="chip">RF Test Equipment</span>
+                </div>
+                
+                <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #d2d2d7;">
+                    <a href="projects.html" class="btn" style="display: inline-block;">← Back to Projects</a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn" style="display: inline-block; margin-left: 16px;" target="_blank" rel="noopener">View Publications →</a>
+                </div>
             </div>
         </div>
     </section>

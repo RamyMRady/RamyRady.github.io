@@ -40,10 +40,107 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>Modern RF and photonic circuits require complex calibration to compensate for process, voltage, and temperature (PVT) variations. Manual tuning is time-consuming and non-scalable. This project developed machine-learning control algorithms that autonomously optimize circuit parameters in real-time, achieving 80% faster calibration with zero manual intervention and robust operation across varying conditions.</p>
+                
+                <h2>Problem</h2>
+                <p>High-performance analog/RF circuits often require tuning dozens of parameters (bias currents, capacitor banks, resonator frequencies) to meet specifications. Traditional lookup tables fail under corner cases, while exhaustive search is prohibitively slow. Process variations across wafer lots mean each device needs individualized calibration, creating manufacturing bottlenecks and field service headaches.</p>
+                
+                <h2>Approach</h2>
+                <div style="background: #f5f5f7; padding: 32px; border-radius: 12px; margin: 32px 0;">
+                    <svg viewBox="0 0 800 240" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 800px; height: auto; display: block; margin: 0 auto;">
+                        <!-- Sense (Sensor/ADC) -->
+                        <rect x="50" y="100" width="100" height="60" fill="none" stroke="#0071e3" stroke-width="2" rx="4"/>
+                        <text x="100" y="127" font-size="14" fill="#1d1d1f" text-anchor="middle" font-weight="600">Sense</text>
+                        <text x="100" y="145" font-size="11" fill="#666" text-anchor="middle">(ADC/Sensor)</text>
+                        
+                        <!-- Arrow to Controller -->
+                        <path d="M 150,130 L 200,130" stroke="#0071e3" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
+                        <text x="175" y="120" font-size="11" fill="#666" text-anchor="middle">state</text>
+                        
+                        <!-- ML Controller -->
+                        <rect x="200" y="100" width="140" height="60" fill="none" stroke="#ff9500" stroke-width="3" rx="4"/>
+                        <text x="270" y="127" font-size="14" fill="#1d1d1f" text-anchor="middle" font-weight="600">ML Controller</text>
+                        <text x="270" y="145" font-size="11" fill="#666" text-anchor="middle">(RL/Policy Network)</text>
+                        
+                        <!-- Arrow to Actuator -->
+                        <path d="M 340,130 L 390,130" stroke="#ff9500" stroke-width="2" fill="none" marker-end="url(#arrowOrange)"/>
+                        <text x="365" y="120" font-size="11" fill="#666" text-anchor="middle">action</text>
+                        
+                        <!-- Actuator (DAC/Driver) -->
+                        <rect x="390" y="100" width="100" height="60" fill="none" stroke="#0071e3" stroke-width="2" rx="4"/>
+                        <text x="440" y="127" font-size="14" fill="#1d1d1f" text-anchor="middle" font-weight="600">Actuator</text>
+                        <text x="440" y="145" font-size="11" fill="#666" text-anchor="middle">(DAC/Driver)</text>
+                        
+                        <!-- Arrow to Plant -->
+                        <path d="M 490,130 L 540,130" stroke="#0071e3" stroke-width="2" fill="none" marker-end="url(#arrowBlue)"/>
+                        <text x="515" y="120" font-size="11" fill="#666" text-anchor="middle">control</text>
+                        
+                        <!-- Plant (Circuit) -->
+                        <rect x="540" y="100" width="110" height="60" fill="none" stroke="#00d4ff" stroke-width="3" rx="4"/>
+                        <text x="595" y="127" font-size="14" fill="#1d1d1f" text-anchor="middle" font-weight="600">Plant</text>
+                        <text x="595" y="145" font-size="11" fill="#666" text-anchor="middle">(Circuit/System)</text>
+                        
+                        <!-- Feedback arrow (Plant to Sense) -->
+                        <path d="M 595,160 L 595,200 L 100,200 L 100,160" stroke="#00d4ff" stroke-width="2" fill="none" marker-end="url(#arrowCyan)"/>
+                        <text x="350" y="220" font-size="11" fill="#666" text-anchor="middle">feedback (output)</text>
+                        
+                        <!-- Arrow markers -->
+                        <defs>
+                            <marker id="arrowBlue" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#0071e3"/>
+                            </marker>
+                            <marker id="arrowOrange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#ff9500"/>
+                            </marker>
+                            <marker id="arrowCyan" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#00d4ff"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                    <p style="text-align: center; margin-top: 16px; color: #6e6e73; font-size: 14px;">Closed-loop control: Sense → ML Controller → Actuator → Plant → Feedback</p>
+                </div>
+                
+                <h2>Key Contributions</h2>
+                <ul>
+                    <li><strong>Model-Free Learning:</strong> Developed reinforcement learning approach that learns optimal control policies without requiring accurate circuit models</li>
+                    <li><strong>Online Adaptation:</strong> System continuously updates policy during operation, adapting to aging, temperature drift, and load variations</li>
+                    <li><strong>Multi-Objective Optimization:</strong> Simultaneously optimizes frequency response, power consumption, and linearity using weighted reward functions</li>
+                    <li><strong>Hardware-Efficient Implementation:</strong> Quantized neural network inference runs on low-cost microcontroller with <100μs latency</li>
+                </ul>
+                
+                <h2>Results</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin: 32px 0;">
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">80%</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Faster calibration</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">Zero</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Manual intervention</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">PVT</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Robust across variations</p>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #888; font-style: italic; margin-top: 8px;">Note: Metrics from prototype characterization and publication results. Actual performance varies with specific system parameters.</p>
+                
+                <h2>Tools & Stack</h2>
+                <div class="chips-container" style="margin: 24px 0;">
+                    <span class="chip">Python (PyTorch)</span>
+                    <span class="chip">MATLAB</span>
+                    <span class="chip">C/C++</span>
+                    <span class="chip">Microcontroller (ARM)</span>
+                    <span class="chip">Cadence</span>
+                    <span class="chip">Reinforcement Learning</span>
+                </div>
+                
+                <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #d2d2d7;">
+                    <a href="projects.html" class="btn" style="display: inline-block;">← Back to Projects</a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn" style="display: inline-block; margin-left: 16px;" target="_blank" rel="noopener">View Publications →</a>
+                </div>
             </div>
         </div>
     </section>

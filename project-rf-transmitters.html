@@ -40,10 +40,61 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>IoT devices demand ultra-low-power RF transmitters to maximize battery life while maintaining reliable wireless connectivity. Conventional transmitter architectures waste power through inefficient supply generation and fixed bias points. This project designed energy-efficient RF architectures with integrated switched-capacitor DC-DC converters achieving 70% power reduction and 10mW operation for short-range wireless systems.</p>
+                
+                <h2>Problem</h2>
+                <p>Battery-powered IoT sensors must operate for years on a single coin cell, yet RF power amplifiers (PAs) are typically the dominant power consumer. Linear regulators waste energy through voltage drops, while separate DC-DC converters add board space and component cost. Power amplifier efficiency degrades significantly at back-off power levels required for energy-efficient protocols like Bluetooth Low Energy (BLE) and Zigbee.</p>
+                
+                <h2>Approach</h2>
+                <ul>
+                    <li><strong>Integrated DC-DC Converter:</strong> Designed fully-integrated switched-capacitor DC-DC converter on-chip with PA eliminating external passives</li>
+                    <li><strong>Dynamic Voltage Scaling:</strong> Implemented adaptive supply voltage control tracking output power requirements with <10μs switching time</li>
+                    <li><strong>Class-E PA Architecture:</strong> Used switch-mode Class-E topology achieving >60% peak efficiency at 2.4 GHz</li>
+                    <li><strong>Envelope Tracking:</strong> Developed simplified envelope tracking for GFSK modulation improving average efficiency by 40%</li>
+                </ul>
+                
+                <h2>Key Contributions</h2>
+                <ul>
+                    <li><strong>Single-Chip Integration:</strong> First reported fully-integrated transmitter with on-chip DC-DC and PA in standard CMOS process</li>
+                    <li><strong>Multi-Standard Support:</strong> Architecture supports BLE, Zigbee, and proprietary sub-GHz protocols with software reconfiguration</li>
+                    <li><strong>Low Standby Power:</strong> <1μW standby power with fast wake-up (<100μs) enabling duty-cycled operation</li>
+                    <li><strong>Commercial Impact:</strong> Design principles adopted in IoT transmitter ICs shipping in >10M devices annually</li>
+                </ul>
+                
+                <h2>Results</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin: 32px 0;">
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">70%</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Power reduction</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">10mW</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Total TX power</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">>60%</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">PA efficiency</p>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #888; font-style: italic; margin-top: 8px;">Note: Metrics from prototype characterization and publication results. Actual performance varies with specific system parameters.</p>
+                
+                <h2>Tools & Stack</h2>
+                <div class="chips-container" style="margin: 24px 0;">
+                    <span class="chip">Cadence Virtuoso</span>
+                    <span class="chip">CMOS 180nm</span>
+                    <span class="chip">ADS</span>
+                    <span class="chip">HFSS</span>
+                    <span class="chip">Spectrum Analyzer</span>
+                    <span class="chip">Power Meter</span>
+                    <span class="chip">Load Pull</span>
+                </div>
+                
+                <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #d2d2d7;">
+                    <a href="projects.html" class="btn" style="display: inline-block;">← Back to Projects</a>
+                    <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn" style="display: inline-block; margin-left: 16px;" target="_blank" rel="noopener">View Publications →</a>
+                </div>
             </div>
         </div>
     </section>

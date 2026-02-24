@@ -1,0 +1,31 @@
+<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+  <!-- Chip body -->
+  <rect x="6" y="6" width="20" height="20" fill="#00b4ff" stroke="#0080c0" stroke-width="1"/>
+  
+  <!-- Pins (left) -->
+  <rect x="2" y="8" width="3" height="2" fill="#0080c0"/>
+  <rect x="2" y="13" width="3" height="2" fill="#0080c0"/>
+  <rect x="2" y="18" width="3" height="2" fill="#0080c0"/>
+  <rect x="2" y="23" width="3" height="2" fill="#0080c0"/>
+  
+  <!-- Pins (right) -->
+  <rect x="27" y="8" width="3" height="2" fill="#0080c0"/>
+  <rect x="27" y="13" width="3" height="2" fill="#0080c0"/>
+  <rect x="27" y="18" width="3" height="2" fill="#0080c0"/>
+  <rect x="27" y="23" width="3" height="2" fill="#0080c0"/>
+  
+  <!-- Pins (top) -->
+  <rect x="10" y="2" width="2" height="3" fill="#0080c0"/>
+  <rect x="15" y="2" width="2" height="3" fill="#0080c0"/>
+  <rect x="20" y="2" width="2" height="3" fill="#0080c0"/>
+  
+  <!-- Pins (bottom) -->
+  <rect x="10" y="27" width="2" height="3" fill="#0080c0"/>
+  <rect x="15" y="27" width="2" height="3" fill="#0080c0"/>
+  <rect x="20" y="27" width="2" height="3" fill="#0080c0"/>
+  
+  <!-- Circuit pattern -->
+  <line x1="10" y1="16" x2="22" y2="16" stroke="#ffffff" stroke-width="1" opacity="0.7"/>
+  <line x1="16" y1="10" x2="16" y2="22" stroke="#ffffff" stroke-width="1" opacity="0.7"/>
+  <circle cx="16" cy="16" r="2" fill="#ffffff" opacity="0.7"/>
+</svg>

@@ -40,10 +40,61 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>AR/VR photonic display systems at Meta Reality Labs require precise control of laser diodes and MEMS mirrors. Driver ICs must deliver high-speed modulation while maintaining sub-microsecond stabilization and 99.9% uptime. This project designed CMOS drivers and automatic control loops achieving 35% power reduction and production-grade reliability for next-generation headsets.</p>
+                
+                <h2>Problem</h2>
+                <p>Photonic displays for AR/VR demand extremely stable optical power and precise MEMS positioning, but laser diodes exhibit temperature-dependent drift and MEMS devices require damping control. Conventional open-loop drivers waste power through over-design margins and cannot adapt to aging or thermal variations. Closed-loop solutions must be fast enough to avoid visible flicker (<16ms) while consuming minimal power to preserve battery life.</p>
+                
+                <h2>Approach</h2>
+                <ul>
+                    <li><strong>Adaptive Current Sources:</strong> Designed high-PSRR laser driver with dynamic headroom optimization reducing dropout voltage by 40%</li>
+                    <li><strong>MEMS Control Loop:</strong> Implemented PID-based stabilization with <1μs settling time for sub-pixel positioning accuracy</li>
+                    <li><strong>Power Management:</strong> Integrated DC-DC buck converter with driver IC for efficient supply generation at point-of-load</li>
+                    <li><strong>Fault Detection:</strong> Built-in optical power monitoring and MEMS position feedback for automatic recovery from failure modes</li>
+                </ul>
+                
+                <h2>Key Contributions</h2>
+                <ul>
+                    <li><strong>Production Deployment:</strong> Shipped driver ICs in Meta Reality Labs headsets with >1M units manufactured</li>
+                    <li><strong>Reliability Engineering:</strong> Achieved 99.9% uptime through predictive monitoring and graceful degradation algorithms</li>
+                    <li><strong>Thermal Management:</strong> Designed adaptive thermal compensation maintaining ±0.5% optical power stability across -10°C to +60°C</li>
+                    <li><strong>Cross-Functional Collaboration:</strong> Worked with photonics, mechanical, and firmware teams for holistic system optimization</li>
+                </ul>
+                
+                <h2>Results</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 24px; margin: 32px 0;">
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">35%</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Power reduction vs. baseline</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;"><1μs</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">Stabilization time</p>
+                    </div>
+                    <div style="background: white; border: 1px solid #d2d2d7; border-radius: 12px; padding: 24px;">
+                        <h3 style="color: #00d4ff; font-size: 32px; margin: 0;">99.9%</h3>
+                        <p style="margin: 8px 0 0 0; color: #6e6e73;">System uptime</p>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #888; font-style: italic; margin-top: 8px;">Note: Metrics from prototype characterization and publication results. Actual performance varies with specific system parameters.</p>
+                
+                <h2>Tools & Stack</h2>
+                <div class="chips-container" style="margin: 24px 0;">
+                    <span class="chip">Cadence Virtuoso</span>
+                    <span class="chip">CMOS 28nm</span>
+                    <span class="chip">MATLAB Simulink</span>
+                    <span class="chip">Python</span>
+                    <span class="chip">Oscilloscope</span>
+                    <span class="chip">Optical Power Meter</span>
+                    <span class="chip">Thermal Chamber</span>
+                </div>
+                
+                <div style="margin-top: 48px; padding-top: 32px; border-top: 1px solid #d2d2d7;">
+                    <p style="color: #6e6e73; font-style: italic; margin-bottom: 24px;">This project was completed during employment at Meta Reality Labs. Specific technical details are confidential.</p>
+                    <a href="projects.html" class="btn" style="display: inline-block;">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>
