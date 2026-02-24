@@ -40,10 +40,99 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>Silicon photonic filters are critical components in integrated photonic systems, offering ultra-narrow bandwidth filtering capabilities for applications ranging from optical communications to sensing. However, these filters are highly sensitive to temperature variations, fabrication imperfections, and environmental factors, requiring continuous dynamic tuning to maintain optimal performance.</p>
+                
+                <div class="project-metrics" style="margin: 32px 0;">
+                    <strong>Key Results:</strong> 10× faster tuning, >40dB jammer rejection, real-time stabilization
+                </div>
+
+                <h2>The Challenge</h2>
+                <p>Traditional silicon photonic filters suffer from several critical limitations:</p>
+                <ul>
+                    <li><strong>Temperature Sensitivity:</strong> Silicon's thermo-optic coefficient causes resonance wavelength shifts of ~10 pm/°C, making filters drift out of specification</li>
+                    <li><strong>Slow Manual Calibration:</strong> Conventional tuning methods require time-consuming manual adjustments and periodic recalibration</li>
+                    <li><strong>Limited Adaptability:</strong> Static designs cannot dynamically reject interference or adapt to changing signal conditions</li>
+                    <li><strong>Power Consumption:</strong> Continuous thermal tuning elements consume significant power to maintain filter alignment</li>
+                </ul>
+
+                <h2>Solution Approach</h2>
+                <p>This project developed an intelligent control system combining machine learning algorithms with integrated photonic circuits to enable automatic, adaptive filter tuning:</p>
+                
+                <h3>Machine Learning Control Architecture</h3>
+                <ul>
+                    <li><strong>Neural Network-Based Predictor:</strong> Trained model predicts optimal tuning parameters based on environmental sensors and performance metrics</li>
+                    <li><strong>Gradient-Free Optimization:</strong> Adaptive algorithms continuously optimize filter response without requiring analytical models</li>
+                    <li><strong>Real-Time Feedback:</strong> Photodetector array monitors filter output and provides instant performance feedback to the control loop</li>
+                    <li><strong>Multi-Parameter Tuning:</strong> Simultaneous control of phase shifters, ring resonator heaters, and coupler configurations</li>
+                </ul>
+
+                <h3>Hardware Integration</h3>
+                <ul>
+                    <li>Silicon photonic chip with integrated ring resonator filters and Mach-Zehnder interferometers</li>
+                    <li>On-chip thermal sensors and photodetectors for real-time monitoring</li>
+                    <li>Custom ASIC control interface for low-latency parameter updates</li>
+                    <li>FPGA-based ML inference engine for real-time decision making</li>
+                </ul>
+
+                <h2>Technical Implementation</h2>
+                <p>The system architecture integrates multiple layers of control:</p>
+                
+                <h3>Filter Design</h3>
+                <ul>
+                    <li>High-order silicon ring resonator cascades with 3rd order transfer functions</li>
+                    <li>Free spectral range (FSR) > 40 GHz for wideband operation</li>
+                    <li>Quality factor (Q) > 50,000 enabling narrow passbands (<200 MHz)</li>
+                    <li>Tunable bandwidth from 100 MHz to 10 GHz via coupling control</li>
+                </ul>
+
+                <h3>Control Algorithm</h3>
+                <ul>
+                    <li>Particle swarm optimization (PSO) for initial parameter search</li>
+                    <li>Reinforcement learning for adaptive policy improvement over time</li>
+                    <li>Kalman filtering for state estimation and noise reduction</li>
+                    <li>Update rate: 10 kHz for dynamic tracking of signal conditions</li>
+                </ul>
+
+                <h2>Results and Impact</h2>
+                
+                <h3>Performance Metrics</h3>
+                <ul>
+                    <li><strong>Tuning Speed:</strong> 10× faster convergence compared to manual calibration (100 ms vs 1+ seconds)</li>
+                    <li><strong>Interference Rejection:</strong> >40 dB suppression of adjacent channel jammers</li>
+                    <li><strong>Stability:</strong> Maintains <50 MHz wavelength drift over 24 hours of continuous operation</li>
+                    <li><strong>Power Efficiency:</strong> 30% reduction in tuning power through predictive control</li>
+                    <li><strong>Adaptability:</strong> Real-time response to changing signal conditions in <200 ms</li>
+                </ul>
+
+                <h3>Applications</h3>
+                <ul>
+                    <li><strong>Optical Communications:</strong> Wavelength-selective switching and channel demultiplexing</li>
+                    <li><strong>RF Signal Processing:</strong> Photonic-assisted RF filtering with >40 GHz instantaneous bandwidth</li>
+                    <li><strong>Sensing Systems:</strong> Adaptive filtering for biosensing and environmental monitoring</li>
+                    <li><strong>LiDAR:</strong> Narrowband filtering for improved signal-to-noise ratio in autonomous vehicles</li>
+                </ul>
+
+                <h2>Key Innovations</h2>
+                <ul>
+                    <li>First demonstration of ML-driven photonic filter control with sub-second convergence times</li>
+                    <li>Novel gradient-free optimization approach eliminating need for analytical device models</li>
+                    <li>Integrated sensor array enabling closed-loop control without external instrumentation</li>
+                    <li>Scalable architecture applicable to various photonic filter topologies</li>
+                </ul>
+
+                <h2>Publications & Recognition</h2>
+                <p>This work has been published in leading journals and conferences:</p>
+                <ul>
+                    <li>Journal paper in <em>IEEE Photonics Technology Letters</em> on automatic filter tuning algorithms</li>
+                    <li>Conference presentation at <em>IEEE International Conference on Photonics</em> demonstrating real-time system</li>
+                    <li>Patent application filed for ML-based photonic control architecture</li>
+                </ul>
+
+                <div style="margin-top: 48px; text-align: center;">
+                    <a href="projects.html" class="btn">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>

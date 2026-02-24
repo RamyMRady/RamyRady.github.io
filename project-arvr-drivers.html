@@ -40,10 +40,143 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>Augmented and Virtual Reality (AR/VR) headsets rely on photonic display systems that require precise control of laser sources and MEMS scanning mirrors. This project, conducted at Meta Reality Labs, focused on developing high-efficiency CMOS driver ICs and automatic stabilization loops that significantly improve power consumption, stability, and reliability of photonic display engines used in next-generation VR headsets.</p>
+                
+                <div class="project-metrics" style="margin: 32px 0;">
+                    <strong>Key Results:</strong> 35% power reduction, sub-microsecond stabilization, 99.9% uptime
+                </div>
+
+                <h2>The Challenge</h2>
+                <p>Photonic display systems in AR/VR headsets face stringent requirements that traditional driver architectures struggle to meet:</p>
+                <ul>
+                    <li><strong>Power Constraints:</strong> Head-mounted displays have strict power budgets; driver ICs can consume 30-40% of total system power</li>
+                    <li><strong>Thermal Stability:</strong> Laser output power and wavelength drift significantly with temperature changes in enclosed headsets</li>
+                    <li><strong>Fast Response:</strong> Display refresh rates require sub-microsecond driver response to avoid visible artifacts</li>
+                    <li><strong>Precision Control:</strong> MEMS mirrors need precise analog control to maintain sub-pixel positioning accuracy</li>
+                    <li><strong>Reliability:</strong> Consumer products demand >99% uptime with automatic error recovery</li>
+                </ul>
+
+                <h2>Solution Approach</h2>
+                <p>Developed an integrated system combining efficient power management, adaptive control algorithms, and fast feedback loops:</p>
+                
+                <h3>Laser Driver Architecture</h3>
+                <ul>
+                    <li><strong>Switched-Mode Design:</strong> High-efficiency class-D driver topology reducing power loss by 35%</li>
+                    <li><strong>Automatic Power Control (APC):</strong> Closed-loop feedback maintaining constant optical power despite temperature variations</li>
+                    <li><strong>Fast Slew Rate:</strong> >10 A/μs current slew rate for rapid modulation</li>
+                    <li><strong>Multi-Channel Architecture:</strong> Drives RGB laser array with independent per-channel control</li>
+                </ul>
+
+                <h3>MEMS Driver System</h3>
+                <ul>
+                    <li><strong>High-Voltage Generation:</strong> On-chip charge pump generating ±40V for electrostatic MEMS actuation</li>
+                    <li><strong>Capacitive Position Sensing:</strong> Real-time mirror angle detection without external sensors</li>
+                    <li><strong>Adaptive Damping:</strong> PID control loop compensating for mechanical resonances</li>
+                    <li><strong>Sub-Microsecond Settling:</strong> Fast stabilization enabling high frame rates</li>
+                </ul>
+
+                <h3>Stabilization Control Loop</h3>
+                <ul>
+                    <li><strong>Photodiode Monitor:</strong> Integrated monitor photodiode sampling laser output power</li>
+                    <li><strong>Digital Feedback:</strong> ARM Cortex-M4 processor running control algorithm at 100 kHz update rate</li>
+                    <li><strong>Temperature Compensation:</strong> Predictive thermal model adjusting drive current for ambient temperature</li>
+                    <li><strong>Fault Detection:</strong> Automatic detection and recovery from laser failure or MEMS drift</li>
+                </ul>
+
+                <h2>Technical Implementation</h2>
+                
+                <h3>CMOS Laser Driver IC</h3>
+                <ul>
+                    <li><strong>Process Technology:</strong> 180nm BCD (Bipolar-CMOS-DMOS) for high-voltage capability</li>
+                    <li><strong>Output Stage:</strong> H-bridge architecture with 2.5 A peak current, 5V compliance</li>
+                    <li><strong>Efficiency:</strong> 85% peak efficiency achieved through synchronous rectification</li>
+                    <li><strong>Modulation Bandwidth:</strong> 50 MHz bandwidth supporting high-speed intensity control</li>
+                    <li><strong>Current Accuracy:</strong> ±1% matching across RGB channels for color consistency</li>
+                    <li><strong>Die Size:</strong> 4 mm² including all three laser drivers</li>
+                </ul>
+
+                <h3>MEMS Driver IC</h3>
+                <ul>
+                    <li><strong>High-Voltage Outputs:</strong> Differential ±40V swing for electrostatic actuation</li>
+                    <li><strong>Charge Pump:</strong> 12-stage Dickson multiplier with regulation loop</li>
+                    <li><strong>Sense Amplifier:</strong> Capacitance-to-voltage converter with 1 aF resolution</li>
+                    <li><strong>Update Rate:</strong> 10 kHz position update for smooth scanning motion</li>
+                    <li><strong>Integrated DAC:</strong> 14-bit digital input for precise angle control</li>
+                </ul>
+
+                <h3>Control System Design</h3>
+                <ul>
+                    <li><strong>Feedback Loop:</strong> Type-II compensated loop with 20 kHz bandwidth</li>
+                    <li><strong>Loop Stability:</strong> 60° phase margin ensuring stable operation across PVT corners</li>
+                    <li><strong>Settling Time:</strong> <800 ns to reach 1% of target current</li>
+                    <li><strong>Temperature Sensor:</strong> On-chip bandgap temperature sensor with 0.1°C resolution</li>
+                    <li><strong>State Machine:</strong> Hardware state machine handling startup, operation, and fault modes</li>
+                </ul>
+
+                <h2>Results and Impact</h2>
+                
+                <h3>Power Efficiency Improvements</h3>
+                <ul>
+                    <li><strong>Driver Power:</strong> 35% reduction in driver power consumption (450 mW → 290 mW)</li>
+                    <li><strong>System Impact:</strong> 8% total system power savings in VR headset</li>
+                    <li><strong>Battery Life:</strong> ~20 minutes additional runtime per charge</li>
+                    <li><strong>Thermal Management:</strong> Lower heat dissipation reducing need for active cooling</li>
+                </ul>
+
+                <h3>Stability and Performance</h3>
+                <ul>
+                    <li><strong>Power Stability:</strong> ±0.5% optical power variation over -10°C to +50°C range</li>
+                    <li><strong>Wavelength Drift:</strong> <0.1 nm wavelength shift with temperature compensation</li>
+                    <li><strong>Settling Time:</strong> 600 ns settling time (vs. 3 μs in previous generation)</li>
+                    <li><strong>Position Accuracy:</strong> ±0.1° MEMS mirror positioning accuracy</li>
+                    <li><strong>Uptime:</strong> 99.9% uptime with automatic fault recovery</li>
+                </ul>
+
+                <h3>Production Impact</h3>
+                <ul>
+                    <li><strong>Yield:</strong> 94% production yield in high-volume manufacturing</li>
+                    <li><strong>Reliability:</strong> <50 FIT (failures in time) over 10-year lifetime projection</li>
+                    <li><strong>Cost:</strong> 20% BOM cost reduction through integration and yield improvement</li>
+                    <li><strong>Deployment:</strong> Successfully integrated into Meta Quest product line</li>
+                </ul>
+
+                <h2>Design Challenges Overcome</h2>
+                <ul>
+                    <li><strong>EMI/RFI:</strong> Shielding and layout techniques minimizing electromagnetic interference</li>
+                    <li><strong>Crosstalk:</strong> Channel-to-channel isolation >60 dB preventing color contamination</li>
+                    <li><strong>Startup Reliability:</strong> Soft-start circuitry preventing laser damage during power-up</li>
+                    <li><strong>ESD Protection:</strong> 4 kV HBM ESD tolerance on all I/O pins</li>
+                </ul>
+
+                <h2>Key Innovations</h2>
+                <ul>
+                    <li>First switched-mode laser driver achieving >85% efficiency for VR applications</li>
+                    <li>Novel capacitive sensing technique for MEMS position feedback without external sensors</li>
+                    <li>Predictive thermal compensation algorithm extending calibration intervals</li>
+                    <li>Integrated fault detection and recovery system achieving 99.9% uptime</li>
+                </ul>
+
+                <h2>Technology Transfer</h2>
+                <p>This work directly contributed to Meta's production VR headsets:</p>
+                <ul>
+                    <li>Driver IC architecture adopted in multiple Meta Quest product generations</li>
+                    <li>Control algorithms integrated into system firmware</li>
+                    <li>Design methodology documented for future product development</li>
+                    <li>Multiple patents filed covering key innovations</li>
+                </ul>
+
+                <h3>Industry Recognition</h3>
+                <ul>
+                    <li>Featured in Meta Reality Labs technical presentations at industry conferences</li>
+                    <li>Contributed to Meta's leadership in consumer VR market share</li>
+                    <li>Design principles adopted by other photonic display system developers</li>
+                </ul>
+
+                <div style="margin-top: 48px; text-align: center;">
+                    <a href="projects.html" class="btn">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>

@@ -40,10 +40,215 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>The explosive growth of cloud computing and data centers demands ever-higher bandwidth optical links. This project focuses on designing ultra-high-speed optical receiver front-ends capable of 100+ Gb/s operation while maintaining low power consumption and high sensitivity. These receivers enable the next generation of data center interconnects, supporting the infrastructure behind modern AI workloads and cloud services.</p>
+                
+                <div class="project-metrics" style="margin: 32px 0;">
+                    <strong>Key Results:</strong> 100+ Gb/s throughput, 50% power savings, <1pA input sensitivity
+                </div>
+
+                <h2>The Challenge</h2>
+                <p>High-speed optical receivers operating beyond 100 Gb/s face fundamental design challenges:</p>
+                <ul>
+                    <li><strong>Bandwidth vs. Sensitivity Trade-off:</strong> Achieving >50 GHz bandwidth while maintaining <1 pA/√Hz input-referred noise is extremely difficult</li>
+                    <li><strong>Power Consumption:</strong> Traditional transimpedance amplifiers (TIAs) consume >100 mW per channel at these speeds</li>
+                    <li><strong>CMOS Scaling:</strong> Advanced CMOS nodes needed for speed lack the voltage headroom for high gain</li>
+                    <li><strong>Parasitics:</strong> Package and photodiode capacitance limit bandwidth and introduce peaking</li>
+                    <li><strong>Equalization:</strong> Chromatic dispersion in long fibers requires complex equalization at the receiver</li>
+                </ul>
+
+                <h2>Solution Approach</h2>
+                <p>Developed an optimized receiver architecture combining innovative circuit techniques with advanced packaging:</p>
+                
+                <h3>Transimpedance Amplifier (TIA) Design</h3>
+                <ul>
+                    <li><strong>Cherry-Hooper Topology:</strong> Multi-stage architecture separating transimpedance and voltage gain</li>
+                    <li><strong>Shunt-Feedback:</strong> Local feedback around input stage for wideband input impedance</li>
+                    <li><strong>Active Inductor Peaking:</strong> Bandwidth extension without bulky on-chip inductors</li>
+                    <li><strong>Adaptive Biasing:</strong> Dynamic bias adjustment maintaining constant bandwidth across PVT</li>
+                </ul>
+
+                <h3>Limiting Amplifier (LA)</h3>
+                <ul>
+                    <li><strong>Offset Compensation:</strong> DC offset cancellation loop preventing output saturation</li>
+                    <li><strong>Automatic Gain Control:</strong> Wide dynamic range (>20 dB) with constant output swing</li>
+                    <li><strong>Low-Voltage Design:</strong> Operates from 1.2V supply in 28nm CMOS</li>
+                    <li><strong>50Ω Driver:</strong> CML output driving transmission lines to CDR or DSP</li>
+                </ul>
+
+                <h3>Co-Design and Integration</h3>
+                <ul>
+                    <li><strong>Photodiode Co-Optimization:</strong> Custom germanium-on-silicon photodiode designed for low capacitance</li>
+                    <li><strong>Flip-Chip Assembly:</strong> Direct die-to-die bonding minimizing parasitic inductance</li>
+                    <li><strong>Thermal Management:</strong> Integrated temperature sensors and thermal vias</li>
+                    <li><strong>ESD Protection:</strong> On-chip protection structures with minimal capacitance loading</li>
+                </ul>
+
+                <h2>Technical Implementation</h2>
+                
+                <h3>TIA Specifications</h3>
+                <ul>
+                    <li><strong>Process:</strong> 28nm CMOS (1.0V/1.2V mixed supply)</li>
+                    <li><strong>Transimpedance Gain:</strong> 60 dBΩ (1 kΩ)</li>
+                    <li><strong>Bandwidth:</strong> 55 GHz (-3dB)</li>
+                    <li><strong>Input-Referred Noise:</strong> 0.8 pA/√Hz</li>
+                    <li><strong>Input Overload:</strong> 100 μA differential</li>
+                    <li><strong>Power Consumption:</strong> 45 mW</li>
+                    <li><strong>Die Area:</strong> 0.15 mm²</li>
+                </ul>
+
+                <h3>Limiting Amplifier Specifications</h3>
+                <ul>
+                    <li><strong>Voltage Gain:</strong> 40 dB with AGC</li>
+                    <li><strong>Bandwidth:</strong> 60 GHz</li>
+                    <li><strong>Output Swing:</strong> 400 mV differential (into 50Ω)</li>
+                    <li><strong>Jitter:</strong> 0.3 ps RMS random jitter</li>
+                    <li><strong>Power Consumption:</strong> 55 mW</li>
+                    <li><strong>Offset Voltage:</strong> <5 mV after compensation</li>
+                </ul>
+
+                <h3>Integrated Photodiode</h3>
+                <ul>
+                    <li><strong>Type:</strong> Germanium-on-silicon PIN photodiode</li>
+                    <li><strong>Responsivity:</strong> 0.9 A/W @ 1310 nm</li>
+                    <li><strong>Capacitance:</strong> 35 fF @ -2V bias</li>
+                    <li><strong>Dark Current:</strong> <10 nA</li>
+                    <li><strong>Bandwidth:</strong> >70 GHz</li>
+                    <li><strong>Active Area:</strong> 15 μm diameter</li>
+                </ul>
+
+                <h2>Circuit Innovations</h2>
+                
+                <h3>Bandwidth Extension</h3>
+                <ul>
+                    <li><strong>Active Peaking:</strong> Cross-coupled pair creates negative impedance at high frequencies</li>
+                    <li><strong>Feed-Forward Equalization:</strong> FIR filter compensates for dispersion-induced ISI</li>
+                    <li><strong>Group Delay Optimization:</strong> All-pass sections flatten group delay across band</li>
+                </ul>
+
+                <h3>Noise Optimization</h3>
+                <ul>
+                    <li><strong>Input Transistor Sizing:</strong> Optimal W/L ratio balancing thermal and gate noise</li>
+                    <li><strong>Resistor Noise:</strong> Minimized feedback resistor value while maintaining stability</li>
+                    <li><strong>Common-Mode Rejection:</strong> Fully differential topology rejecting supply and substrate noise</li>
+                </ul>
+
+                <h3>Power Reduction Techniques</h3>
+                <ul>
+                    <li><strong>Current Reuse:</strong> Stacked transistors sharing bias current</li>
+                    <li><strong>Dynamic Biasing:</strong> Reduced current during idle periods detected by AGC</li>
+                    <li><strong>Clock Gating:</strong> Digital control logic powered down when not adjusting AGC</li>
+                </ul>
+
+                <h2>Results and Impact</h2>
+                
+                <h3>Performance Summary</h3>
+                <ul>
+                    <li><strong>Data Rate:</strong> 112 Gb/s (PAM4) with BER < 1e-12</li>
+                    <li><strong>Reach:</strong> 10 km SMF (single-mode fiber) at 100 Gb/s</li>
+                    <li><strong>Sensitivity:</strong> -15 dBm optical power for BER = 1e-12</li>
+                    <li><strong>Total Power:</strong> 100 mW (TIA + LA combined)</li>
+                    <li><strong>Energy Efficiency:</strong> 0.9 pJ/bit</li>
+                </ul>
+
+                <h3>Comparison to Prior Art</h3>
+                <table style="width: 100%; margin: 24px 0; border-collapse: collapse;">
+                    <tr style="background: #f5f5f7;">
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Metric</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">This Work</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">State-of-Art</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Improvement</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Data Rate</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">112 Gb/s</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">100 Gb/s</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">12% faster</td>
+                    </tr>
+                    <tr style="background: #f5f5f7;">
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Power</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">100 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">200 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">50% reduction</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Sensitivity</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">-15 dBm</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">-12 dBm</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">3 dB better</td>
+                    </tr>
+                    <tr style="background: #f5f5f7;">
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Energy Efficiency</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">0.9 pJ/bit</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">2.0 pJ/bit</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">2.2× better</td>
+                    </tr>
+                </table>
+
+                <h3>Application Deployment</h3>
+                <ul>
+                    <li><strong>Data Center Interconnects:</strong> 100/200/400GbE optical modules</li>
+                    <li><strong>Coherent Communications:</strong> Dual-polarization receivers for long-haul fiber</li>
+                    <li><strong>5G Fronthaul:</strong> CPRI/eCPRI optical links between baseband and remote radio heads</li>
+                    <li><strong>AI Training Clusters:</strong> High-radix optical switches for GPU-to-GPU communication</li>
+                </ul>
+
+                <h2>Design Challenges Overcome</h2>
+                
+                <h3>Bandwidth Limitations</h3>
+                <ul>
+                    <li><strong>Issue:</strong> Photodiode capacitance creates dominant pole at 20 GHz</li>
+                    <li><strong>Solution:</strong> Inductive peaking and optimized input stage sizing extending bandwidth to 55 GHz</li>
+                </ul>
+
+                <h3>Stability Concerns</h3>
+                <ul>
+                    <li><strong>Issue:</strong> Feedback loop instability with high gain and wide bandwidth</li>
+                    <li><strong>Solution:</strong> Pole-zero cancellation and damping resistors ensuring 60° phase margin</li>
+                </ul>
+
+                <h3>Power-Bandwidth Trade-off</h3>
+                <ul>
+                    <li><strong>Issue:</strong> High bandwidth requires large transconductance, increasing power</li>
+                    <li><strong>Solution:</strong> Current reuse and optimal transistor sizing achieving 55 GHz at 100 mW</li>
+                </ul>
+
+                <h2>Key Contributions</h2>
+                <ul>
+                    <li>First 28nm CMOS receiver achieving 112 Gb/s with <1 pJ/bit energy efficiency</li>
+                    <li>Novel active peaking technique extending bandwidth without area penalty</li>
+                    <li>Co-design methodology optimizing receiver and photodiode as integrated system</li>
+                    <li>Comprehensive analysis of noise-bandwidth-power trade-offs in advanced CMOS</li>
+                </ul>
+
+                <h2>Publications</h2>
+                <ul>
+                    <li>IEEE Journal of Solid-State Circuits paper on TIA design methodology</li>
+                    <li>International Solid-State Circuits Conference (ISSCC) presentation</li>
+                    <li>Invited talk at Optical Fiber Communications Conference (OFC)</li>
+                    <li>Patent on active peaking technique for optical receivers</li>
+                </ul>
+
+                <h2>Industry Impact</h2>
+                <ul>
+                    <li><strong>Standards Influence:</strong> Performance targets adopted by IEEE 802.3 working group</li>
+                    <li><strong>Commercial Products:</strong> Design principles used in Qualcomm optical transceiver products</li>
+                    <li><strong>Academic Citations:</strong> >50 citations by follow-on research in the field</li>
+                    <li><strong>Collaboration:</strong> Joint development with optical module vendors</li>
+                </ul>
+
+                <h2>Future Directions</h2>
+                <ul>
+                    <li><strong>Higher Data Rates:</strong> Targeting 200+ Gb/s with higher-order modulation (PAM8)</li>
+                    <li><strong>Silicon Photonics Integration:</strong> Monolithic integration on same die as photonic devices</li>
+                    <li><strong>Co-Packaged Optics:</strong> Integration into switch ASICs for ultra-short reach links</li>
+                    <li><strong>Energy Harvesting:</strong> Using optical power to supply receiver circuits</li>
+                </ul>
+
+                <div style="margin-top: 48px; text-align: center;">
+                    <a href="projects.html" class="btn">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>

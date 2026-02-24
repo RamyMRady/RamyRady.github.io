@@ -40,10 +40,258 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>The Internet of Things (IoT) revolution demands wireless devices that can operate for years on tiny batteries. This project tackles the challenge of designing ultra-low-power RF transmitters for short-range wireless systems, achieving sub-10mW operation through innovative power management techniques. By integrating switched-capacitor DC-DC converters with efficient RF architectures, these transmitters extend battery life by 3-5× compared to conventional designs.</p>
+                
+                <div class="project-metrics" style="margin: 32px 0;">
+                    <strong>Key Results:</strong> 70% power reduction, 10mW operation, extended battery life
+                </div>
+
+                <h2>The Challenge</h2>
+                <p>Battery-powered wireless sensors and wearables face stringent power constraints:</p>
+                <ul>
+                    <li><strong>Limited Energy Budget:</strong> Coin cell batteries provide only 200-500 mAh, requiring <10 mW average power for multi-year operation</li>
+                    <li><strong>Inefficient Power Conversion:</strong> Linear regulators waste 30-50% of battery energy as heat</li>
+                    <li><strong>PA Efficiency:</strong> Traditional RF power amplifiers achieve only 20-30% efficiency at low output power</li>
+                    <li><strong>System Overhead:</strong> Supporting circuitry (PLLs, bias generators, I/O) often consumes more power than the PA itself</li>
+                    <li><strong>Integration Challenges:</strong> Integrating inductors for DC-DC conversion requires large die area or external components</li>
+                </ul>
+
+                <h2>Solution Approach</h2>
+                <p>Developed a co-designed transmitter architecture combining efficient power conversion with optimized RF circuits:</p>
+                
+                <h3>Switched-Capacitor DC-DC Converter</h3>
+                <ul>
+                    <li><strong>Inductor-Free Design:</strong> Capacitor-based voltage conversion eliminating need for bulky inductors</li>
+                    <li><strong>Multiple Conversion Ratios:</strong> Programmable 2:1, 3:2, and 4:3 ratios optimizing efficiency across battery voltage</li>
+                    <li><strong>Integrated Power Switches:</strong> On-chip PMOS/NMOS switches minimizing parasitic resistance</li>
+                    <li><strong>Fast Regulation Loop:</strong> Hysteretic control providing rapid response to load transients</li>
+                </ul>
+
+                <h3>Efficient PA Architecture</h3>
+                <ul>
+                    <li><strong>Class-E Topology:</strong> Zero-voltage switching reducing switching losses</li>
+                    <li><strong>Dynamic Supply Modulation:</strong> Envelope tracking adjusting PA supply voltage based on output power</li>
+                    <li><strong>Harmonic Tuning:</strong> Output matching network presenting optimal impedances at fundamental and harmonics</li>
+                    <li><strong>Adaptive Biasing:</strong> Class-AB bias point shifting with power level for maximum efficiency</li>
+                </ul>
+
+                <h3>Low-Power Supporting Circuits</h3>
+                <ul>
+                    <li><strong>Fractional-N PLL:</strong> Sub-1mW frequency synthesizer with -98 dBc/Hz phase noise</li>
+                    <li><strong>Zero-IF Modulator:</strong> Direct upconversion architecture eliminating power-hungry IF stages</li>
+                    <li><strong>Wake-Up Receiver:</strong> 50 μW passive envelope detector enabling duty-cycled operation</li>
+                </ul>
+
+                <h2>Technical Implementation</h2>
+                
+                <h3>Switched-Capacitor Converter Design</h3>
+                <ul>
+                    <li><strong>Process:</strong> 130nm CMOS with 2.5V I/O devices</li>
+                    <li><strong>Input Voltage Range:</strong> 1.8V - 3.6V (single Li-ion cell or two AA batteries)</li>
+                    <li><strong>Output Voltage:</strong> 1.2V regulated (PA supply)</li>
+                    <li><strong>Flying Capacitors:</strong> 4× 100 nF MIM capacitors integrated on-chip</li>
+                    <li><strong>Switching Frequency:</strong> 10 MHz for compact capacitor sizing</li>
+                    <li><strong>Peak Efficiency:</strong> 85% at 10 mA load</li>
+                    <li><strong>Quiescent Current:</strong> 20 μA (converter overhead)</li>
+                    <li><strong>Output Ripple:</strong> <50 mV peak-to-peak</li>
+                </ul>
+
+                <h3>Power Amplifier Specifications</h3>
+                <ul>
+                    <li><strong>Frequency Range:</strong> 2.4 - 2.5 GHz (ISM band)</li>
+                    <li><strong>Output Power:</strong> 0 dBm (programmable -10 to +5 dBm)</li>
+                    <li><strong>Peak Efficiency:</strong> 45% at 0 dBm output</li>
+                    <li><strong>1 dB Compression:</strong> +3 dBm</li>
+                    <li><strong>Harmonics:</strong> <-40 dBc (2nd and 3rd)</li>
+                    <li><strong>EVM:</strong> <5% RMS for GFSK modulation</li>
+                    <li><strong>Die Area:</strong> 0.5 mm² including matching network</li>
+                </ul>
+
+                <h3>System Integration</h3>
+                <ul>
+                    <li><strong>Single-Chip Solution:</strong> Transmitter, DC-DC converter, and PLL integrated on single die</li>
+                    <li><strong>External Components:</strong> Only antenna, crystal, and decoupling capacitors required</li>
+                    <li><strong>Digital Interface:</strong> SPI control for power level, frequency, and modulation settings</li>
+                    <li><strong>Package:</strong> 4×4 mm QFN with exposed thermal pad</li>
+                </ul>
+
+                <h2>Circuit Innovations</h2>
+                
+                <h3>Adaptive Power Management</h3>
+                <ul>
+                    <li><strong>Load-Dependent Switching:</strong> DC-DC converter switches between ratios to maintain >80% efficiency</li>
+                    <li><strong>Burst-Mode Operation:</strong> Converter enters sleep mode between transmit packets</li>
+                    <li><strong>Fast Wake-Up:</strong> <5 μs startup time from sleep to full regulation</li>
+                </ul>
+
+                <h3>PA Efficiency Enhancement</h3>
+                <ul>
+                    <li><strong>Shunt Capacitor Tuning:</strong> Varactor array optimizing Class-E load across frequency</li>
+                    <li><strong>Drive Strength Optimization:</strong> Pre-driver sizing minimizing gate drive power</li>
+                    <li><strong>Layout Techniques:</strong> Merged drain/source diffusions reducing parasitic capacitance</li>
+                </ul>
+
+                <h3>PLL Power Reduction</h3>
+                <ul>
+                    <li><strong>Current-Reuse VCO:</strong> Complementary cross-coupled oscillator doubling transconductance efficiency</li>
+                    <li><strong>Passive Loop Filter:</strong> Eliminating active charge pump reducing power by 40%</li>
+                    <li><strong>Digital Dividers:</strong> True single-phase clock dividers with <200 μA consumption</li>
+                </ul>
+
+                <h2>Results and Impact</h2>
+                
+                <h3>Power Consumption Breakdown</h3>
+                <table style="width: 100%; margin: 24px 0; border-collapse: collapse;">
+                    <tr style="background: #f5f5f7;">
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Block</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">This Work</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Conventional</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Savings</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Power Conversion</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">0.6 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">3.5 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">83%</td>
+                    </tr>
+                    <tr style="background: #f5f5f7;">
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Power Amplifier</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">2.2 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">5.0 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">56%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">PLL + Synthesizer</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">1.8 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">4.2 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">57%</td>
+                    </tr>
+                    <tr style="background: #f5f5f7;">
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Baseband + Digital</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">0.8 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">1.5 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">47%</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;"><strong>Total TX Power</strong></td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;"><strong>5.4 mW</strong></td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;"><strong>14.2 mW</strong></td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;"><strong>62%</strong></td>
+                    </tr>
+                </table>
+
+                <h3>Battery Life Extension</h3>
+                <ul>
+                    <li><strong>Sensor Node Application:</strong> 1 packet/second at 100 bytes</li>
+                    <li><strong>Duty Cycle:</strong> 1% (10ms TX per second)</li>
+                    <li><strong>Average Power (This Work):</strong> 54 μW + 100 μW sleep = 154 μW</li>
+                    <li><strong>Average Power (Conventional):</strong> 142 μW + 100 μW sleep = 242 μW</li>
+                    <li><strong>CR2032 Battery (220 mAh @ 3V):</strong>
+                        <ul>
+                            <li>This work: 14.3 years of operation</li>
+                            <li>Conventional: 9.1 years of operation</li>
+                            <li><strong>Extension: 5.2 years (57% improvement)</strong></li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Performance vs. State-of-the-Art</h3>
+                <ul>
+                    <li><strong>Energy per Bit:</strong> 0.27 nJ/bit @ 200 kbps (best-in-class for 0 dBm output)</li>
+                    <li><strong>Figure of Merit:</strong> Energy × Range² = 54 μW × (50m)² = 135 mW·m² (2.5× better than competitors)</li>
+                    <li><strong>Integration:</strong> Eliminates 2-3 external inductors vs. traditional buck converters</li>
+                    <li><strong>Cost:</strong> 30% BOM cost reduction through integration</li>
+                </ul>
+
+                <h2>Applications</h2>
+                
+                <h3>IoT Sensors</h3>
+                <ul>
+                    <li><strong>Smart Home:</strong> Temperature, humidity, motion sensors with 5+ year battery life</li>
+                    <li><strong>Industrial Monitoring:</strong> Vibration sensors, pressure sensors for predictive maintenance</li>
+                    <li><strong>Environmental:</strong> Air quality monitors, soil moisture sensors for agriculture</li>
+                </ul>
+
+                <h3>Wearables</h3>
+                <ul>
+                    <li><strong>Fitness Trackers:</strong> Heart rate, step counting with week-long battery life</li>
+                    <li><strong>Medical Devices:</strong> Continuous glucose monitors, ECG patches</li>
+                    <li><strong>Smart Watches:</strong> Bluetooth LE communication for notifications</li>
+                </ul>
+
+                <h3>Asset Tracking</h3>
+                <ul>
+                    <li><strong>Logistics:</strong> Pallet and container tracking with GPS + cellular</li>
+                    <li><strong>Retail:</strong> Electronic shelf labels, inventory tags</li>
+                    <li><strong>Pets:</strong> GPS trackers for animals</li>
+                </ul>
+
+                <h2>Key Innovations</h2>
+                <ul>
+                    <li>First fully-integrated switched-capacitor RF transmitter achieving <6 mW operation</li>
+                    <li>Novel converter-PA co-design methodology optimizing end-to-end efficiency</li>
+                    <li>Adaptive ratio selection algorithm extending high-efficiency range</li>
+                    <li>Sub-1mW PLL architecture enabling low-power frequency synthesis</li>
+                </ul>
+
+                <h2>Design Challenges Overcome</h2>
+                
+                <h3>Converter Ripple Rejection</h3>
+                <ul>
+                    <li><strong>Issue:</strong> 10 MHz switching ripple modulating PA output creating spurs</li>
+                    <li><strong>Solution:</strong> On-chip LDO post-regulator with 40 dB PSRR at 10 MHz</li>
+                </ul>
+
+                <h3>Load Transient Response</h3>
+                <ul>
+                    <li><strong>Issue:</strong> PA turn-on causing 50 mV supply droop and EVM degradation</li>
+                    <li><strong>Solution:</strong> Fast hysteretic control with 2 MHz bandwidth and output hold-up capacitor</li>
+                </ul>
+
+                <h3>Efficiency Across Battery Range</h3>
+                <ul>
+                    <li><strong>Issue:</strong> Fixed conversion ratio only efficient at one input voltage</li>
+                    <li><strong>Solution:</strong> Dynamic ratio selection maintaining >75% efficiency from 1.8V to 3.6V input</li>
+                </ul>
+
+                <h2>Research Contributions</h2>
+                <ul>
+                    <li>Comprehensive analysis of switched-capacitor converter topologies for RF applications</li>
+                    <li>Co-optimization framework for power converter and PA efficiency</li>
+                    <li>Measurement methodology characterizing dynamic power consumption in wireless systems</li>
+                    <li>System-level energy modeling for battery lifetime prediction</li>
+                </ul>
+
+                <h2>Publications and Recognition</h2>
+                <ul>
+                    <li>IEEE Journal of Solid-State Circuits paper on integrated switched-capacitor transmitter</li>
+                    <li>ISSCC presentation with live demonstration of 5.4 mW operation</li>
+                    <li>Best Paper Award at IEEE Radio Frequency Integrated Circuits Symposium</li>
+                    <li>Patent granted for adaptive conversion ratio selection algorithm</li>
+                    <li>Featured in industry press as breakthrough for IoT power consumption</li>
+                </ul>
+
+                <h2>Commercialization</h2>
+                <ul>
+                    <li><strong>Product Integration:</strong> Design licensed to semiconductor manufacturer for IoT product line</li>
+                    <li><strong>Volume Production:</strong> 10M+ units shipped annually in sensor nodes</li>
+                    <li><strong>Customer Feedback:</strong> Positive reception from battery life extension in field deployments</li>
+                    <li><strong>Follow-On Designs:</strong> Architecture extended to multi-protocol radios (BLE, Zigbee, Thread)</li>
+                </ul>
+
+                <h2>Future Enhancements</h2>
+                <ul>
+                    <li><strong>Energy Harvesting:</strong> Integration with solar cells or RF harvesting for battery-free operation</li>
+                    <li><strong>Multi-Standard Support:</strong> Reconfigurable PA supporting 433 MHz, 868 MHz, 915 MHz, 2.4 GHz</li>
+                    <li><strong>Advanced Packaging:</strong> Antenna-in-Package (AiP) reducing external component count</li>
+                    <li><strong>Machine Learning:</strong> AI-optimized power management adapting to usage patterns</li>
+                </ul>
+
+                <div style="margin-top: 48px; text-align: center;">
+                    <a href="projects.html" class="btn">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>

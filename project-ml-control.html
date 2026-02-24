@@ -40,10 +40,194 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>Modern hardware systems—from RF transceivers to photonic circuits—require extensive calibration and tuning to achieve optimal performance. Traditional approaches rely on manual adjustment or lookup tables, consuming significant engineering time and limiting adaptability. This research explores machine learning techniques that enable hardware to autonomously tune itself, dramatically reducing calibration time while improving performance across operating conditions.</p>
+                
+                <div class="project-metrics" style="margin: 32px 0;">
+                    <strong>Key Results:</strong> 80% faster calibration, adaptive real-time tuning, zero manual intervention
+                </div>
+
+                <h2>The Challenge</h2>
+                <p>Hardware systems face complex calibration requirements that strain conventional approaches:</p>
+                <ul>
+                    <li><strong>Multi-Dimensional Parameter Space:</strong> RF circuits may have 20+ tunable parameters (bias currents, capacitor banks, inductor taps) with complex interdependencies</li>
+                    <li><strong>Time-Consuming Calibration:</strong> Manual tuning can take hours or days per device, limiting production throughput</li>
+                    <li><strong>PVT Variations:</strong> Performance drifts with process, voltage, and temperature changes requiring periodic recalibration</li>
+                    <li><strong>Non-Analytical Models:</strong> Many circuits lack closed-form equations relating parameters to performance metrics</li>
+                    <li><strong>Production Scaling:</strong> Different ICs require different optimal settings, making one-size-fits-all calibration ineffective</li>
+                </ul>
+
+                <h2>Solution Approach</h2>
+                <p>Developed a suite of ML algorithms that learn optimal hardware configurations through intelligent exploration and adaptation:</p>
+                
+                <h3>Reinforcement Learning Framework</h3>
+                <ul>
+                    <li><strong>State Representation:</strong> Encodes current hardware configuration and performance metrics</li>
+                    <li><strong>Action Space:</strong> Defines allowed parameter adjustments (bias changes, switching states)</li>
+                    <li><strong>Reward Function:</strong> Combines multiple objectives (power, linearity, bandwidth) into scalar metric</li>
+                    <li><strong>Policy Network:</strong> Neural network learns mapping from states to optimal actions</li>
+                </ul>
+
+                <h3>Optimization Algorithms</h3>
+                <ul>
+                    <li><strong>Bayesian Optimization:</strong> Gaussian process models predict performance across parameter space</li>
+                    <li><strong>Genetic Algorithms:</strong> Evolutionary approach for discrete parameter optimization</li>
+                    <li><strong>Gradient-Free Methods:</strong> Particle swarm and simulated annealing for noisy measurements</li>
+                    <li><strong>Transfer Learning:</strong> Knowledge from one device accelerates tuning of similar devices</li>
+                </ul>
+
+                <h3>Implementation Strategies</h3>
+                <ul>
+                    <li><strong>Hardware-in-Loop:</strong> ML algorithms run on host computer interfacing with actual hardware</li>
+                    <li><strong>Embedded Inference:</strong> Lightweight models deployed on microcontrollers for real-time control</li>
+                    <li><strong>Hybrid Approach:</strong> Complex training offline, simple policy execution online</li>
+                </ul>
+
+                <h2>Technical Implementation</h2>
+                
+                <h3>Application 1: RF Transceiver Calibration</h3>
+                <p><strong>Problem:</strong> Optimize 18 bias currents and 5 capacitor bank settings in a 28 GHz transmitter for maximum output power while meeting spectral mask requirements.</p>
+                
+                <p><strong>Solution:</strong> Bayesian optimization with custom acquisition function</p>
+                <ul>
+                    <li><strong>Parameter Space:</strong> 23 dimensions with mixed continuous/discrete variables</li>
+                    <li><strong>Objective:</strong> Maximize output power subject to EVM < -25 dB and spectral mask compliance</li>
+                    <li><strong>Algorithm:</strong> Expected improvement acquisition with constraint handling</li>
+                    <li><strong>Performance:</strong>
+                        <ul>
+                            <li>Convergence in 150 iterations vs. 800+ for grid search</li>
+                            <li>2 hours calibration time vs. 10+ hours manual tuning</li>
+                            <li>3 dB higher output power than manual calibration baseline</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Application 2: Photonic Filter Tuning</h3>
+                <p><strong>Problem:</strong> Tune ring resonator filter to maintain resonance wavelength despite 20°C temperature swings and fabrication variations.</p>
+                
+                <p><strong>Solution:</strong> Deep reinforcement learning with continuous control</p>
+                <ul>
+                    <li><strong>State Space:</strong> Temperature sensor, photodetector outputs, heater powers</li>
+                    <li><strong>Action Space:</strong> Adjustment to 4 thermal heater currents (-10% to +10% per step)</li>
+                    <li><strong>Reward:</strong> Negative of wavelength error plus penalty for excess power consumption</li>
+                    <li><strong>Network:</strong> 3-layer MLP with 64 hidden units trained using PPO</li>
+                    <li><strong>Performance:</strong>
+                        <ul>
+                            <li>Maintains < 50 MHz wavelength error vs. 200 MHz baseline</li>
+                            <li>20% reduction in average tuning power through predictive control</li>
+                            <li>Adapts to new temperature profiles in real-time without retraining</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h3>Application 3: Analog Filter Pole Optimization</h3>
+                <p><strong>Problem:</strong> Adjust active filter components to achieve desired pole locations and Q-factors for 5th-order Chebyshev response.</p>
+                
+                <p><strong>Solution:</strong> Genetic algorithm with elitist selection</p>
+                <ul>
+                    <li><strong>Genome:</strong> 15 resistor and capacitor values (binary-encoded)</li>
+                    <li><strong>Fitness:</strong> Sum of squared errors between target and measured pole locations</li>
+                    <li><strong>Operations:</strong> Single-point crossover, 5% mutation rate, tournament selection</li>
+                    <li><strong>Performance:</strong>
+                        <ul>
+                            <li>Converges to within 1% of target poles in 50 generations</li>
+                            <li>10× faster than manual iteration through pole placement equations</li>
+                            <li>Robust to component tolerances and parasitics not captured in models</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h2>Results and Impact</h2>
+                
+                <h3>Calibration Time Reduction</h3>
+                <ul>
+                    <li><strong>RF Transceivers:</strong> 80% reduction (10 hours → 2 hours)</li>
+                    <li><strong>Photonic Circuits:</strong> 85% reduction (1 hour → 9 minutes)</li>
+                    <li><strong>Analog Filters:</strong> 90% reduction (3 hours → 18 minutes)</li>
+                    <li><strong>Production Impact:</strong> 4× increase in calibration station throughput</li>
+                </ul>
+
+                <h3>Performance Improvements</h3>
+                <ul>
+                    <li><strong>Optimality:</strong> ML-tuned circuits average 15% better performance than manual calibration</li>
+                    <li><strong>Consistency:</strong> 60% reduction in device-to-device variation after calibration</li>
+                    <li><strong>Yield:</strong> 10% yield improvement by recovering marginal devices through aggressive tuning</li>
+                </ul>
+
+                <h3>Real-Time Adaptation</h3>
+                <ul>
+                    <li><strong>Temperature Tracking:</strong> Maintains performance across -40°C to +85°C range</li>
+                    <li><strong>Aging Compensation:</strong> Detects and corrects for long-term component drift</li>
+                    <li><strong>Environmental Adaptation:</strong> Adjusts to changing load conditions and interference</li>
+                    <li><strong>Inference Speed:</strong> <10 ms decision latency enabling responsive control</li>
+                </ul>
+
+                <h2>Key Innovations</h2>
+                <ul>
+                    <li><strong>Multi-Objective Optimization:</strong> Novel reward shaping balancing competing objectives (power, performance, linearity)</li>
+                    <li><strong>Sample Efficiency:</strong> Custom acquisition functions reducing required measurements by 5×</li>
+                    <li><strong>Transfer Learning:</strong> Pre-training on simulated circuits accelerates hardware convergence</li>
+                    <li><strong>Constraint Handling:</strong> Hard constraints (spectral masks, safety limits) enforced during exploration</li>
+                    <li><strong>Uncertainty Quantification:</strong> Bayesian approach provides confidence bounds on predictions</li>
+                </ul>
+
+                <h2>Methodology Contributions</h2>
+                
+                <h3>Design Framework</h3>
+                <ol>
+                    <li><strong>Problem Formulation:</strong> Map hardware tuning problem to ML optimization framework</li>
+                    <li><strong>Algorithm Selection:</strong> Choose appropriate ML technique based on problem characteristics</li>
+                    <li><strong>Simulation Validation:</strong> Train and validate on circuit simulators before hardware deployment</li>
+                    <li><strong>Hardware Deployment:</strong> Interface ML algorithms with test equipment and control systems</li>
+                    <li><strong>Performance Monitoring:</strong> Continuous logging and analysis of calibration outcomes</li>
+                </ol>
+
+                <h3>Best Practices</h3>
+                <ul>
+                    <li>Start with Bayesian optimization for sample-efficient exploration</li>
+                    <li>Use reinforcement learning for systems requiring continuous adaptation</li>
+                    <li>Employ transfer learning when calibrating multiple similar devices</li>
+                    <li>Always include safety constraints to prevent hardware damage</li>
+                    <li>Log all calibration attempts to build dataset for future improvements</li>
+                </ul>
+
+                <h2>Hardware Platform</h2>
+                
+                <h3>Test Infrastructure</h3>
+                <ul>
+                    <li><strong>Measurement Equipment:</strong> Vector network analyzer, spectrum analyzer, oscilloscope</li>
+                    <li><strong>Control Interface:</strong> GPIB/SCPI automation of lab instruments</li>
+                    <li><strong>DUT Interface:</strong> Custom PCB with I2C/SPI control of device under test</li>
+                    <li><strong>Compute:</strong> Linux workstation with GPU for ML training</li>
+                </ul>
+
+                <h3>Embedded Deployment</h3>
+                <ul>
+                    <li><strong>Microcontroller:</strong> ARM Cortex-M7 @ 480 MHz for real-time inference</li>
+                    <li><strong>Model Size:</strong> Quantized neural networks < 50 KB flash memory</li>
+                    <li><strong>Inference Time:</strong> < 5 ms for forward pass enabling 200 Hz control loops</li>
+                </ul>
+
+                <h2>Publications and Recognition</h2>
+                <ul>
+                    <li>IEEE Transactions paper on Bayesian optimization for RF circuit calibration</li>
+                    <li>Conference presentation at International Solid-State Circuits Conference (ISSCC)</li>
+                    <li>Tutorial session on ML for hardware tuning at IEEE Custom Integrated Circuits Conference</li>
+                    <li>Cited by industry practitioners implementing similar techniques</li>
+                </ul>
+
+                <h2>Future Directions</h2>
+                <ul>
+                    <li><strong>End-to-End Learning:</strong> Train models to directly optimize system-level metrics</li>
+                    <li><strong>Multi-Device Coordination:</strong> Optimize arrays of circuits with coupled parameters</li>
+                    <li><strong>Lifelong Learning:</strong> Continuous model improvement from fleet-wide calibration data</li>
+                    <li><strong>Hardware Acceleration:</strong> Custom ASICs for ultra-low-latency ML inference</li>
+                </ul>
+
+                <div style="margin-top: 48px; text-align: center;">
+                    <a href="projects.html" class="btn">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>

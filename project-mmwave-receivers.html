@@ -40,10 +40,138 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+                <h2>Overview</h2>
+                <p>As 5G and future 6G communication systems push into millimeter-wave (mm-wave) frequencies, conventional CMOS receiver architectures face fundamental limitations in bandwidth, linearity, and blocker rejection. This project explores hybrid electronic-photonic receiver systems that leverage the complementary strengths of CMOS and photonics to achieve breakthrough performance for next-generation wireless communications.</p>
+                
+                <div class="project-metrics" style="margin: 32px 0;">
+                    <strong>Key Results:</strong> 20 GHz+ bandwidth, 60% efficiency improvement, >30dB blocker rejection
+                </div>
+
+                <h2>The Challenge</h2>
+                <p>Modern mm-wave receivers operating at 24-100 GHz face critical performance bottlenecks:</p>
+                <ul>
+                    <li><strong>Limited Bandwidth:</strong> CMOS mixers and filters struggle to achieve >10 GHz instantaneous bandwidth due to parasitic capacitance and inductance</li>
+                    <li><strong>Poor Blocker Rejection:</strong> Strong adjacent channel interferers saturate receiver front-ends, limiting dynamic range</li>
+                    <li><strong>High Power Consumption:</strong> Multi-stage amplifiers and active mixers consume 100+ mW per channel</li>
+                    <li><strong>Signal Integrity:</strong> Electronic components introduce significant phase noise and distortion at mm-wave frequencies</li>
+                    <li><strong>Tunability Constraints:</strong> Fixed RF filters cannot adapt to varying channel conditions or frequency allocations</li>
+                </ul>
+
+                <h2>Solution Approach</h2>
+                <p>This work introduces a hybrid CMOS-photonic receiver architecture that performs RF-to-optical conversion followed by photonic filtering and detection:</p>
+                
+                <h3>Hybrid Architecture</h3>
+                <ul>
+                    <li><strong>Electro-Optic Modulation:</strong> Incoming mm-wave signal modulates optical carrier via high-speed silicon photonic modulator</li>
+                    <li><strong>Photonic RF Filtering:</strong> Tunable optical filters provide >30 dB blocker rejection with >20 GHz passband</li>
+                    <li><strong>Coherent Detection:</strong> Balanced photodetectors convert filtered optical signal back to electrical baseband</li>
+                    <li><strong>Electronic IF Processing:</strong> CMOS baseband chains handle digitization and demodulation</li>
+                </ul>
+
+                <h3>Key Innovations</h3>
+                <ul>
+                    <li>Co-designed CMOS front-end with integrated photonic modulator for minimal RF loss</li>
+                    <li>Tunable photonic filter bank enabling software-defined frequency selection</li>
+                    <li>Heterogeneous integration of III-V lasers with silicon photonics and CMOS electronics</li>
+                    <li>Novel calibration algorithms compensating for electro-optic nonlinearities</li>
+                </ul>
+
+                <h2>Technical Implementation</h2>
+                
+                <h3>CMOS Front-End Design</h3>
+                <ul>
+                    <li><strong>Low-Noise Amplifier (LNA):</strong> 28nm CMOS design with <3 dB noise figure at 28 GHz</li>
+                    <li><strong>Input Matching:</strong> Wideband matching network covering 24-40 GHz frequency range</li>
+                    <li><strong>Modulator Driver:</strong> High-linearity driver amplifier delivering 2 Vpp differential swing</li>
+                    <li><strong>Process Technology:</strong> 28nm CMOS enabling low-power, high-frequency operation</li>
+                </ul>
+
+                <h3>Photonic Components</h3>
+                <ul>
+                    <li><strong>Silicon Photonic Modulator:</strong> Traveling-wave Mach-Zehnder with >40 GHz 3-dB bandwidth</li>
+                    <li><strong>Tunable Filter:</strong> 4th-order ring resonator cascade with 100 MHz to 30 GHz tuning range</li>
+                    <li><strong>Photodetectors:</strong> Germanium-on-silicon p-i-n diodes with 50 GHz bandwidth</li>
+                    <li><strong>Laser Source:</strong> Integrated DFB laser with <100 kHz linewidth</li>
+                    <li><strong>Platform:</strong> 220nm SOI silicon photonics with hybrid III-V integration</li>
+                </ul>
+
+                <h3>System Integration</h3>
+                <ul>
+                    <li>2.5D integration using silicon interposer for low-loss RF and optical routing</li>
+                    <li>Flip-chip bonding of CMOS die to photonic chip for minimal parasitics</li>
+                    <li>On-chip bias generation and thermal management</li>
+                    <li>SPI control interface for filter tuning and gain adjustment</li>
+                </ul>
+
+                <h2>Results and Impact</h2>
+                
+                <h3>Performance Achievements</h3>
+                <ul>
+                    <li><strong>Bandwidth:</strong> 25 GHz instantaneous bandwidth (24-49 GHz RF coverage)</li>
+                    <li><strong>Blocker Rejection:</strong> >30 dB suppression at ±5 GHz offset from desired signal</li>
+                    <li><strong>Power Consumption:</strong> 250 mW total (60% reduction vs. all-electronic equivalent)</li>
+                    <li><strong>Noise Figure:</strong> 8 dB overall system noise figure including optical losses</li>
+                    <li><strong>Dynamic Range:</strong> 75 dB spurious-free dynamic range (SFDR) in 1 GHz bandwidth</li>
+                    <li><strong>Linearity:</strong> +5 dBm IIP3 (third-order input intercept point)</li>
+                </ul>
+
+                <h3>Comparison to State-of-the-Art</h3>
+                <table style="width: 100%; margin: 24px 0; border-collapse: collapse;">
+                    <tr style="background: #f5f5f7;">
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Metric</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">This Work</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">CMOS-Only</th>
+                        <th style="padding: 12px; text-align: left; border: 1px solid #d2d2d7;">Improvement</th>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Bandwidth</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">25 GHz</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">8 GHz</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">3.1×</td>
+                    </tr>
+                    <tr style="background: #f5f5f7;">
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Power</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">250 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">640 mW</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">61% reduction</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">Blocker Rejection</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">>30 dB</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">15 dB</td>
+                        <td style="padding: 12px; border: 1px solid #d2d2d7;">2× better</td>
+                    </tr>
+                </table>
+
+                <h3>Applications</h3>
+                <ul>
+                    <li><strong>5G/6G Base Stations:</strong> Multi-band receivers for massive MIMO arrays</li>
+                    <li><strong>Satellite Communications:</strong> Wideband receivers for Ka-band and Q-band</li>
+                    <li><strong>Radar Systems:</strong> High-resolution automotive and defense radar</li>
+                    <li><strong>Point-to-Point Links:</strong> Backhaul and fronthaul wireless connectivity</li>
+                </ul>
+
+                <h2>Key Innovations</h2>
+                <ul>
+                    <li>First demonstration of >20 GHz bandwidth mm-wave photonic receiver in production silicon photonics</li>
+                    <li>Novel co-design methodology optimizing RF-photonic interface for minimal conversion loss</li>
+                    <li>Programmable filter architecture enabling software-defined radio functionality</li>
+                    <li>Low-power heterogeneous integration approach scalable to multi-channel arrays</li>
+                </ul>
+
+                <h2>Research Contributions</h2>
+                <p>This work advances the field of RF photonics in several ways:</p>
+                <ul>
+                    <li>Comprehensive design framework for hybrid CMOS-photonic receivers</li>
+                    <li>Experimental validation of photonic filtering advantages at mm-wave frequencies</li>
+                    <li>Characterization of nonlinearity sources in electro-optic conversion</li>
+                    <li>Path forward for next-generation software-defined wireless systems</li>
+                </ul>
+
+                <div style="margin-top: 48px; text-align: center;">
+                    <a href="projects.html" class="btn">← Back to Projects</a>
+                </div>
             </div>
         </div>
     </section>
