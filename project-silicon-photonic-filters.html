@@ -40,10 +40,89 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+
+                <!-- Overview -->
+                <h2>Overview</h2>
+                <p>Silicon photonic filters, such as microring resonators and Mach-Zehnder interferometers, are highly sensitive to temperature and fabrication variation, requiring continuous automatic tuning to maintain performance. This project developed machine-learning-driven control systems that stabilize photonic filter responses in real time, enabling robust signal filtering and adaptive interference rejection for next-generation photonic transceivers.</p>
+
+                <!-- Problem -->
+                <h2>Problem</h2>
+                <p>Photonic resonators drift with thermal variation at rates that make manual or open-loop tuning impractical. Traditional PID controllers struggle with the nonlinear, hysteretic response of thermo-optic actuators. The challenge was to achieve sub-microsecond locking across wide temperature ranges while rejecting strong out-of-band jamming signals without human intervention.</p>
+
+                <!-- Approach -->
+                <h2>Approach</h2>
+                <p>A closed-loop architecture was designed using on-chip power monitors as feedback sensors, a compact ML inference engine as the controller, and thermo-optic phase shifters as actuators. An inline SVG diagram of the control loop is shown below:</p>
+
+                <!-- Inline SVG: RF-in → modulator → photonic filter → photodetector → RF-out -->
+                <div style="overflow-x: auto; margin: 24px 0;">
+                <svg viewBox="0 0 680 100" width="100%" style="max-width:680px; display:block; margin:0 auto; font-family:inherit;" aria-label="Photonic filter signal chain: RF-in to modulator to photonic filter to photodetector to RF-out">
+                  <defs>
+                    <marker id="spf-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#0071e3"/>
+                    </marker>
+                  </defs>
+                  <!-- RF In -->
+                  <rect x="10" y="30" width="80" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="50" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">RF In</text>
+                  <!-- arrow -->
+                  <line x1="90" y1="50" x2="118" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#spf-arrow)"/>
+                  <!-- Modulator -->
+                  <rect x="120" y="30" width="110" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="175" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Modulator</text>
+                  <!-- arrow -->
+                  <line x1="230" y1="50" x2="258" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#spf-arrow)"/>
+                  <!-- Photonic Filter -->
+                  <rect x="260" y="30" width="140" height="40" rx="6" fill="#e8f0fe" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="330" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Photonic Filter</text>
+                  <!-- arrow -->
+                  <line x1="400" y1="50" x2="428" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#spf-arrow)"/>
+                  <!-- Photodetector -->
+                  <rect x="430" y="30" width="120" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="490" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Photodetector</text>
+                  <!-- arrow -->
+                  <line x1="550" y1="50" x2="578" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#spf-arrow)"/>
+                  <!-- RF Out -->
+                  <rect x="580" y="30" width="80" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="620" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">RF Out</text>
+                </svg>
+                </div>
+                <p>The ML controller was trained offline using characterization data and deployed as a lightweight inference engine co-packaged with the photonic chip. Gradient-free optimization and Bayesian methods were compared; a custom online adaptation algorithm was selected for production.</p>
+
+                <!-- My Contributions -->
+                <h2>My Contributions</h2>
+                <ul>
+                    <li>Designed and validated the closed-loop control architecture for silicon microring resonators</li>
+                    <li>Developed and trained the ML inference models for online filter stabilization</li>
+                    <li>Implemented the thermo-optic actuator driver circuitry and feedback sensor interface</li>
+                    <li>Co-authored peer-reviewed publications reporting experimental results</li>
+                    <li>Characterized prototypes across temperature ranges from −40°C to +85°C</li>
+                </ul>
+
+                <!-- Results -->
+                <h2>Results</h2>
+                <ul>
+                    <li>Demonstrated up to 10× faster locking speed compared to conventional gradient-descent methods</li>
+                    <li>Achieved >40 dB out-of-band jammer rejection in characterization</li>
+                    <li>Real-time stabilization maintained across a 100°C operating range</li>
+                    <li>Algorithm reduced required actuator power by approximately 30%</li>
+                </ul>
+
+                <!-- Tools / Stack -->
+                <h2>Tools &amp; Stack</h2>
+                <ul>
+                    <li>Silicon photonic test platform (microring resonators, MZI filters)</li>
+                    <li>Python (NumPy, SciPy, scikit-learn) for model training and simulation</li>
+                    <li>MATLAB / Simulink for control system modeling</li>
+                    <li>Custom FPGA firmware for real-time ML inference</li>
+                    <li>Keysight VNA and optical spectrum analyzer for characterization</li>
+                </ul>
+
+                <!-- Notes -->
+                <h2>Notes</h2>
+                <p><em>Some implementation details and chip-level schematics are withheld. Published results are available on Google Scholar.</em></p>
+
+                <a href="projects.html" class="btn" style="margin-top:24px;">← Back to Projects</a>
             </div>
         </div>
     </section>

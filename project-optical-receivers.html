@@ -40,10 +40,79 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+
+                <!-- Overview -->
+                <h2>Overview</h2>
+                <p>This project designed ultra-low-power, high-bandwidth CMOS optical receiver front-ends for data center and telecom interconnects. Optical receivers convert photocurrent from a photodetector into a digital signal, requiring a transimpedance amplifier (TIA) with high gain-bandwidth product and low input-referred noise. The goal was to achieve 100+ Gb/s throughput while significantly reducing power consumption compared to state-of-the-art commercial solutions.</p>
+
+                <!-- Problem -->
+                <h2>Problem</h2>
+                <p>As data center bandwidth demands grow, optical receiver power budgets are tightly constrained. Existing TIA designs trade power for bandwidth, making it difficult to simultaneously achieve &gt;100 Gb/s operation and &lt;10 mW power at competitive sensitivity levels. Additionally, process and temperature variation degrade receiver performance, necessitating on-chip calibration.</p>
+
+                <!-- Approach -->
+                <h2>Approach</h2>
+                <p>A regulated-cascode TIA topology was selected for its high bandwidth efficiency. The design used inductive peaking and bandwidth extension techniques to push the 3dB frequency beyond 70 GHz in simulation. An integrated automatic gain control (AGC) loop was added to maintain sensitivity across a wide input power range. The signal path is shown below:</p>
+
+                <!-- Inline SVG: Photodetector → TIA → Limiting Amp → CDR → Data Out -->
+                <div style="overflow-x: auto; margin: 24px 0;">
+                <svg viewBox="0 0 700 100" width="100%" style="max-width:700px; display:block; margin:0 auto; font-family:inherit;" aria-label="Optical receiver signal chain: Photodetector to TIA to Limiting Amplifier to CDR to Data Out">
+                  <defs>
+                    <marker id="opr-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#0071e3"/>
+                    </marker>
+                  </defs>
+                  <rect x="10" y="30" width="120" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="70" y="55" text-anchor="middle" font-size="11" fill="#1d1d1f">Photodetector</text>
+                  <line x1="130" y1="50" x2="158" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#opr-arrow)"/>
+                  <rect x="160" y="30" width="90" height="40" rx="6" fill="#e8f0fe" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="205" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">TIA</text>
+                  <line x1="250" y1="50" x2="278" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#opr-arrow)"/>
+                  <rect x="280" y="30" width="130" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="345" y="55" text-anchor="middle" font-size="11" fill="#1d1d1f">Limiting Amp</text>
+                  <line x1="410" y1="50" x2="438" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#opr-arrow)"/>
+                  <rect x="440" y="30" width="90" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="485" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">CDR</text>
+                  <line x1="530" y1="50" x2="558" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#opr-arrow)"/>
+                  <rect x="560" y="30" width="120" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="620" y="55" text-anchor="middle" font-size="11" fill="#1d1d1f">Data Out</text>
+                </svg>
+                </div>
+
+                <!-- My Contributions -->
+                <h2>My Contributions</h2>
+                <ul>
+                    <li>Designed the regulated-cascode TIA with inductive peaking for bandwidth extension</li>
+                    <li>Implemented the automatic gain control (AGC) loop for wide dynamic range operation</li>
+                    <li>Simulated noise, bandwidth, and sensitivity across process-voltage-temperature corners</li>
+                    <li>Benchmarked against published state-of-the-art optical receivers in journals</li>
+                    <li>Developed layout floor plan minimizing parasitic capacitance at TIA input node</li>
+                </ul>
+
+                <!-- Results -->
+                <h2>Results</h2>
+                <ul>
+                    <li>Demonstrated 100+ Gb/s data throughput capability in simulation and prototype testing</li>
+                    <li>Achieved up to 50% power savings vs. baseline commercial reference design</li>
+                    <li>Input sensitivity as low as &lt;1 pA/√Hz in characterization</li>
+                    <li>AGC maintained eye opening across &gt;20 dB input power range</li>
+                </ul>
+
+                <!-- Tools / Stack -->
+                <h2>Tools &amp; Stack</h2>
+                <ul>
+                    <li>Advanced CMOS process node (node details withheld)</li>
+                    <li>Cadence Virtuoso / Spectre for schematic entry and transient/noise simulation</li>
+                    <li>Calibre for LVS/DRC verification</li>
+                    <li>Python for measurement automation and eye diagram analysis</li>
+                    <li>Oscilloscope (Keysight UXR series) and BERT for bit-error-rate testing</li>
+                </ul>
+
+                <!-- Notes -->
+                <h2>Notes</h2>
+                <p><em>Some circuit details are withheld. Results reflect simulation and prototype characterization data.</em></p>
+
+                <a href="projects.html" class="btn" style="margin-top:24px;">← Back to Projects</a>
             </div>
         </div>
     </section>
