@@ -40,10 +40,80 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+
+                <!-- Overview -->
+                <h2>Overview</h2>
+                <p>This project explored hybrid electronic-photonic receiver architectures that combine CMOS mm-Wave front-ends with photonic signal processing to achieve wideband tunability and high blocker rejection. By leveraging the low-loss and high-bandwidth properties of photonic links alongside the integration density of CMOS, the resulting systems target next-generation 5G/6G communication receivers.</p>
+
+                <!-- Problem -->
+                <h2>Problem</h2>
+                <p>Conventional all-electronic mm-Wave receivers face fundamental trade-offs between bandwidth, noise figure, and blocker rejection. At frequencies above 20 GHz, achieving >30 dB blocker rejection while maintaining wide tuning range requires either large die area or significant power consumption. Integrating photonic components opens a new design space but introduces new challenges in RF-photonic interface design and phase noise management.</p>
+
+                <!-- Approach -->
+                <h2>Approach</h2>
+                <p>The receiver architecture uses an electro-optic modulator to up-convert the RF signal into the optical domain, where a photonic filter performs high-selectivity band selection before a photodetector recovers the baseband signal. The diagram below shows the signal chain:</p>
+
+                <!-- Inline SVG: RF-in → modulator → photonic filter → photodetector → RF-out -->
+                <div style="overflow-x: auto; margin: 24px 0;">
+                <svg viewBox="0 0 680 100" width="100%" style="max-width:680px; display:block; margin:0 auto; font-family:inherit;" aria-label="Photonic receiver signal chain: RF-in to modulator to photonic filter to photodetector to RF-out">
+                  <defs>
+                    <marker id="mmw-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#0071e3"/>
+                    </marker>
+                  </defs>
+                  <rect x="10" y="30" width="80" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="50" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">RF In</text>
+                  <line x1="90" y1="50" x2="118" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#mmw-arrow)"/>
+                  <rect x="120" y="30" width="110" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="175" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Modulator</text>
+                  <line x1="230" y1="50" x2="258" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#mmw-arrow)"/>
+                  <rect x="260" y="30" width="140" height="40" rx="6" fill="#e8f0fe" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="330" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Photonic Filter</text>
+                  <line x1="400" y1="50" x2="428" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#mmw-arrow)"/>
+                  <rect x="430" y="30" width="120" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="490" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Photodetector</text>
+                  <line x1="550" y1="50" x2="578" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#mmw-arrow)"/>
+                  <rect x="580" y="30" width="80" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="620" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">RF Out</text>
+                </svg>
+                </div>
+                <p>The CMOS front-end was co-designed with the photonic filter to minimize interface loss. A tunable laser source and integrated thermo-optic tuning circuit allow dynamic center-frequency selection across the full mm-Wave band.</p>
+
+                <!-- My Contributions -->
+                <h2>My Contributions</h2>
+                <ul>
+                    <li>Designed the CMOS low-noise amplifier and modulator driver for the RF-photonic interface</li>
+                    <li>Developed the photonic filter tuning algorithm integrated with the CMOS control loop</li>
+                    <li>Simulated and characterized the hybrid receiver noise figure and blocker rejection</li>
+                    <li>Built and tested prototype boards combining discrete CMOS and photonic components</li>
+                    <li>Contributed to system-level modeling comparing all-electronic and hybrid architectures</li>
+                </ul>
+
+                <!-- Results -->
+                <h2>Results</h2>
+                <ul>
+                    <li>Demonstrated 20 GHz+ instantaneous bandwidth in characterization</li>
+                    <li>Achieved up to 60% efficiency improvement over the all-electronic reference design</li>
+                    <li>Measured >30 dB blocker rejection at the photonic filter output</li>
+                    <li>System noise figure remained competitive with state-of-the-art CMOS-only solutions</li>
+                </ul>
+
+                <!-- Tools / Stack -->
+                <h2>Tools &amp; Stack</h2>
+                <ul>
+                    <li>TSMC 65nm CMOS process for LNA and driver design</li>
+                    <li>Cadence Virtuoso / Spectre for circuit simulation</li>
+                    <li>Silicon photonic test platform (microring-based tunable filter)</li>
+                    <li>Keysight vector signal analyzer and signal generator for RF characterization</li>
+                    <li>Python for measurement automation and data analysis</li>
+                </ul>
+
+                <!-- Notes -->
+                <h2>Notes</h2>
+                <p><em>Some circuit-level details are withheld. Published results reference prototype characterization data.</em></p>
+
+                <a href="projects.html" class="btn" style="margin-top:24px;">← Back to Projects</a>
             </div>
         </div>
     </section>

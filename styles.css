@@ -804,6 +804,12 @@ body {
     color: var(--accent);
 }
 
+.metrics-footnote {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 4px;
+}
+
 /* ============================================
    Publications List
    ============================================ */

@@ -40,10 +40,88 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+
+                <!-- Overview -->
+                <h2>Overview</h2>
+                <p>This project developed CMOS laser driver ICs, MEMS actuator drivers, and automatic optical power control loops for photonic display subsystems used in AR/VR headsets. The work was conducted during an internship at Meta Reality Labs and focused on improving power efficiency, thermal stability, and response latency in the photonic light engine.</p>
+
+                <!-- Problem -->
+                <h2>Problem</h2>
+                <p>Photonic display engines in AR/VR devices require precise, low-latency optical power modulation to render high-quality images. Laser diodes and MEMS mirrors are sensitive to temperature-induced drift, causing brightness variation and display artifacts. Existing driver circuits consumed excessive power and lacked the sub-microsecond stabilization loop bandwidth needed for high frame-rate display.</p>
+
+                <!-- Approach -->
+                <h2>Approach</h2>
+                <p>A closed-loop stabilization architecture was designed with an integrated optical power monitor feeding back into a fast CMOS driver. The feedback loop compensates for laser threshold drift and MEMS mirror position error in real time. The block diagram below illustrates the control flow:</p>
+
+                <!-- Inline SVG: Sense → Controller → Actuator → Plant → Sense (feedback loop) -->
+                <div style="overflow-x: auto; margin: 24px 0;">
+                <svg viewBox="0 0 700 140" width="100%" style="max-width:700px; display:block; margin:0 auto; font-family:inherit;" aria-label="Control loop diagram: Sense feeds Controller, Controller drives Actuator, Actuator drives Plant, Plant feeds back to Sense">
+                  <defs>
+                    <marker id="arvr-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#0071e3"/>
+                    </marker>
+                  </defs>
+                  <!-- Sense -->
+                  <rect x="10" y="30" width="100" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="60" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Sense</text>
+                  <!-- arrow Sense → Controller -->
+                  <line x1="110" y1="50" x2="138" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#arvr-arrow)"/>
+                  <!-- Controller -->
+                  <rect x="140" y="30" width="120" height="40" rx="6" fill="#e8f0fe" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="200" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Controller</text>
+                  <!-- arrow Controller → Actuator -->
+                  <line x1="260" y1="50" x2="288" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#arvr-arrow)"/>
+                  <!-- Actuator -->
+                  <rect x="290" y="30" width="110" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="345" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Actuator</text>
+                  <!-- arrow Actuator → Plant -->
+                  <line x1="400" y1="50" x2="428" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#arvr-arrow)"/>
+                  <!-- Plant -->
+                  <rect x="430" y="30" width="110" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="485" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Plant</text>
+                  <!-- feedback path: Plant → bottom → Sense -->
+                  <line x1="485" y1="70" x2="485" y2="110" stroke="#0071e3" stroke-width="1.5"/>
+                  <line x1="485" y1="110" x2="60" y2="110" stroke="#0071e3" stroke-width="1.5"/>
+                  <line x1="60" y1="110" x2="60" y2="72" stroke="#0071e3" stroke-width="1.5" marker-end="url(#arvr-arrow)"/>
+                </svg>
+                </div>
+                <p>Low-dropout regulators and switched-capacitor DC-DC converters were integrated to minimize supply-induced noise, while digital calibration routines compensated for process variation across manufacturing batches.</p>
+
+                <!-- My Contributions -->
+                <h2>My Contributions</h2>
+                <ul>
+                    <li>Designed and simulated CMOS laser driver circuits targeting sub-microsecond loop bandwidth</li>
+                    <li>Implemented automatic optical power control (AOPC) feedback loop in RTL and silicon</li>
+                    <li>Characterized driver ICs across temperature (−20°C to +70°C) and supply corners</li>
+                    <li>Collaborated with display systems team to define power and latency requirements</li>
+                    <li>Developed digital calibration algorithm reducing offset from manufacturing variation</li>
+                </ul>
+
+                <!-- Results -->
+                <h2>Results</h2>
+                <ul>
+                    <li>Demonstrated up to 35% reduction in driver power consumption vs. prior generation</li>
+                    <li>Achieved sub-microsecond stabilization loop response time</li>
+                    <li>System maintained demonstrated 99.9% optical power uptime across operating range</li>
+                    <li>Calibration reduced inter-device variation by more than 4×</li>
+                </ul>
+
+                <!-- Tools / Stack -->
+                <h2>Tools &amp; Stack</h2>
+                <ul>
+                    <li>Advanced CMOS process node (details withheld)</li>
+                    <li>Cadence Virtuoso / Spectre for circuit design and simulation</li>
+                    <li>Python and MATLAB for loop stability analysis and measurement automation</li>
+                    <li>Optical power meter and oscilloscope for characterization</li>
+                    <li>Internal simulation and verification frameworks</li>
+                </ul>
+
+                <!-- Notes -->
+                <h2>Notes</h2>
+                <p><em>This work was performed under NDA at Meta Reality Labs. Circuit schematics and process details are withheld. Results described reflect prototype characterization.</em></p>
+
+                <a href="projects.html" class="btn" style="margin-top:24px;">← Back to Projects</a>
             </div>
         </div>
     </section>

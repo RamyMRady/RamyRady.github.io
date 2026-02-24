@@ -40,10 +40,79 @@
     <!-- Content -->
     <section class="about-section">
         <div class="container">
-            <div class="about-content fade-in" style="text-align: center; padding: 80px 0;">
-                <h2>Coming Soon</h2>
-                <p style="font-size: 21px; margin-bottom: 32px;">Detailed case study content is currently being developed.</p>
-                <a href="projects.html" class="btn">← Back to Projects</a>
+            <div class="about-content fade-in">
+
+                <!-- Overview -->
+                <h2>Overview</h2>
+                <p>This project developed energy-efficient RF transmitter architectures for IoT and short-range wireless applications, powered by switched-capacitor DC-DC converters. The key insight is that traditional RF transmitters waste significant power in the PA supply regulation stage. By co-designing the DC-DC converter with the RF power amplifier (PA), the system achieves highly efficient supply modulation at the transmitter, dramatically reducing total power consumption.</p>
+
+                <!-- Problem -->
+                <h2>Problem</h2>
+                <p>IoT devices demand RF transmitters that operate at milliwatt-level power budgets while meeting spectral mask and EVM requirements. Conventional linear regulators powering the PA are highly inefficient, especially at back-off power levels. Switched-capacitor converters offer high efficiency but introduce supply ripple that degrades RF output spectrum and EVM if not carefully managed.</p>
+
+                <!-- Approach -->
+                <h2>Approach</h2>
+                <p>A co-designed switched-capacitor DC-DC converter and Class-E RF PA architecture was developed. The converter's switching frequency and phase were synchronized with the RF carrier to minimize supply ripple at baseband frequencies. An on-chip calibration loop compensated for converter output impedance variation. The signal chain is shown below:</p>
+
+                <!-- Inline SVG: Battery → SC DC-DC → Class-E PA → Antenna -->
+                <div style="overflow-x: auto; margin: 24px 0;">
+                <svg viewBox="0 0 680 100" width="100%" style="max-width:680px; display:block; margin:0 auto; font-family:inherit;" aria-label="RF transmitter chain: Battery to SC DC-DC converter to Class-E PA to Antenna">
+                  <defs>
+                    <marker id="rft-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                      <path d="M0,0 L0,6 L8,3 z" fill="#0071e3"/>
+                    </marker>
+                  </defs>
+                  <rect x="10" y="30" width="90" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="55" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Battery</text>
+                  <line x1="100" y1="50" x2="128" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#rft-arrow)"/>
+                  <rect x="130" y="30" width="150" height="40" rx="6" fill="#e8f0fe" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="205" y="48" text-anchor="middle" font-size="11" fill="#1d1d1f">SC DC-DC</text>
+                  <text x="205" y="63" text-anchor="middle" font-size="10" fill="#6e6e73">Converter</text>
+                  <line x1="280" y1="50" x2="308" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#rft-arrow)"/>
+                  <rect x="310" y="30" width="140" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="380" y="48" text-anchor="middle" font-size="11" fill="#1d1d1f">Class-E PA</text>
+                  <text x="380" y="63" text-anchor="middle" font-size="10" fill="#6e6e73">RF Amplifier</text>
+                  <line x1="450" y1="50" x2="478" y2="50" stroke="#0071e3" stroke-width="1.5" marker-end="url(#rft-arrow)"/>
+                  <rect x="480" y="30" width="110" height="40" rx="6" fill="#f5f5f7" stroke="#0071e3" stroke-width="1.5"/>
+                  <text x="535" y="55" text-anchor="middle" font-size="12" fill="#1d1d1f">Antenna</text>
+                </svg>
+                </div>
+                <p>The converter topology was optimized using GenAI-assisted engineering tools that rapidly explored capacitor bank sizing and switching sequences, reducing design iteration cycles significantly before committing to silicon.</p>
+
+                <!-- My Contributions -->
+                <h2>My Contributions</h2>
+                <ul>
+                    <li>Designed the switched-capacitor DC-DC converter topology co-optimized with the Class-E PA</li>
+                    <li>Developed synchronization logic to suppress supply ripple at critical RF frequencies</li>
+                    <li>Simulated transmitter efficiency and EVM across power back-off levels</li>
+                    <li>Implemented on-chip calibration loop for converter output impedance variation</li>
+                    <li>Characterized prototype transmitter: efficiency, spectral mask, and EVM at 10 mW output</li>
+                </ul>
+
+                <!-- Results -->
+                <h2>Results</h2>
+                <ul>
+                    <li>Demonstrated up to 70% power reduction vs. linear-regulator-based reference design</li>
+                    <li>Prototype operated at as low as 10 mW total power in characterization</li>
+                    <li>Extended projected battery life by approximately 2× in duty-cycled IoT scenario modeling</li>
+                    <li>EVM within specification for targeted short-range wireless standards</li>
+                </ul>
+
+                <!-- Tools / Stack -->
+                <h2>Tools &amp; Stack</h2>
+                <ul>
+                    <li>CMOS process (node details withheld)</li>
+                    <li>Cadence Virtuoso / Spectre for circuit simulation (transient, PSS, Pnoise)</li>
+                    <li>Python for efficiency modeling and swept characterization data analysis</li>
+                    <li>Spectrum analyzer and RF power meter for transmitter output characterization</li>
+                    <li>GenAI-assisted engineering tools for converter topology exploration</li>
+                </ul>
+
+                <!-- Notes -->
+                <h2>Notes</h2>
+                <p><em>Some circuit-level implementation details are withheld. Results reflect prototype characterization and simulation data.</em></p>
+
+                <a href="projects.html" class="btn" style="margin-top:24px;">← Back to Projects</a>
             </div>
         </div>
     </section>
