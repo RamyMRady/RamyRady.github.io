@@ -643,6 +643,40 @@ body {
     transform: scale(1.05);
 }
 
+/* Resume Page Sections */
+.resume-section {
+    margin-bottom: 60px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.resume-section:last-of-type {
+    border-bottom: none;
+}
+
+.resume-section h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 24px;
+    color: var(--primary-color);
+}
+
+.resume-section p {
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-color);
+    margin-bottom: 16px;
+}
+
+.resume-section ul {
+    margin-left: 20px;
+    margin-bottom: 16px;
+}
+
+.resume-section ul li {
+    margin-bottom: 8px;
+}
+
 /* ============================================
    Hero Description
    ============================================ */
