@@ -17,6 +17,7 @@ This website serves as a comprehensive portfolio for Dr. Ramy Rady, Hardware Eng
 - **Projects** - Six case studies with impact metrics
 - **Experience** - Professional timeline (Apple, Meta, Qualcomm, Fraunhofer, Texas A&M)
 - **Research** - Publications and Google Scholar profile
+- **Resume** - Comprehensive CV page with education, experience, skills, and achievements
 - **Contact** - Multiple contact methods and form
 
 ## Technology Stack
@@ -52,6 +53,7 @@ This is a static website that requires no build process:
 ├── projects.html           # Project portfolio
 ├── experience.html         # Professional timeline
 ├── research.html           # Publications
+├── resume.html             # Comprehensive CV page
 ├── contact.html            # Contact information
 ├── project-*.html          # Case study placeholders (6 files)
 ├── styles.css              # Main stylesheet
