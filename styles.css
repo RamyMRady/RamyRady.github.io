@@ -1882,10 +1882,7 @@ body {
     }
 
     .header-email {
-        width: 100%;
-        text-align: center;
-        order: 3;
-        margin-top: 8px;
+        display: none;
     }
 
     .terminal-panel {
