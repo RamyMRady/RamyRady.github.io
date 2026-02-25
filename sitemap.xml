@@ -31,6 +31,11 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://www.ramyrady.com/resume.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.ramyrady.com/project-silicon-photonic-filters.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
