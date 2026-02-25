@@ -62,32 +62,24 @@
     <!-- Canvas for Matrix Background -->
     <canvas id="matrix-canvas"></canvas>
 
-    <!-- Minimal Header -->
+    <!-- Minimal Header (Apple-style) -->
     <header class="minimal-header">
         <div class="header-container">
             <a href="#hero" class="header-logo">Ramy Rady</a>
             <nav class="header-nav">
                 <!-- Resume Dropdown -->
-                <div class="header-dropdown">
-                    <button class="header-link dropdown-toggle">
-                        <svg class="resume-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
-                            <path d="M9 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5l-5-5zM5 1h3v4h4v8H4V2a1 1 0 0 1 1-1z"/>
-                        </svg>
-                        Resume
-                        <svg class="dropdown-arrow" width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
-                            <path d="M2 3l3 4 3-4H2z"/>
-                        </svg>
-                    </button>
-                    <div class="dropdown-menu">
-                        <a href="resume.html" class="dropdown-item">📄 Resume Page</a>
-                        <a href="assets/Ramy_Rady_CV.pdf" class="dropdown-item" download>⬇️ Download PDF</a>
-                        <a href="contact.html" class="dropdown-item">✉️ Contact</a>
+                <div class="nav-dropdown">
+                    <a href="resume.html" class="header-link nav-dropdown-trigger">Resume</a>
+                    <div class="nav-dropdown-menu">
+                        <a href="resume.html" class="nav-dropdown-item">View Resume</a>
+                        <a href="assets/Ramy_Rady_CV.pdf" class="nav-dropdown-item" download>Download PDF</a>
+                        <a href="#contact" class="nav-dropdown-item">Contact Me</a>
                     </div>
                 </div>
                 <!-- Main Nav Links -->
-                <a href="contact.html" class="header-link">Contact</a>
+                <a href="#contact" class="header-link">Contact</a>
                 <a href="research.html" class="header-link">Research</a>
-                <a href="projects.html" class="header-link">EE Projects</a>
+                <a href="projects.html" class="header-link">Projects</a>
                 <a href="https://www.linkedin.com/in/ramyrady/" class="header-link" target="_blank" rel="noopener">LinkedIn</a>
                 <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="header-link" target="_blank" rel="noopener">Scholar</a>
             </nav>
