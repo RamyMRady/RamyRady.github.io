@@ -1,105 +1,35 @@
-# Dr. Ramy Rady - Professional Portfolio
+# ramyrady.com
 
-Personal website showcasing hardware engineering expertise, research, and professional experience.
+Personal research website of Ramy Rady, Ph.D., served by GitHub Pages from `main`.
 
-## Overview
+## Editing content
 
-This website serves as a comprehensive portfolio for Dr. Ramy Rady, Hardware Engineer at Apple, featuring:
-- Professional experience timeline
-- Research publications and innovations
-- Impact-driven project case studies
-- Contact information and resume
+All pages are generated from one data file, so every page stays consistent.
 
-## Website Structure
+1. Edit `_build/data.py`. It holds the bio, news, publications, research themes, CV entries, and honors.
+2. Run `python3 _build/build.py`.
+3. Commit the regenerated HTML files together with your data change.
 
-- **Home** - Hero section, resume preview, and contact information
-- **About** - Professional narrative and technical expertise
-- **Projects** - Six case studies with impact metrics
-- **Experience** - Professional timeline (Apple, Meta, Qualcomm, Fraunhofer, Texas A&M)
-- **Research** - Publications and Google Scholar profile
-- **Resume** - Comprehensive CV page with education, experience, skills, and achievements
-- **Contact** - Multiple contact methods and form
+Examples:
 
-## Technology Stack
+- **Add a paper:** add an entry to `PUBS` (use `selected=True` to feature it on the homepage).
+- **Add news:** add a line to `NEWS`. It is sorted by the second field (`YYYY-MM`).
+- **Update the CV PDF:** replace `assets/Ramy_Rady_CV.pdf` and set `CV_UPDATED`.
 
-- Pure HTML5, CSS3, and JavaScript
-- No frameworks or build process
-- Mobile-responsive design
-- Apple-inspired minimalist aesthetic
-- GitHub Pages hosting
-
-## Setup & Deployment
-
-This is a static website that requires no build process:
-
-1. Clone the repository
-2. Update `assets/Ramy_Rady_CV.pdf` with your actual resume
-3. Push changes to GitHub
-4. Site automatically deploys via GitHub Pages
-
-## Post-Setup Tasks
-
-- [ ] Replace placeholder resume in `assets/Ramy_Rady_CV.pdf`
-- [ ] Verify LinkedIn URL is correct
-- [ ] Add detailed content to project case study pages
-- [ ] Update publication titles if needed
-
-## File Structure
+Only rebuild the link-preview image (`assets/og-image.png`) when the name, title, or photo changes. It requires `pip install playwright`:
 
 ```
-/
-├── index.html              # Homepage with hero and contact
-├── about.html              # Professional narrative
-├── projects.html           # Project portfolio
-├── experience.html         # Professional timeline
-├── research.html           # Publications
-├── resume.html             # Comprehensive CV page
-├── contact.html            # Contact information
-├── project-*.html          # Case study placeholders (6 files)
-├── styles.css              # Main stylesheet
-├── script.js               # Interactive features
-├── assets/                 # Static assets
-│   ├── Ramy_Rady_CV.pdf   # Resume (replace with actual)
-│   └── README.md          # Asset instructions
-└── DEPLOYMENT_NOTES.md    # Detailed deployment guide
+python3 _build/og_image.py
 ```
 
-## Features
+## Structure
 
-### SEO Optimization
-- Meta descriptions and keywords
-- JSON-LD structured data
-- Open Graph tags for social sharing
-
-### Accessibility
-- Semantic HTML structure
-- ARIA labels on interactive elements
-- Reduced motion support
-- Mobile-responsive design
-
-### Performance
-- Minimal dependencies
-- Optimized assets
-- Fast page loads
-- Static site advantages
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-- Mobile browsers
-
-## Maintenance
-
-Regular updates recommended:
-- Resume PDF (quarterly)
-- Publications list (as published)
-- Experience timeline (as roles change)
-- Project case studies (as completed)
-
-## License
-
-© 2026 Ramy Rady. All rights reserved.
-
+| Path | Purpose |
+| --- | --- |
+| `index.html` | About, news, research overview, selected publications, honors, contact |
+| `research.html` | Research themes with diagrams and key results |
+| `publications.html` | Full list by year, with filters, DOI links, and BibTeX |
+| `resume.html` | CV |
+| `styles.css`, `script.js` | Shared styles (light/dark) and behavior |
+| `_build/` | Content and generator (Jekyll does not publish `_` folders) |
+| `about.html`, `project-*.html`, … | Redirects from older URLs |
