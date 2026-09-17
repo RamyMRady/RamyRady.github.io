@@ -9,7 +9,8 @@
     <meta name="robots" content="index, follow">
     <title>Dr. Ramy Rady | IC Designer</title>
     <link rel="canonical" href="https://www.ramyrady.com">
-    <link rel="icon" type="image/png" href="assets/ic-brain-favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
@@ -56,7 +57,7 @@
         }
         </script>
     
-    <link rel="stylesheet" href="styles.css?v=2">
+    <link rel="stylesheet" href="styles.css?v=3">
 </head>
 <body>
     <!-- Canvas for Matrix Background -->
@@ -103,11 +104,15 @@
                 <div class="terminal-title">ramyrady@portfolio:~$</div>
             </div>
             <div class="terminal-body">
-                <div class="terminal-line" id="line1"></div>
-                <div class="terminal-line" id="line2"></div>
-                <div class="terminal-line" id="line3"></div>
-                <div class="terminal-line" id="line4"></div>
+                <h1 class="terminal-line terminal-name" id="line1">Hi, I'm Dr. Ramy Rady.</h1>
+                <p class="terminal-line" id="line2">Hardware Engineer at Apple.</p>
+                <p class="terminal-line" id="line3">I build RF IC + silicon photonics systems, and intelligent control loops.</p>
             </div>
+        </div>
+        <div class="hero-actions">
+            <a href="#projects" class="hero-btn hero-btn-primary">View Projects</a>
+            <a href="#publications" class="hero-btn">Publications</a>
+            <a href="assets/Ramy_Rady_CV.pdf" class="hero-btn" download>Download CV</a>
         </div>
         <a href="#about" class="scroll-arrow" aria-label="Scroll to About section">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -139,7 +144,7 @@
                         <svg class="resume-icon-inline" width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
                             <path d="M9 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5l-5-5zM5 1h3v4h4v8H4V2a1 1 0 0 1 1-1z"/>
                         </svg>
-                        Last updated April 2024
+                        Last updated August 2025
                     </p>
                 </div>
             </div>
@@ -148,7 +153,7 @@
             <div class="resume-card fade-in">
                 <div class="resume-icon">📄</div>
                 <h3>Download Resume</h3>
-                <p class="resume-date">Last updated April 2024</p>
+                <p class="resume-date">Last updated August 2025</p>
                 <a href="assets/Ramy_Rady_CV.pdf" class="btn" download>
                     Download PDF
                 </a>
@@ -377,25 +382,27 @@
                 <h3>Selected Publications</h3>
                 <ul class="publications-list">
                     <li>
-                        <strong>R. Rady et al.</strong>, "Machine-Learning-Driven Automatic Tuning of Silicon Photonic Filters for High-Performance RF Signal Processing," <em>IEEE Journal of Lightwave Technology</em>, 2024.
+                        <strong>R. Rady</strong>, Y. Luo, C. Madsen, S. Palermo, K. Entesari, "An mm-Wave CMOS/Si-Photonics Reconfigurable Hybrid-Integrated Heterodyning Software-Defined Radio Receiver," <em>IEEE Transactions on Microwave Theory and Techniques</em>, 2024. <a href="https://doi.org/10.1109/TMTT.2024.3371914" class="pub-doi" target="_blank" rel="noopener">DOI</a>
                     </li>
                     <li>
-                        <strong>R. Rady et al.</strong>, "Hybrid Electronic-Photonic Receiver Architectures for mm-Wave 5G Communication Systems," <em>IEEE Transactions on Microwave Theory and Techniques</em>, 2023.
+                        <strong>R. Rady</strong>, C. Madsen, S. Palermo, K. Entesari, "Ultra-Wideband mm-Wave Remote Antenna Unit for Radio-over-Fiber Distributed Antenna Systems in Silicon Photonics," <em>Optics Express</em>, 2024. <a href="https://doi.org/10.1364/OE.527239" class="pub-doi" target="_blank" rel="noopener">DOI</a>
                     </li>
                     <li>
-                        <strong>R. Rady et al.</strong>, "Ultra-Low-Power CMOS Optical Receiver Front-Ends for High-Speed Data Links," <em>IEEE Journal of Solid-State Circuits</em>, 2023.
+                        <strong>R. Rady</strong>, C. Madsen, S. Palermo, K. Entesari, "A 20–43.5-GHz Wideband Tunable Silicon Photonic Receiver Front-End for mm-Wave Channel Selection/Jammer Rejection," <em>Journal of Lightwave Technology</em>, 2023. <a href="https://doi.org/10.1109/JLT.2022.3222192" class="pub-doi" target="_blank" rel="noopener">DOI</a>
                     </li>
                     <li>
-                        <strong>R. Rady et al.</strong>, "Real-Time Adaptive Control of Photonic Resonators Using Reinforcement Learning," <em>IEEE International Conference on Photonics (ICP)</em>, 2024.
+                        <strong>R. Rady</strong>, Y. Luo, C. Madsen, S. Palermo, K. Entesari, "A mm-Wave CMOS/Si-Photonics Hybrid-Integrated Software-Defined Radio Receiver Achieving &gt;80-dB Blocker Rejection of &lt;−10 dBm In-Band Blockers," <em>IEEE Radio Frequency Integrated Circuits Symposium (RFIC)</em>, 2023. <a href="https://doi.org/10.1109/RFIC54547.2023.10186186" class="pub-doi" target="_blank" rel="noopener">DOI</a>
                     </li>
                     <li>
-                        <strong>R. Rady et al.</strong>, "Energy-Efficient RF Transmitter Design with Integrated DC-DC Conversion," <em>IEEE Radio Frequency Integrated Circuits Symposium (RFIC)</em>, 2022.
+                        Y. Luo, <strong>R. Rady</strong>, K. Entesari, S. Palermo, "A Power-Efficient 20–35-GHz MZM Driver With Programmable Linearizer for Analog Photonic Links in 28-nm CMOS," <em>IEEE Transactions on Microwave Theory and Techniques</em>, 2023. <a href="https://doi.org/10.1109/TMTT.2022.3218051" class="pub-doi" target="_blank" rel="noopener">DOI</a>
                     </li>
                     <li>
-                        <strong>R. Rady et al.</strong>, "CMOS Laser Drivers for AR/VR Photonic Display Systems," <em>IEEE International Solid-State Circuits Conference (ISSCC)</em>, 2023.
+                        K. Entesari, S. Palermo, C. Madsen, D. Paladugu, Y. Luo, H. Yu, <strong>R. Rady</strong>, "Microwave Silicon Photonics Drivers/Mach–Zehnder Modulators for Radio-Over-Fiber Links," <em>IEEE Microwave Magazine</em>, 2026. <a href="https://doi.org/10.1109/MMM.2026.3683640" class="pub-doi" target="_blank" rel="noopener">DOI</a>
                     </li>
                 </ul>
                 
+                <p class="scholar-stats">20+ publications · 110+ citations · h-index 7 <span>(Google Scholar, Sept 2026)</span></p>
+
                 <div class="view-all-scholar">
                     <a href="https://scholar.google.com/citations?hl=en&user=sBTMlW4AAAAJ" class="btn btn-outline" target="_blank" rel="noopener">
                         View all on Scholar →
@@ -455,6 +462,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Send Message</button>
+                    <p class="form-status" role="status" aria-live="polite" hidden></p>
                 </form>
             </div>
         </div>

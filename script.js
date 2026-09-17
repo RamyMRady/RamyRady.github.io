@@ -47,15 +47,27 @@ function initMatrixAnimation() {
 
 // Typewriter Effect for Terminal
 function initTypewriterEffect() {
+    // Text lives in the HTML (for search engines, screen readers, and no-JS visitors);
+    // the effect re-types it for sighted visitors.
     const lines = [
-        { id: 'line1', text: "Hi, I'm Dr. Ramy Rady.", delay: 0 },
-        { id: 'line2', text: "Hardware Engineer at Apple.", delay: 1000 },
-        { id: 'line3', text: "I build RF IC + silicon photonics systems, and intelligent control loops.", delay: 2000 },
-        { id: 'line4', text: "Scroll or click the arrow to learn more.", delay: 4000 }
-    ];
-    
-    function typeWriter(element, text, speed = 50) {
+        { id: 'line1', delay: 0 },
+        { id: 'line2', delay: 250 },
+        { id: 'line3', delay: 250 }
+    ]
+        .map(line => ({ ...line, element: document.getElementById(line.id) }))
+        .filter(line => line.element);
+
+    if (prefersReducedMotion || lines.length === 0) return;
+
+    lines.forEach(line => {
+        line.text = line.element.textContent;
+        line.element.setAttribute('aria-label', line.text);
+        line.element.textContent = '';
+    });
+
+    function typeWriter(element, text, speed = 28) {
         let i = 0;
+        element.classList.add('typing');
         return new Promise((resolve) => {
             function type() {
                 if (i < text.length) {
@@ -63,36 +75,21 @@ function initTypewriterEffect() {
                     i++;
                     setTimeout(type, speed);
                 } else {
-                    element.classList.add('complete');
+                    element.classList.remove('typing');
+                    element.removeAttribute('aria-label');
                     resolve();
                 }
             }
             type();
         });
     }
-    
-    async function startTypewriter() {
+
+    (async function startTypewriter() {
         for (const line of lines) {
             await new Promise(resolve => setTimeout(resolve, line.delay));
-            const element = document.getElementById(line.id);
-            if (element) {
-                await typeWriter(element, line.text);
-            }
+            await typeWriter(line.element, line.text);
         }
-    }
-    
-    if (!prefersReducedMotion) {
-        startTypewriter();
-    } else {
-        // If reduced motion, just show all text immediately
-        lines.forEach(line => {
-            const element = document.getElementById(line.id);
-            if (element) {
-                element.textContent = line.text;
-                element.classList.add('complete');
-            }
-        });
-    }
+    })();
 }
 
 // Mobile Menu Toggle
@@ -149,21 +146,30 @@ document.addEventListener('DOMContentLoaded', function() {
         fadeInObserver.observe(element);
     });
 
-    // Form Submission Handler (for demo purposes)
+    // Contact form: no backend on GitHub Pages, so compose the message in the visitor's email app
     const contactForm = document.querySelector('.contact-form');
     if (contactForm) {
+        const status = contactForm.querySelector('.form-status');
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
-            
-            // Get form data
+
             const formData = new FormData(contactForm);
-            const name = formData.get('name');
-            
-            // Show success message (in production, you'd send this to a backend)
-            alert(`Thank you ${name}! Your message has been received. I'll get back to you soon.`);
-            
-            // Reset form
-            contactForm.reset();
+            const name = formData.get('name').trim();
+            const email = formData.get('email').trim();
+            const message = formData.get('message').trim();
+
+            const subject = `Website inquiry from ${name}`;
+            const body = `${message}\n\n— ${name} (${email})`;
+            window.location.href = 'mailto:engramyrady@gmail.com'
+                + '?subject=' + encodeURIComponent(subject)
+                + '&body=' + encodeURIComponent(body);
+
+            if (status) {
+                status.innerHTML = 'Your email app should open with this message ready to send. '
+                    + 'Nothing opened? Email me directly at '
+                    + '<a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.';
+                status.hidden = false;
+            }
         });
     }
 
