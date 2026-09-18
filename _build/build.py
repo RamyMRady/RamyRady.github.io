@@ -7,6 +7,7 @@ redirect pages for retired URLs, and sitemap.xml into the repo root.
 """
 import html
 import json
+from datetime import date
 import re
 from pathlib import Path
 
@@ -111,10 +112,15 @@ def footer():
     links = " · ".join(
         f'<a href="{u}"{ext(u)}>{label}</a>' for u, _, label in LINKS if not u.startswith("assets")
     )
+    built = date.today().strftime("%d %B %Y")
     return f"""    <footer class="site-footer">
         <div class="wrap footer-inner">
             <p>© 2026 Ramy Rady</p>
             <p>{links}</p>
+        </div>
+        <div class="wrap site-status">
+            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated {built}</p>
+            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
         </div>
     </footer>
     <script src="script.js?v={ASSET_V}"></script>
@@ -264,7 +270,7 @@ def build_index():
                 </div>
             </div>
             <aside class="intro-card">
-                <img src="{D.PERSON['photo']}" alt="Portrait of Ramy Rady" width="360" height="359">
+                <img src="{D.PERSON['photo']}" alt="Ramy Rady" width="720" height="720">
                 <div class="intro-card-body">
                     <p class="where">{D.PERSON['location']}</p>
                     <ul class="link-list">

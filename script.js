@@ -30,6 +30,21 @@
         });
     }
 
+    // Visit counter (Abacus: a free, keyless counter API). If it is unreachable,
+    // the line stays hidden and nothing else is affected.
+    var countBox = document.querySelector('.status-count');
+    if (countBox) {
+        fetch('https://abacus.jasoncameron.dev/hit/ramyrady.com/site')
+            .then(function (r) { return r.ok ? r.json() : Promise.reject(r.status); })
+            .then(function (d) {
+                if (typeof d.value !== 'number') return;
+                countBox.querySelector('.count-value').textContent = d.value.toLocaleString();
+                countBox.querySelector('.count-label').textContent = d.value === 1 ? 'visit' : 'visits';
+                countBox.hidden = false;
+            })
+            .catch(function () { /* counter unavailable: leave it hidden */ });
+    }
+
     // Homepage terminal: the text is in the HTML; this retypes the commands for effect.
     var termBody = document.querySelector('.term-body');
     if (termBody && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

@@ -478,3 +478,24 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
     .term-body.is-typing .term-out { visibility: visible; }
     .term-body.is-typing .term-cmd.active .term-typed::after { content: none; }
 }
+
+/* ---------- footer status ---------- */
+
+.site-status {
+    display: flex; flex-wrap: wrap; gap: 6px 18px;
+    padding-bottom: 24px; margin-top: -10px;
+    font: 400 13px/1.5 var(--mono); color: var(--muted);
+}
+.live-dot {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: #2fbf6b; margin-right: 6px; vertical-align: middle;
+    box-shadow: 0 0 0 0 rgba(47, 191, 107, 0.55);
+    animation: live-pulse 2.4s ease-out infinite;
+}
+@keyframes live-pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(47, 191, 107, 0.5); }
+    70%  { box-shadow: 0 0 0 7px rgba(47, 191, 107, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(47, 191, 107, 0); }
+}
+.count-value { color: var(--ink); font-weight: 500; }
+@media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
