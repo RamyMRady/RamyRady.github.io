@@ -126,6 +126,89 @@
             </aside>
         </section>
 
+        <section class="terminal-band" aria-label="Summary in a terminal">
+            <div class="chip-bg"><svg class="chip-svg" viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+  <defs>
+    <pattern id="chip-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path class="chip-grid-line" d="M40 0H0V40"/>
+    </pattern>
+    <radialGradient id="chip-glow" cx="50%" cy="50%" r="62%">
+      <stop offset="0%" class="chip-glow-in"/>
+      <stop offset="100%" class="chip-glow-out"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="420" fill="url(#chip-grid)"/>
+  <rect width="1200" height="420" fill="url(#chip-glow)"/>
+
+  <!-- dies sit left and right, clear of the terminal panel -->
+  <g class="chip-die">
+    <rect x="52" y="120" width="190" height="180" rx="10"/>
+    <rect x="86" y="154" width="122" height="112" rx="6" class="chip-core"/>
+    <rect x="958" y="120" width="190" height="180" rx="10"/>
+    <rect x="992" y="154" width="122" height="112" rx="6" class="chip-core"/>
+  </g>
+  <g class="chip-pad">
+    <rect x="30" y="142" width="18" height="8" rx="2"/><rect x="30" y="176" width="18" height="8" rx="2"/>
+    <rect x="30" y="210" width="18" height="8" rx="2"/><rect x="30" y="244" width="18" height="8" rx="2"/>
+    <rect x="30" y="278" width="18" height="8" rx="2"/>
+    <rect x="246" y="142" width="18" height="8" rx="2"/><rect x="246" y="176" width="18" height="8" rx="2"/>
+    <rect x="246" y="210" width="18" height="8" rx="2"/><rect x="246" y="244" width="18" height="8" rx="2"/>
+    <rect x="246" y="278" width="18" height="8" rx="2"/>
+    <rect x="936" y="142" width="18" height="8" rx="2"/><rect x="936" y="176" width="18" height="8" rx="2"/>
+    <rect x="936" y="210" width="18" height="8" rx="2"/><rect x="936" y="244" width="18" height="8" rx="2"/>
+    <rect x="936" y="278" width="18" height="8" rx="2"/>
+    <rect x="1152" y="142" width="18" height="8" rx="2"/><rect x="1152" y="176" width="18" height="8" rx="2"/>
+    <rect x="1152" y="210" width="18" height="8" rx="2"/><rect x="1152" y="244" width="18" height="8" rx="2"/>
+    <rect x="1152" y="278" width="18" height="8" rx="2"/>
+    <rect x="96" y="98" width="8" height="18" rx="2"/><rect x="136" y="98" width="8" height="18" rx="2"/>
+    <rect x="176" y="98" width="8" height="18" rx="2"/>
+    <rect x="96" y="304" width="8" height="18" rx="2"/><rect x="136" y="304" width="8" height="18" rx="2"/>
+    <rect x="176" y="304" width="8" height="18" rx="2"/>
+    <rect x="1002" y="98" width="8" height="18" rx="2"/><rect x="1042" y="98" width="8" height="18" rx="2"/>
+    <rect x="1082" y="98" width="8" height="18" rx="2"/>
+    <rect x="1002" y="304" width="8" height="18" rx="2"/><rect x="1042" y="304" width="8" height="18" rx="2"/>
+    <rect x="1082" y="304" width="8" height="18" rx="2"/>
+  </g>
+
+  <!-- routing between the dies and off the edges -->
+  <g class="chip-trace">
+    <path d="M0 146h22"/><path d="M0 214h22"/><path d="M0 282h22"/>
+    <path d="M264 146h96l30-30h120"/>
+    <path d="M264 214h72l34 34h150"/>
+    <path d="M264 282h130l26-26h110"/>
+    <path d="M1200 146h-22"/><path d="M1200 214h-22"/><path d="M1200 282h-22"/>
+    <path d="M936 146h-92l-28-28H700"/>
+    <path d="M936 214h-70l-32 32H690"/>
+    <path d="M936 282h-120l-24-24h-96"/>
+    <path d="M100 98V44h240"/><path d="M180 322v54H420"/>
+    <path d="M1006 98V44H770"/><path d="M1086 322v54H860"/>
+  </g>
+  <g class="chip-via">
+    <circle cx="410" cy="116" r="4"/><circle cx="370" cy="248" r="4"/><circle cx="420" cy="256" r="4"/>
+    <circle cx="790" cy="118" r="4"/><circle cx="834" cy="246" r="4"/><circle cx="792" cy="258" r="4"/>
+    <circle cx="340" cy="44" r="4"/><circle cx="860" cy="376" r="4"/>
+  </g>
+</svg></div>
+            <div class="wrap">
+                <div class="term">
+                    <div class="term-bar">
+                        <span class="term-dots"><i></i><i></i><i></i></span>
+                        <span class="term-title">ramyrady@portfolio:~$</span>
+                    </div>
+                    <div class="term-body">
+                        <p class="term-cmd"><span class="term-prompt">$</span> <span class="term-typed">whoami</span></p>
+                        <p class="term-out">Ramy Rady, Ph.D. — SerDes analog/mixed-signal design, Apple Silicon Engineering Group</p>
+                        <p class="term-cmd"><span class="term-prompt">$</span> <span class="term-typed">cat research/focus.txt</span></p>
+                        <p class="term-out">mm-wave CMOS + silicon photonics, automatic tuning loops, radio-over-fiber links</p>
+                        <p class="term-cmd"><span class="term-prompt">$</span> <span class="term-typed">ls publications/ | wc -l</span></p>
+                        <p class="term-out">20</p>
+                        <p class="term-cmd"><span class="term-prompt">$</span> <span class="term-typed">git log --oneline -1 phd</span></p>
+                        <p class="term-out">2024  Texas A&amp;M University — automatically tunable mm-wave silicon photonic front-ends</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section class="wrap block" aria-labelledby="news-h">
             <h2 id="news-h">News</h2>
             <ul class="news">

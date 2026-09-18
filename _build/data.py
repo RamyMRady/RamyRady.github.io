@@ -25,6 +25,18 @@ PERSON = {
 # Google Scholar profile totals, as read on the date below.
 SCHOLAR_STATS = {"pubs": "20", "citations": "111", "h": "7", "as_of": "Sept 2026"}
 
+# Homepage terminal: (command, output). Text also renders without JavaScript.
+TERMINAL = [
+    ("whoami",
+     "Ramy Rady, Ph.D. — SerDes analog/mixed-signal design, Apple Silicon Engineering Group"),
+    ("cat research/focus.txt",
+     "mm-wave CMOS + silicon photonics, automatic tuning loops, radio-over-fiber links"),
+    ("ls publications/ | wc -l",
+     "20"),
+    ("git log --oneline -1 phd",
+     "2024  Texas A&amp;M University — automatically tunable mm-wave silicon photonic front-ends"),
+]
+
 INTERESTS = [
     "High-speed SerDes analog front-ends",
     "Microwave & RF silicon photonics",
