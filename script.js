@@ -30,6 +30,55 @@
         });
     }
 
+    // Homepage terminal: the text is in the HTML; this retypes the commands for effect.
+    var termBody = document.querySelector('.term-body');
+    if (termBody && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        var steps = [];
+        termBody.querySelectorAll('.term-cmd').forEach(function (cmd) {
+            var typed = cmd.querySelector('.term-typed');
+            steps.push({ cmd: cmd, typed: typed, text: typed.textContent, out: cmd.nextElementSibling });
+        });
+        if (steps.length) {
+            termBody.classList.add('is-typing');
+            steps.forEach(function (s) { s.typed.textContent = ''; });
+
+            var typeLine = function (step) {
+                return new Promise(function (resolve) {
+                    step.cmd.classList.add('shown', 'active');
+                    var i = 0;
+                    (function tick() {
+                        if (i < step.text.length) {
+                            step.typed.textContent += step.text.charAt(i++);
+                            setTimeout(tick, 26);
+                        } else {
+                            step.cmd.classList.remove('active');
+                            setTimeout(function () {
+                                if (step.out) step.out.classList.add('shown');
+                                resolve();
+                            }, 160);
+                        }
+                    })();
+                });
+            };
+
+            var run = function () {
+                steps.reduce(function (chain, step) {
+                    return chain.then(function () { return typeLine(step); });
+                }, Promise.resolve());
+            };
+
+            // Start when the terminal is actually on screen.
+            if ('IntersectionObserver' in window) {
+                var io = new IntersectionObserver(function (entries) {
+                    if (entries[0].isIntersecting) { io.disconnect(); run(); }
+                }, { threshold: 0.25 });
+                io.observe(termBody);
+            } else {
+                run();
+            }
+        }
+    }
+
     // BibTeX: show/hide and copy
     document.querySelectorAll('[data-cite]').forEach(function (btn) {
         btn.addEventListener('click', function () {

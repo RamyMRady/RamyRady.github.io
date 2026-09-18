@@ -401,3 +401,80 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 .send-head { font-size: 14px; font-weight: 600; color: var(--ink); }
 .send-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
 .send-buttons .button { padding: 8px 16px; font-size: 14px; }
+
+/* ---------- terminal band with chip backdrop ---------- */
+
+.terminal-band {
+    position: relative;
+    margin-top: 56px;
+    padding-block: 44px;
+    background: linear-gradient(180deg, #0a1020 0%, #0d1527 100%);
+    border-block: 1px solid #1b2742;
+    overflow: hidden;
+    isolation: isolate;
+}
+.chip-bg { position: absolute; inset: 0; z-index: -1; }
+.chip-svg { width: 100%; height: 100%; display: block; }
+.chip-grid-line { fill: none; stroke: #7fd8ff; stroke-width: 1; opacity: 0.07; }
+.chip-glow-in { stop-color: #00b4e6; stop-opacity: 0.16; }
+.chip-glow-out { stop-color: #00b4e6; stop-opacity: 0; }
+.chip-trace { fill: none; stroke: #5cc6f2; stroke-width: 1.6; opacity: 0.38; stroke-linecap: round; stroke-linejoin: round; }
+.chip-via { fill: #5cc6f2; opacity: 0.45; }
+.chip-die { fill: none; stroke: #5cc6f2; stroke-width: 1.4; opacity: 0.42; }
+.chip-die .chip-core { stroke-dasharray: 3 4; opacity: 0.8; }
+.chip-pad { fill: #7fd8ff; opacity: 0.45; }
+
+.term {
+    max-width: 760px;
+    margin-inline: auto;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(9, 14, 28, 0.82);
+    border: 1px solid rgba(124, 200, 235, 0.22);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+.term-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.04);
+    border-bottom: 1px solid rgba(124, 200, 235, 0.16);
+}
+.term-dots { display: flex; gap: 7px; }
+.term-dots i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+.term-dots i:nth-child(1) { background: #ff5f56; }
+.term-dots i:nth-child(2) { background: #ffbd2e; }
+.term-dots i:nth-child(3) { background: #27c93f; }
+.term-title { font: 400 12.5px var(--mono); color: #8fa3c4; }
+
+.term-body { padding: 20px 20px 22px; display: grid; gap: 2px; font-family: var(--mono); font-size: 14px; line-height: 1.7; }
+.term-cmd { color: #e6f4ff; }
+.term-prompt { color: #5cc6f2; margin-right: 8px; }
+.term-out { color: #9fb4d4; padding-left: 20px; margin-bottom: 12px; overflow-wrap: anywhere; }
+.term-out:last-child { margin-bottom: 0; }
+
+/* Only applied once the typing script takes over, so no-JS visitors see everything. */
+.term-body.is-typing .term-cmd,
+.term-body.is-typing .term-out { visibility: hidden; }
+.term-body.is-typing .term-cmd.shown,
+.term-body.is-typing .term-out.shown { visibility: visible; }
+.term-body.is-typing .term-cmd.active .term-typed::after {
+    content: '▋';
+    color: #5cc6f2;
+    margin-left: 2px;
+    animation: term-blink 1s steps(1, end) infinite;
+}
+@keyframes term-blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
+
+@media (max-width: 680px) {
+    .terminal-band { padding-block: 32px; }
+    .term-body { font-size: 12.5px; padding: 16px 14px 18px; }
+    .term-out { padding-left: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .term-body.is-typing .term-cmd,
+    .term-body.is-typing .term-out { visibility: visible; }
+    .term-body.is-typing .term-cmd.active .term-typed::after { content: none; }
+}

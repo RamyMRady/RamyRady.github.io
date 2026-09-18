@@ -244,6 +244,12 @@ def build_index():
                     <h3>{t['title']}</h3>
                 </a>""" for t in D.THEMES
     )
+    term_lines = "\n".join(
+        f'                        <p class="term-cmd"><span class="term-prompt">$</span> <span class="term-typed">{cmd}</span></p>\n'
+        f'                        <p class="term-out">{out}</p>'
+        for cmd, out in D.TERMINAL
+    )
+    chip = figures.CHIP_BG
     s = D.SCHOLAR_STATS
     body = f"""        <section class="wrap intro" id="about" aria-labelledby="name">
             <div class="intro-text">
@@ -266,6 +272,21 @@ def build_index():
                     </ul>
                 </div>
             </aside>
+        </section>
+
+        <section class="terminal-band" aria-label="Summary in a terminal">
+            <div class="chip-bg">{chip}</div>
+            <div class="wrap">
+                <div class="term">
+                    <div class="term-bar">
+                        <span class="term-dots"><i></i><i></i><i></i></span>
+                        <span class="term-title">ramyrady@portfolio:~$</span>
+                    </div>
+                    <div class="term-body">
+{term_lines}
+                    </div>
+                </div>
+            </div>
         </section>
 
         <section class="wrap block" aria-labelledby="news-h">
