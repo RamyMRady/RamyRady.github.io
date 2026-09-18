@@ -1,186 +1,98 @@
-// Check for reduced motion preference
-const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function () {
+    var root = document.documentElement;
 
-// Matrix Canvas Animation
-function initMatrixAnimation() {
-    if (prefersReducedMotion) return;
-    
-    const canvas = document.getElementById('matrix-canvas');
-    if (!canvas) return;
-    
-    const ctx = canvas.getContext('2d');
-    
-    // Set canvas size
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-    
-    // Matrix characters
-    const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array(Math.floor(columns)).fill(1);
-    
-    function draw() {
-        ctx.fillStyle = 'rgba(10, 14, 39, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        
-        ctx.fillStyle = '#00d4ff';
-        ctx.font = fontSize + 'px monospace';
-        
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars[Math.floor(Math.random() * chars.length)];
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-    
-    setInterval(draw, 50);
-}
-
-// Typewriter Effect for Terminal
-function initTypewriterEffect() {
-    const lines = [
-        { id: 'line1', text: "Hi, I'm Dr. Ramy Rady.", delay: 0 },
-        { id: 'line2', text: "Hardware Engineer at Apple.", delay: 1000 },
-        { id: 'line3', text: "I build RF IC + silicon photonics systems, and intelligent control loops.", delay: 2000 },
-        { id: 'line4', text: "Scroll or click the arrow to learn more.", delay: 4000 }
-    ];
-    
-    function typeWriter(element, text, speed = 50) {
-        let i = 0;
-        return new Promise((resolve) => {
-            function type() {
-                if (i < text.length) {
-                    element.textContent += text.charAt(i);
-                    i++;
-                    setTimeout(type, speed);
-                } else {
-                    element.classList.add('complete');
-                    resolve();
-                }
-            }
-            type();
+    // Theme toggle: an explicit choice is stored; otherwise the OS setting applies.
+    var toggle = document.querySelector('.theme-toggle');
+    if (toggle) {
+        toggle.addEventListener('click', function () {
+            var current = root.dataset.theme ||
+                (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            var next = current === 'dark' ? 'light' : 'dark';
+            root.dataset.theme = next;
+            try { localStorage.setItem('theme', next); } catch (e) {}
         });
     }
-    
-    async function startTypewriter() {
-        for (const line of lines) {
-            await new Promise(resolve => setTimeout(resolve, line.delay));
-            const element = document.getElementById(line.id);
-            if (element) {
-                await typeWriter(element, line.text);
-            }
-        }
-    }
-    
-    if (!prefersReducedMotion) {
-        startTypewriter();
-    } else {
-        // If reduced motion, just show all text immediately
-        lines.forEach(line => {
-            const element = document.getElementById(line.id);
-            if (element) {
-                element.textContent = line.text;
-                element.classList.add('complete');
+
+    // Mobile navigation
+    var navToggle = document.querySelector('.nav-toggle');
+    var nav = document.getElementById('site-nav');
+    if (navToggle && nav) {
+        navToggle.addEventListener('click', function () {
+            var open = nav.classList.toggle('open');
+            navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && nav.classList.contains('open')) {
+                nav.classList.remove('open');
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggle.focus();
             }
         });
     }
-}
 
-// Mobile Menu Toggle
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize matrix animation
-    initMatrixAnimation();
-    
-    // Initialize typewriter effect
-    initTypewriterEffect();
-    
-    const navToggle = document.querySelector('.nav-toggle');
-    const navMenu = document.querySelector('.nav-menu');
-    
-    if (navToggle) {
-        navToggle.addEventListener('click', function() {
-            navToggle.classList.toggle('active');
-            navMenu.classList.toggle('active');
+    // BibTeX: show/hide and copy
+    document.querySelectorAll('[data-cite]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var box = document.getElementById(btn.dataset.cite);
+            if (!box) return;
+            box.hidden = !box.hidden;
+            btn.setAttribute('aria-expanded', box.hidden ? 'false' : 'true');
         });
+    });
+    document.querySelectorAll('.copy-bib').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var text = btn.parentElement.querySelector('pre').textContent;
+            var reset = function () { setTimeout(function () { btn.textContent = 'Copy BibTeX'; }, 1600); };
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function () {
+                    btn.textContent = 'Copied';
+                    reset();
+                }, function () {
+                    btn.textContent = 'Copy failed. Select the text above';
+                    reset();
+                });
+            }
+        });
+    });
 
-        // Close menu when clicking on a link
-        const navLinks = document.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
+    // Publication filters
+    var filters = document.querySelectorAll('.filter');
+    filters.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var f = btn.dataset.filter;
+            filters.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+            document.querySelectorAll('.pubs-page .pub').forEach(function (li) {
+                li.hidden = !(f === 'all' ||
+                    (f === 'first' ? li.dataset.first === 'true' : li.dataset.kind === f));
+            });
+            document.querySelectorAll('.year-group').forEach(function (g) {
+                g.hidden = !g.querySelector('.pub:not([hidden])');
             });
         });
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const isClickInsideNav = navToggle.contains(event.target) || navMenu.contains(event.target);
-            if (!isClickInsideNav && navMenu.classList.contains('active')) {
-                navToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
-        });
-    }
-
-    // Fade-in Animation on Scroll
-    const fadeElements = document.querySelectorAll('.fade-in');
-    
-    const fadeInObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-            }
-        });
-    }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
     });
 
-    fadeElements.forEach(element => {
-        fadeInObserver.observe(element);
-    });
-
-    // Form Submission Handler (for demo purposes)
-    const contactForm = document.querySelector('.contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
+    // Contact form: GitHub Pages has no backend, so compose the email in the visitor's mail app.
+    var form = document.querySelector('.contact-form');
+    if (form) {
+        var status = form.querySelector('.form-status');
+        form.addEventListener('submit', function (e) {
             e.preventDefault();
-            
-            // Get form data
-            const formData = new FormData(contactForm);
-            const name = formData.get('name');
-            
-            // Show success message (in production, you'd send this to a backend)
-            alert(`Thank you ${name}! Your message has been received. I'll get back to you soon.`);
-            
-            // Reset form
-            contactForm.reset();
+            var name = form.elements.name.value.trim();
+            var email = form.elements.email.value.trim();
+            var message = form.elements.message.value.trim();
+            if (!name || !email || !message) {
+                status.textContent = 'Add your name, email, and a message, then try again.';
+                status.classList.add('error');
+                status.hidden = false;
+                return;
+            }
+            status.classList.remove('error');
+            window.location.href = 'mailto:engramyrady@gmail.com' +
+                '?subject=' + encodeURIComponent('Website inquiry from ' + name) +
+                '&body=' + encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
+            status.innerHTML = 'Your email app should open with this message ready to send. ' +
+                'If nothing opened, write to <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.';
+            status.hidden = false;
         });
     }
-
-    // Smooth scroll for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const href = this.getAttribute('href');
-            if (href && href !== '#') {
-                e.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-});
+})();
