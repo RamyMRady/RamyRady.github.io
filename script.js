@@ -71,28 +71,55 @@
         });
     });
 
-    // Contact form: GitHub Pages has no backend, so compose the email in the visitor's mail app.
+    // Contact form: GitHub Pages has no backend, and a mailto: link does nothing for
+    // visitors with no mail app registered (webmail users), so offer explicit choices.
     var form = document.querySelector('.contact-form');
     if (form) {
         var status = form.querySelector('.form-status');
+        var options = form.querySelector('.send-options');
+        var address = 'engramyrady@gmail.com';
+        var composed = '';
+
         form.addEventListener('submit', function (e) {
             e.preventDefault();
             var name = form.elements.name.value.trim();
             var email = form.elements.email.value.trim();
             var message = form.elements.message.value.trim();
+
             if (!name || !email || !message) {
                 status.textContent = 'Add your name, email, and a message, then try again.';
                 status.classList.add('error');
                 status.hidden = false;
                 return;
             }
+
+            var subject = 'Website inquiry from ' + name;
+            var body = message + '\n\n— ' + name + ' (' + email + ')';
+            composed = 'To: ' + address + '\nSubject: ' + subject + '\n\n' + body;
+
+            var s = encodeURIComponent(subject);
+            var b = encodeURIComponent(body);
+            form.querySelector('.send-gmail').href =
+                'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(address) + '&su=' + s + '&body=' + b;
+            form.querySelector('.send-outlook').href =
+                'https://outlook.live.com/mail/0/deeplink/compose?to=' + encodeURIComponent(address) + '&subject=' + s + '&body=' + b;
+            form.querySelector('.send-mailto').href = 'mailto:' + address + '?subject=' + s + '&body=' + b;
+
             status.classList.remove('error');
-            window.location.href = 'mailto:engramyrady@gmail.com' +
-                '?subject=' + encodeURIComponent('Website inquiry from ' + name) +
-                '&body=' + encodeURIComponent(message + '\n\n— ' + name + ' (' + email + ')');
-            status.innerHTML = 'Your email app should open with this message ready to send. ' +
-                'If nothing opened, write to <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.';
-            status.hidden = false;
+            status.hidden = true;
+            options.hidden = false;
+            options.querySelector('.send-gmail').focus();
         });
+
+        var copyBtn = form.querySelector('.copy-message');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', function () {
+                if (!navigator.clipboard) return;
+                navigator.clipboard.writeText(composed).then(function () {
+                    copyBtn.textContent = 'Copied. Paste it into any email app';
+                    setTimeout(function () { copyBtn.textContent = 'Copy message'; }, 2600);
+                });
+            });
+        }
     }
 })();

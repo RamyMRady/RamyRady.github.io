@@ -322,8 +322,18 @@ def build_index():
                         <label for="cf-message">Message</label>
                         <textarea id="cf-message" name="message" rows="4" required></textarea>
                     </div>
-                    <button class="button" type="submit">Write email</button>
-                    <p class="form-note">Opens your email app with the message filled in.</p>
+                    <button class="button" type="submit">Continue</button>
+                    <p class="form-note">Next you'll pick how to send: Gmail, Outlook, or your mail app.</p>
+                    <div class="send-options" hidden>
+                        <p class="send-head">Send your message with</p>
+                        <div class="send-buttons">
+                            <a class="button send-gmail" href="#" target="_blank" rel="noopener">Gmail</a>
+                            <a class="button send-outlook" href="#" target="_blank" rel="noopener">Outlook</a>
+                            <a class="button send-mailto" href="#">Mail app</a>
+                        </div>
+                        <button class="chip-btn copy-message" type="button">Copy message</button>
+                        <p class="form-note">Or write to <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a> directly.</p>
+                    </div>
                     <p class="form-status" role="status" aria-live="polite" hidden></p>
                 </form>
             </div>
