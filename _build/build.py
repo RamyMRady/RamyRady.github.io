@@ -17,12 +17,46 @@ import figures
 ROOT = Path(__file__).resolve().parent.parent
 ASSET_V = "5"  # bump to bust browser caches for styles.css / script.js
 
+GALLERY_DIR = ROOT / "assets" / "gallery"
+GALLERY_EXT = {".jpg", ".jpeg", ".png", ".webp"}
+
+
+def gallery_items():
+    """Photos in assets/gallery/, with captions from captions.json when present."""
+    if not GALLERY_DIR.is_dir():
+        return []
+    meta = {}
+    meta_file = GALLERY_DIR / "captions.json"
+    if meta_file.is_file():
+        try:
+            meta = json.loads(meta_file.read_text())
+        except json.JSONDecodeError as e:
+            print(f"  ! captions.json ignored ({e})")
+    items = []
+    for f in sorted(GALLERY_DIR.iterdir()):
+        if f.suffix.lower() not in GALLERY_EXT:
+            continue
+        info = meta.get(f.name, {})
+        stem = f.stem
+        group = info.get("group") or ("awards" if stem.startswith(("award", "talk")) else "chips")
+        title = info.get("title") or stem.replace("-", " ").replace("_", " ").strip().capitalize()
+        items.append({
+            "src": f"assets/gallery/{f.name}",
+            "title": html.escape(str(title)),
+            "caption": html.escape(str(info.get("caption", ""))),
+            "group": group,
+        })
+    return items
+
+
 NAV = [
     ("index.html", "About"),
     ("research.html", "Research"),
     ("publications.html", "Publications"),
     ("resume.html", "CV"),
 ]
+if gallery_items():
+    NAV.insert(3, ("gallery.html", "Gallery"))
 
 ICONS = {
     "mail": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.4V17h16V7.4l-8 5.3-8-5.3ZM5.2 7 12 11.5 18.8 7H5.2Z"/></svg>',
@@ -542,6 +576,43 @@ def build_resume():
          body)
 
 
+def build_gallery():
+    items = gallery_items()
+    if not items:
+        return False
+    sections = []
+    for key, label in D.GALLERY_GROUPS:
+        group = [i for i in items if i["group"] == key]
+        if not group:
+            continue
+        tiles = "\n".join(
+            f"""                <figure class="tile">
+                    <a href="{i['src']}" target="_blank" rel="noopener">
+                        <img src="{i['src']}" alt="{i['title']}" loading="lazy" decoding="async">
+                    </a>
+                    <figcaption>
+                        <b>{i['title']}</b>
+                        {f'<span>{i["caption"]}</span>' if i["caption"] else ''}
+                    </figcaption>
+                </figure>""" for i in group
+        )
+        sections.append(f"""        <section class="wrap block" aria-labelledby="g-{key}">
+            <h2 id="g-{key}">{label}</h2>
+            <div class="tiles">
+{tiles}
+            </div>
+        </section>""")
+    body = f"""        <section class="wrap page-head">
+            <h1>Gallery</h1>
+            <p class="lede">Chips, lab setups, and moments from conferences.</p>
+        </section>
+{chr(10).join(sections)}"""
+    page("gallery.html", "Gallery · Ramy Rady",
+         "Photographs of chips, lab setups, and conference moments from Ramy Rady's work in RF ICs and silicon photonics.",
+         body)
+    return True
+
+
 def build_redirects():
     for old, new in D.REDIRECTS.items():
         (ROOT / old).write_text(f"""<!DOCTYPE html>
@@ -560,8 +631,10 @@ def build_redirects():
 """)
 
 
-def build_sitemap():
+def build_sitemap(has_gallery=False):
     pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("resume.html", "0.8")]
+    if has_gallery:
+        pages.append(("gallery.html", "0.6"))
     urls = "\n".join(
         f"  <url>\n    <loc>{D.SITE_URL}/{p}</loc>\n    <lastmod>{D.UPDATED}</lastmod>\n    <priority>{pr}</priority>\n  </url>"
         for p, pr in pages
@@ -576,6 +649,7 @@ if __name__ == "__main__":
     build_research()
     build_publications()
     build_resume()
+    has_gallery = build_gallery()
     build_redirects()
-    build_sitemap()
+    build_sitemap(has_gallery)
     print("Built", ", ".join(p for p, _ in NAV), "+", len(D.REDIRECTS), "redirects + sitemap.xml")
