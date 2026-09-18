@@ -499,3 +499,18 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 }
 .count-value { color: var(--ink); font-weight: 500; }
 @media (prefers-reduced-motion: reduce) { .live-dot { animation: none; } }
+
+/* ---------- gallery ---------- */
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 18px; }
+.tile { margin: 0; display: grid; gap: 10px; }
+.tile a {
+    display: block; border-radius: 10px; overflow: hidden;
+    border: 1px solid var(--rule); background: var(--surface-2);
+    transition: border-color .15s ease, transform .15s ease;
+}
+.tile a:hover { border-color: var(--accent-line); transform: translateY(-2px); }
+.tile img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; }
+.tile figcaption { display: grid; gap: 3px; font-size: 14.5px; }
+.tile figcaption b { color: var(--ink); font-weight: 600; }
+.tile figcaption span { color: var(--muted); font-size: 13.5px; }

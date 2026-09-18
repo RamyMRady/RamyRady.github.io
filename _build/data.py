@@ -37,6 +37,9 @@ TERMINAL = [
      "2024  Texas A&amp;M University — automatically tunable mm-wave silicon photonic front-ends"),
 ]
 
+# Gallery: photos are read from assets/gallery/ (see the README there).
+GALLERY_GROUPS = [("chips", "Chips &amp; lab"), ("awards", "Awards &amp; talks")]
+
 INTERESTS = [
     "High-speed SerDes analog front-ends",
     "Microwave & RF silicon photonics",
