@@ -84,6 +84,7 @@ def ext(url):
 def head(path, title, desc, jsonld=None):
     url = D.SITE_URL + ("/" if path == "index.html" else "/" + path)
     ld = f'\n    <script type="application/ld+json">\n{json.dumps(jsonld, indent=2, ensure_ascii=False)}\n    </script>' if jsonld else ""
+    noindex = '\n    <meta name="robots" content="noindex">' if path == "404.html" else ""
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -92,9 +93,11 @@ def head(path, title, desc, jsonld=None):
     <title>{title}</title>
     <meta name="description" content="{desc}">
     <meta name="author" content="Ramy Rady">
-    <link rel="canonical" href="{url}">
+    <link rel="canonical" href="{url}">{noindex}
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
     <meta property="og:type" content="{'profile' if path == 'index.html' else 'website'}">
     <meta property="og:site_name" content="Ramy Rady">
     <meta property="og:title" content="{title}">
@@ -613,6 +616,22 @@ def build_gallery():
     return True
 
 
+def build_404():
+    body = """        <section class="wrap page-head">
+            <h1>Page not found</h1>
+            <p class="lede">That link is broken or the page has moved. A few pages that do exist:</p>
+            <nav class="toc" aria-label="Main pages">
+                <a href="/">About</a>
+                <a href="/research.html">Research</a>
+                <a href="/publications.html">Publications</a>
+                <a href="/resume.html">CV</a>
+            </nav>
+            <p class="muted">If you followed a link from somewhere else, tell me at
+                <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a> and I will fix it.</p>
+        </section>"""
+    page("404.html", "Page not found · Ramy Rady", "That page does not exist on ramyrady.com.", body)
+
+
 def build_redirects():
     for old, new in D.REDIRECTS.items():
         (ROOT / old).write_text(f"""<!DOCTYPE html>
@@ -632,11 +651,12 @@ def build_redirects():
 
 
 def build_sitemap(has_gallery=False):
+    today = date.today().isoformat()
     pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("resume.html", "0.8")]
     if has_gallery:
         pages.append(("gallery.html", "0.6"))
     urls = "\n".join(
-        f"  <url>\n    <loc>{D.SITE_URL}/{p}</loc>\n    <lastmod>{D.UPDATED}</lastmod>\n    <priority>{pr}</priority>\n  </url>"
+        f"  <url>\n    <loc>{D.SITE_URL}/{p}</loc>\n    <lastmod>{today}</lastmod>\n    <priority>{pr}</priority>\n  </url>"
         for p, pr in pages
     )
     (ROOT / "sitemap.xml").write_text(
@@ -650,6 +670,7 @@ if __name__ == "__main__":
     build_publications()
     build_resume()
     has_gallery = build_gallery()
+    build_404()
     build_redirects()
     build_sitemap(has_gallery)
     print("Built", ", ".join(p for p, _ in NAV), "+", len(D.REDIRECTS), "redirects + sitemap.xml")
