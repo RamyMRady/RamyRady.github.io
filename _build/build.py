@@ -63,6 +63,7 @@ ICONS = {
     "scholar": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 24a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0-24L0 9.5l4.838 3.94A8 8 0 0 1 12 9a8 8 0 0 1 7.162 4.44L24 9.5z"/></svg>',
     "linkedin": '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>',
     "rg": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v18H3V3Zm2 2v14h14V5H5Zm2.2 11.5V7.6h2.9c1.9 0 2.9.9 2.9 2.4 0 1.1-.6 1.9-1.6 2.2l2 4.3h-1.9l-1.8-4H8.9v4H7.2Zm1.7-5.4h1.1c.9 0 1.4-.4 1.4-1.1 0-.7-.5-1.1-1.4-1.1H8.9v2.2Zm8.6 5.5c-1.3 0-2-.8-2-2.2v-1.1c0-1.4.8-2.2 2.1-2.2 1 0 1.7.5 1.9 1.4l-1.2.3c-.1-.4-.3-.6-.7-.6-.5 0-.7.3-.7 1v1.3c0 .7.3 1 .8 1s.8-.3.8-.9v-.2h-.8v-1h2.1v1.2c0 1.3-.8 2-2.3 2Z"/></svg>',
+    "orcid": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm-4.2 5.1a.95.95 0 1 1 0 1.9.95.95 0 0 1 0-1.9Zm-.7 3.1h1.4v7.1H7.1v-7.1Zm3.3 0h3.2c2.3 0 3.6 1.6 3.6 3.55 0 1.98-1.4 3.55-3.65 3.55h-3.15v-7.1Zm1.4 1.26v4.58h1.68c1.6 0 2.3-1.06 2.3-2.29 0-1.3-.78-2.29-2.34-2.29h-1.64Z"/></svg>',
     "cv": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h8l6 6v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Zm7 1.5V9h5.5L13 3.5ZM8 13v1.6h8V13H8Zm0 3.4V18h8v-1.6H8Z"/></svg>',
     "sun": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg>',
     "moon": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg>',
@@ -74,6 +75,7 @@ LINKS = [
     (D.PERSON["scholar"], "scholar", "Google Scholar"),
     (D.PERSON["linkedin"], "linkedin", "LinkedIn"),
     (D.PERSON["researchgate"], "rg", "ResearchGate"),
+    (D.PERSON["orcid"], "orcid", "ORCID"),
 ]
 
 
@@ -260,7 +262,8 @@ def person_jsonld():
         "url": D.SITE_URL + "/",
         "image": D.SITE_URL + "/" + D.PERSON["photo"],
         "email": "mailto:" + D.PERSON["email"],
-        "sameAs": [D.PERSON["scholar"], D.PERSON["linkedin"], D.PERSON["researchgate"]],
+        "sameAs": [D.PERSON["scholar"], D.PERSON["linkedin"], D.PERSON["researchgate"], D.PERSON["orcid"]],
+        "identifier": {"@type": "PropertyValue", "propertyID": "ORCID", "value": D.PERSON["orcid"]},
         "alumniOf": [
             {"@type": "CollegeOrUniversity", "name": "Texas A&M University"},
             {"@type": "CollegeOrUniversity", "name": "Istanbul Şehir University"},

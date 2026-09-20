@@ -19,6 +19,7 @@ PERSON = {
     "scholar": "https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en",
     "linkedin": "https://www.linkedin.com/in/ramyrady/",
     "researchgate": "https://www.researchgate.net/profile/Ramy-Rady-2",
+    "orcid": "https://orcid.org/0000-0001-6108-3645",
     "photo": "assets/profile-photo.jpg",
 }
 
