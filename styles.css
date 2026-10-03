@@ -377,6 +377,12 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 .lec-num { font: 500 11.5px/1.2 var(--mono); letter-spacing: 0.04em; color: var(--muted); }
 .lec-title { color: var(--ink); }
 .lec-credit { padding-top: 4px; }
+.talks { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); gap: 24px; }
+.talk { margin: 0; display: grid; gap: 10px; }
+.video { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; background: var(--surface-2); border: 1px solid var(--rule); }
+.video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.talk figcaption { display: grid; gap: 2px; }
+.talk figcaption b { color: var(--ink); font-weight: 600; }
 .course-materials { display: grid; gap: 16px; padding-top: 8px; }
 .course-materials h3 { padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
 .materials { display: grid; gap: 8px; }

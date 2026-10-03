@@ -79,7 +79,7 @@ NEWS = [
 HONORS = [
     ("2024", "ISSCC Student Travel Grant"),
     ("2023", "Best Student Paper Award Finalist, IEEE Radio &amp; Wireless Week (RWW)"),
-    ("2023", "Three-Minute Thesis Finalist, IEEE RFIC Symposium"),
+    ("2023", '<a href="teaching.html#talks">Three-Minute Thesis Finalist</a>, IEEE RFIC Symposium'),
     ("2019–2024", "Graduate Research Scholarship and Quality Graduate Student Award, Texas A&amp;M"),
     ("2019–2024", '<a href="teaching.html">Graduate Assistant Lecturer</a> teaching fellowship, Texas A&amp;M'),
     ("During Ph.D.", "IEEE MTT-S Student Ambassador"),
@@ -113,6 +113,16 @@ TEACHING = [
                 (6, "Thevenin, Norton, and power transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
             ]),
         ],
+    },
+]
+
+# Recorded talks, embedded on the Teaching page. "youtube" is the video ID.
+TALKS = [
+    {
+        "youtube": "PKXa2FhZcvg",
+        "title": "My Ph.D. research in three minutes",
+        "event": "Three-Minute Thesis (3MT&reg;) finalist, IEEE Microwave Week 2023",
+        "source": "IEEE Microwave Theory and Technology Society",
     },
 ]
 
