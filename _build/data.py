@@ -111,6 +111,10 @@ TEACHING = [
         "lectures": [
             ("DC circuits", [
                 (6, "Thevenin, Norton, and power transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
+                (8, "Resistive circuits revision: worked examples", "mesh", "lecture-08-resistive-circuits-revision.pdf"),
+            ]),
+            ("Capacitors, inductors, and transients", [
+                (12, "Capacitors, inductors, and transient response", "capacitor", "lecture-12-capacitors-inductors-transients.pdf"),
             ]),
         ],
     },
