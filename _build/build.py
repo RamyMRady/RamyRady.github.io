@@ -114,6 +114,53 @@ ICONS = {
     "moon": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg>',
 }
 
+# Lecture symbols: 24x24 stroke icons, drawn in currentColor.
+LECTURE_ICONS = {
+    "bolt": '<path d="M13 2 5 13h6l-1 9 8-12h-6l1-8Z"/>',
+    "source": '<circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M12 8.5v4M10 10.5h4M10 15h4"/>',
+    "node": '<circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M3 12h7M14 12h7M12 3v7M5 12l2.5-2M5 12l2.5 2M19 12l-2.5-2M19 12l-2.5 2M12 5l-2 2.5M12 5l2 2.5"/>',
+    "divider": '<path d="M12 2v3l-3 1.5 6 2-6 2 3 1.5v1l-3 1.5 6 2-6 2 3 1.5v3M12 12.5h7"/><circle cx="19.5" cy="12.5" r="1" fill="currentColor"/>',
+    "node-v": '<path d="M3 19h18"/><path d="M6 19V8h12v11"/><circle cx="6" cy="8" r="1.6" fill="currentColor"/><circle cx="18" cy="8" r="1.6" fill="currentColor"/><path d="M12 5v6"/><path d="M10 7h4"/>',
+    "mesh": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/><path d="M8.5 9.5a2.5 2.5 0 1 1-1 3.6M7 13.5l.6-1.6 1.5.7"/><path d="M15.5 9.5a2.5 2.5 0 1 1-1 3.6M14 13.5l.6-1.6 1.5.7"/>',
+    "thevenin": '<circle cx="5" cy="12" r="3"/><path d="M5 9V5h3l1.5-2 2 4 2-4 2 4 1.5-2H21M5 15v4h16"/><circle cx="21" cy="5" r="1" fill="currentColor"/><circle cx="21" cy="19" r="1" fill="currentColor"/>',
+    "peak": '<path d="M3 21V3M3 21h18"/><path d="M4 19c4-14 8-14 16-6"/><circle cx="10" cy="8.6" r="1.6" fill="currentColor"/>',
+    "capacitor": '<path d="M2 12h8M14 12h8M10 5v14M14 5v14"/>',
+    "inductor": '<path d="M1 15h3a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0h4"/>',
+    "battery": '<path d="M2 12h7M15 12h7M9 6v12M12 9v6M15 6v12"/>',
+    "decay": '<path d="M3 3v18h18"/><path d="M5 5c2 7 5 12 15 13"/>',
+    "step": '<path d="M3 3v18h18"/><path d="M5 19c2-9 6-12 15-12"/><path d="M5 7h15" stroke-dasharray="2 2"/>',
+    "sine": '<path d="M2 12h20" opacity=".4"/><path d="M2 12c2-8 5-8 7 0s5 8 7 0 4-6 6-4"/>',
+    "phasor": '<path d="M4 20V4M4 20h16"/><path d="M4 20 16 8M11 8h5v5"/>',
+    "ac-source": '<circle cx="12" cy="12" r="8"/><path d="M7.5 12c1.2-3.5 3.3-3.5 4.5 0s3.3 3.5 4.5 0"/>',
+    "phasor-diagram": '<path d="M3 20h18"/><path d="M3 20 18 9M14 8.5l4 .5-1.5 3.8"/><path d="M3 20V7M1.5 9 3 6.5 4.5 9"/><path d="M9 20a6 6 0 0 0-1-3.5"/>',
+    "spectrum": '<path d="M3 21h18"/><path d="M5 21V6M9 21v-8M13 21v-5M17 21v-3M21 21v-1.5"/>',
+    "bode": '<path d="M3 3v18h18"/><path d="M5 8h7l8 10"/>',
+    "opamp": '<path d="M6 4v16l14-8Z"/><path d="M2 8h4M2 16h4M20 12h2M8.5 8h2M8.5 16h2M9.5 15v2"/>',
+    "diffamp": '<path d="M7 5v14l12-7Z"/><path d="M2 9h5M2 15h5M19 12h3M4 9V5h15v7"/>',
+    "square": '<path d="M2 17h4V7h5v10h5V7h6"/>',
+    "andgate": '<path d="M7 5h5a7 7 0 0 1 0 14H7Z"/><path d="M2 9h5M2 15h5M19 12h3"/>',
+    "table": '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9.5 3v18M15.5 3v18"/>',
+}
+
+
+def lec_icon(name):
+    return (f'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+            f'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{LECTURE_ICONS[name]}</svg>')
+
+
+def lecture_row(slug, n, title, icon, filename):
+    """One row in the Lectures panel; the whole row downloads the PDF."""
+    path = TEACHING_DIR / slug / "lectures" / filename
+    if not path.is_file():
+        raise SystemExit(f"Missing lecture file: {path}")
+    mb = path.stat().st_size / 1e6
+    return (f'                        <li><a class="lec-link" href="assets/teaching/{slug}/lectures/{filename}" download>'
+            f'<span class="lec-icon">{lec_icon(icon)}</span>'
+            f'<span class="lec-text"><span class="lec-num">Lecture {n}</span><span class="lec-title">{html.escape(title)}</span></span>'
+            f'<span class="lec-dl"><span class="lec-size">PDF · {mb:.1f} MB</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg></span>'
+            f'</a></li>')
+
+
 LINKS = [
     ("mailto:" + D.PERSON["email"], "mail", "Email"),
     ("assets/Ramy_Rady_CV.pdf", "cv", "CV (PDF)"),
@@ -687,29 +734,50 @@ def build_teaching():
 {rows}
                         </ul>
                     </div>""")
-        materials = ("\n".join(groups) if groups else
-                     '                    <p class="muted small">Course materials will be posted here.</p>')
-        courses.append(f"""        <section class="wrap block course" id="{c['slug']}" aria-labelledby="{c['slug']}-h">
-            <div class="course-head">
-                <span class="label">{c['code']}</span>
-                <h2 id="{c['slug']}-h">{c['title']}</h2>
-                <p class="cv-org"><b>{c['org']}</b> · {c['dept']}</p>
-                <p class="muted">{c['role']} · {c['when']}</p>
-            </div>
-            <p class="lede">{c['about']}</p>
-            <dl class="skills">
-{facts}
-            </dl>
+        materials = "\n".join(groups)
+        units = "\n".join(
+            f"""                <div class="lec-unit">
+                    <h4>{label}</h4>
+                    <ol class="lec-list">
+{chr(10).join(lecture_row(c['slug'], *lec) for lec in lectures)}
+                    </ol>
+                </div>""" for label, lectures in c.get("lectures", [])
+        )
+        count = sum(len(ls) for _, ls in c.get("lectures", []))
+        count_label = f"{count} lecture{'s' if count != 1 else ''}"
+        lecture_panel = f"""            <div class="lec-panel" aria-labelledby="{c['slug']}-lec-h">
+                <div class="lec-panel-head">
+                    <h3 id="{c['slug']}-lec-h">Lectures</h3>
+                    <span class="chip-note">{count_label}</span>
+                </div>
+{units}
+                <p class="muted small lec-credit">{c['lectures_credit']}</p>
+            </div>""" if units else ""
+        materials_block = f"""
             <div class="course-materials">
                 <h3>Materials</h3>
 {materials}
-            </div>
+            </div>""" if materials else ""
+        courses.append(f"""        <section class="wrap block course" id="{c['slug']}" aria-labelledby="{c['slug']}-h">
+            <div class="course-grid">
+                <aside class="course-card">
+                    <span class="label">{c['code']}</span>
+                    <h2 id="{c['slug']}-h">{c['title']}</h2>
+                    <p class="cv-org"><b>{c['org']}</b></p>
+                    <p class="muted small">{c['role']} · <span class="nowrap">{c['when']}</span></p>
+                    <p>{c['about']}</p>
+                    <dl class="course-facts">
+{facts}
+                    </dl>
+                </aside>
+{lecture_panel}
+            </div>{materials_block}
         </section>""")
     earlier = "\n".join(f"                <li><time>{w}</time><p>{t}</p></li>" for w, t in D.TEACHING_EARLIER)
     body = f"""        <section class="wrap page-head">
             <h1>Teaching</h1>
             <p class="lede">I taught circuits to engineering undergraduates at Texas A&amp;M as a Graduate Assistant Lecturer
-                throughout my Ph.D. The materials below are free to use for self-study.</p>
+                throughout my Ph.D. Click a lecture to download its slides.</p>
         </section>
 {chr(10).join(courses)}
         <section class="wrap block" aria-labelledby="earlier-h">
@@ -719,7 +787,7 @@ def build_teaching():
             </ul>
         </section>"""
     page("teaching.html", "Teaching · Ramy Rady",
-         "Course materials from ECEN 215, Principles of Electrical Engineering, which Ramy Rady taught at Texas A&M as a Graduate Assistant Lecturer.",
+         "Lecture slides from ECEN 215, Principles of Electrical Engineering, which Ramy Rady taught at Texas A&M.",
          body)
 
 

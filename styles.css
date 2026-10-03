@@ -86,6 +86,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 time { font-family: var(--mono); font-size: 13px; color: var(--muted); white-space: nowrap; }
 .muted { color: var(--muted); }
 .small { font-size: 14px; }
+.nowrap { white-space: nowrap; }
 .label {
     font: 500 12px/1 var(--mono);
     letter-spacing: 0.08em;
@@ -333,7 +334,49 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 
 /* ---------- teaching ---------- */
 
-.course-head { display: grid; gap: 6px; }
+.course-grid { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; align-items: start; }
+.course-card {
+    position: sticky; top: 84px; display: grid; gap: 10px; padding: 20px;
+    background: var(--surface); border: 1px solid var(--rule); border-radius: 12px;
+}
+.course-card h2 { font-size: 22px; line-height: 1.25; }
+.course-facts { margin: 6px 0 0; display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 14px; }
+.course-facts dt { font: 500 11px/1.4 var(--mono); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.course-facts dd { margin: 2px 0 0; }
+.lec-panel {
+    display: grid; gap: 22px; padding: 20px 22px 18px;
+    background: var(--surface-2); border: 1px solid var(--rule); border-radius: 12px;
+}
+.lec-panel-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.lec-panel-head h3 { font-size: 18px; }
+.lec-unit { display: grid; gap: 4px; }
+.lec-unit h4 {
+    justify-self: start; padding: 5px 12px; border-radius: 6px;
+    background: var(--accent); color: var(--accent-ink); font-size: 13.5px; font-weight: 600;
+}
+.lec-list { list-style: none; display: grid; }
+.lec-list li { border-bottom: 1px solid var(--rule); }
+.lec-link {
+    display: flex; align-items: center; gap: 14px; padding: 9px 8px; margin-inline: -4px;
+    border-radius: 8px; color: inherit;
+}
+.lec-link:hover { background: var(--surface); text-decoration: none; }
+.lec-link:hover .lec-title { color: var(--accent); }
+.lec-dl {
+    margin-left: auto; flex: none; display: inline-flex; align-items: center; gap: 8px;
+    font: 500 12px/1 var(--mono); color: var(--muted);
+}
+.lec-dl svg { width: 18px; height: 18px; fill: none; stroke: var(--accent); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.lec-list li:last-child { border-bottom: 0; }
+.lec-icon {
+    flex: none; display: inline-grid; place-items: center; width: 40px; height: 40px; border-radius: 10px;
+    background: var(--surface); border: 1px solid var(--accent-line); color: var(--accent);
+}
+.lec-icon svg { width: 24px; height: 24px; }
+.lec-text { display: grid; gap: 2px; min-width: 0; }
+.lec-num { font: 500 11.5px/1.2 var(--mono); letter-spacing: 0.04em; color: var(--muted); }
+.lec-title { color: var(--ink); }
+.lec-credit { padding-top: 4px; }
 .course-materials { display: grid; gap: 16px; padding-top: 8px; }
 .course-materials h3 { padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
 .materials { display: grid; gap: 8px; }
@@ -392,6 +435,11 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
     .cv-head { grid-template-columns: 1fr; align-items: start; }
     .cv-head .button { justify-self: start; }
     .cv-item, .skills div { grid-template-columns: 1fr; gap: 4px; }
+    .course-grid { grid-template-columns: 1fr; }
+    .course-card { position: static; }
+    .lec-panel { padding: 16px 14px; }
+    .lec-link { gap: 12px; }
+    .lec-size { display: none; }
 }
 
 @media (max-width: 440px) {

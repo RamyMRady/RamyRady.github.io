@@ -102,6 +102,16 @@ TEACHING = [
             ("Format", "3 credits: 2 hours of lecture and 2 hours of lab each week"),
             ("Audience", "Undergraduate engineering majors other than ECE"),
             ("Prerequisites", "MATH 251 or 253, and PHYS 207 or 208"),
+            ("Taught", "Spring 2022 lectures; instructor of record in Spring 2024 (sections 501–503)"),
+            ("Textbook", "Allan R. Hambley, <em>Electrical Engineering: Principles and Applications</em>, 7th ed."),
+        ],
+        # Lectures I wrote: (number, title, icon, file). Files live in assets/teaching/<slug>/lectures/;
+        # icons are drawn in build.py (LECTURE_ICONS).
+        "lectures_credit": "Slides by Ramy Rady.",
+        "lectures": [
+            ("DC circuits", [
+                (6, "Thevenin, Norton, and power transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
+            ]),
         ],
     },
 ]
