@@ -2,7 +2,7 @@
 
     python3 _build/build.py
 
-Writes index.html, research.html, publications.html, resume.html,
+Writes index.html, research.html, publications.html, teaching.html, resume.html,
 redirect pages for retired URLs, and sitemap.xml into the repo root.
 """
 import html
@@ -15,7 +15,7 @@ import data as D
 import figures
 
 ROOT = Path(__file__).resolve().parent.parent
-ASSET_V = "5"  # bump to bust browser caches for styles.css / script.js
+ASSET_V = "6"  # bump to bust browser caches for styles.css / script.js
 
 GALLERY_DIR = ROOT / "assets" / "gallery"
 GALLERY_EXT = {".jpg", ".jpeg", ".png", ".webp"}
@@ -49,14 +49,59 @@ def gallery_items():
     return items
 
 
+TEACHING_DIR = ROOT / "assets" / "teaching"
+TEACHING_EXT = {".pdf", ".zip", ".m", ".py", ".ipynb", ".asc", ".txt"}
+# Filename prefix -> section on the Teaching page, in display order.
+MATERIAL_KINDS = [
+    ("syllabus", "Syllabus"),
+    ("lecture", "Lecture slides"),
+    ("lab", "Lab handouts"),
+    ("notes", "Notes &amp; worked examples"),
+    ("other", "Other"),
+]
+
+
+def teaching_files(slug):
+    """Files in assets/teaching/<slug>/, with titles from materials.json when present."""
+    folder = TEACHING_DIR / slug
+    if not folder.is_dir():
+        return []
+    meta = {}
+    meta_file = folder / "materials.json"
+    if meta_file.is_file():
+        try:
+            meta = json.loads(meta_file.read_text())
+        except json.JSONDecodeError as e:
+            print(f"  ! {slug}/materials.json ignored ({e})")
+    kinds = {k for k, _ in MATERIAL_KINDS}
+    items = []
+    for f in sorted(folder.iterdir()):
+        if f.suffix.lower() not in TEACHING_EXT:
+            continue
+        info = meta.get(f.name, {})
+        prefix = f.stem.split("-", 1)[0].lower()
+        kind = info.get("kind") or (prefix if prefix in kinds else "other")
+        title = info.get("title") or f.stem.replace("-", " ").replace("_", " ").strip().capitalize()
+        size = f.stat().st_size
+        items.append({
+            "src": f"assets/teaching/{slug}/{f.name}",
+            "title": html.escape(str(title)),
+            "note": html.escape(str(info.get("note", ""))),
+            "kind": kind,
+            "meta": f"{f.suffix[1:].upper()} · {size / 1e6:.1f} MB" if size >= 1e5 else f"{f.suffix[1:].upper()} · {max(1, round(size / 1e3))} KB",
+        })
+    return items
+
+
 NAV = [
     ("index.html", "About"),
     ("research.html", "Research"),
     ("publications.html", "Publications"),
+    ("teaching.html", "Teaching"),
     ("resume.html", "CV"),
 ]
 if gallery_items():
-    NAV.insert(3, ("gallery.html", "Gallery"))
+    NAV.insert(4, ("gallery.html", "Gallery"))
 
 ICONS = {
     "mail": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.4V17h16V7.4l-8 5.3-8-5.3ZM5.2 7 12 11.5 18.8 7H5.2Z"/></svg>',
@@ -619,6 +664,65 @@ def build_gallery():
     return True
 
 
+def build_teaching():
+    courses = []
+    for c in D.TEACHING:
+        files = teaching_files(c["slug"])
+        facts = "\n".join(f"                <div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in c["facts"])
+        groups = []
+        for kind, label in MATERIAL_KINDS:
+            group = [f for f in files if f["kind"] == kind]
+            if not group:
+                continue
+            rows = "\n".join(
+                f"""                            <li>
+                                <a href="{f['src']}" download>{f['title']}</a>
+                                <span class="chip-note">{f['meta']}</span>
+                                {f'<p class="muted small">{f["note"]}</p>' if f["note"] else ''}
+                            </li>""" for f in group
+            )
+            groups.append(f"""                    <div class="materials">
+                        <h4>{label}</h4>
+                        <ul class="file-list">
+{rows}
+                        </ul>
+                    </div>""")
+        materials = ("\n".join(groups) if groups else
+                     '                    <p class="muted small">Course materials will be posted here.</p>')
+        courses.append(f"""        <section class="wrap block course" id="{c['slug']}" aria-labelledby="{c['slug']}-h">
+            <div class="course-head">
+                <span class="label">{c['code']}</span>
+                <h2 id="{c['slug']}-h">{c['title']}</h2>
+                <p class="cv-org"><b>{c['org']}</b> · {c['dept']}</p>
+                <p class="muted">{c['role']} · {c['when']}</p>
+            </div>
+            <p class="lede">{c['about']}</p>
+            <dl class="skills">
+{facts}
+            </dl>
+            <div class="course-materials">
+                <h3>Materials</h3>
+{materials}
+            </div>
+        </section>""")
+    earlier = "\n".join(f"                <li><time>{w}</time><p>{t}</p></li>" for w, t in D.TEACHING_EARLIER)
+    body = f"""        <section class="wrap page-head">
+            <h1>Teaching</h1>
+            <p class="lede">I taught circuits to engineering undergraduates at Texas A&amp;M as a Graduate Assistant Lecturer
+                throughout my Ph.D. The materials below are free to use for self-study.</p>
+        </section>
+{chr(10).join(courses)}
+        <section class="wrap block" aria-labelledby="earlier-h">
+            <h2 id="earlier-h">Earlier teaching</h2>
+            <ul class="dated">
+{earlier}
+            </ul>
+        </section>"""
+    page("teaching.html", "Teaching · Ramy Rady",
+         "Course materials from ECEN 215, Principles of Electrical Engineering, which Ramy Rady taught at Texas A&M as a Graduate Assistant Lecturer.",
+         body)
+
+
 def build_404():
     body = """        <section class="wrap page-head">
             <h1>Page not found</h1>
@@ -627,6 +731,7 @@ def build_404():
                 <a href="/">About</a>
                 <a href="/research.html">Research</a>
                 <a href="/publications.html">Publications</a>
+                <a href="/teaching.html">Teaching</a>
                 <a href="/resume.html">CV</a>
             </nav>
             <p class="muted">If you followed a link from somewhere else, tell me at
@@ -655,7 +760,7 @@ def build_redirects():
 
 def build_sitemap(has_gallery=False):
     today = date.today().isoformat()
-    pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("resume.html", "0.8")]
+    pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("teaching.html", "0.7"), ("resume.html", "0.8")]
     if has_gallery:
         pages.append(("gallery.html", "0.6"))
     urls = "\n".join(
@@ -672,6 +777,7 @@ if __name__ == "__main__":
     build_research()
     build_publications()
     build_resume()
+    build_teaching()
     has_gallery = build_gallery()
     build_404()
     build_redirects()

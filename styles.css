@@ -331,6 +331,17 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 .skills dt { font-weight: 600; color: var(--ink); }
 .skills dd { margin: 0; }
 
+/* ---------- teaching ---------- */
+
+.course-head { display: grid; gap: 6px; }
+.course-materials { display: grid; gap: 16px; padding-top: 8px; }
+.course-materials h3 { padding-bottom: 8px; border-bottom: 1px solid var(--rule); }
+.materials { display: grid; gap: 8px; }
+.materials h4 { font-size: 14px; font-weight: 600; color: var(--ink); }
+.file-list { list-style: none; display: grid; gap: 6px; }
+.file-list li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+.file-list li p { flex-basis: 100%; }
+
 /* ---------- figures ---------- */
 
 .fig { width: 100%; height: auto; display: block; font-family: var(--sans); }

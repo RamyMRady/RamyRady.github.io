@@ -81,8 +81,33 @@ HONORS = [
     ("2023", "Best Student Paper Award Finalist, IEEE Radio &amp; Wireless Week (RWW)"),
     ("2023", "Three-Minute Thesis Finalist, IEEE RFIC Symposium"),
     ("2019–2024", "Graduate Research Scholarship and Quality Graduate Student Award, Texas A&amp;M"),
-    ("2019–2024", "Graduate Assistant Lecturer teaching fellowship, Texas A&amp;M"),
+    ("2019–2024", '<a href="teaching.html">Graduate Assistant Lecturer</a> teaching fellowship, Texas A&amp;M'),
     ("During Ph.D.", "IEEE MTT-S Student Ambassador"),
+]
+
+# Teaching. Course facts are from the Texas A&M catalog; the role from the CV.
+# Downloadable files are read from assets/teaching/<slug>/ (see the README there).
+TEACHING = [
+    {
+        "slug": "ecen215",
+        "code": "ECEN 215",
+        "title": "Principles of Electrical Engineering",
+        "org": "Texas A&amp;M University",
+        "dept": "Department of Electrical &amp; Computer Engineering",
+        "when": "2019–2024",
+        "role": "Graduate Assistant Lecturer",
+        "about": "Fundamentals of electric circuit analysis and an introduction to electronics, "
+                 "for engineering majors outside electrical and computer engineering.",
+        "facts": [
+            ("Format", "3 credits: 2 hours of lecture and 2 hours of lab each week"),
+            ("Audience", "Undergraduate engineering majors other than ECE"),
+            ("Prerequisites", "MATH 251 or 253, and PHYS 207 or 208"),
+        ],
+    },
+]
+
+TEACHING_EARLIER = [
+    ("2015–2017", "Teaching and Research Assistant, undergraduate microelectronic circuits, Istanbul Sehir University"),
 ]
 
 MEDIA = [
