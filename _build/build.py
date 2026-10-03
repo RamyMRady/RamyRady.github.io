@@ -2,7 +2,7 @@
 
     python3 _build/build.py
 
-Writes index.html, research.html, publications.html, resume.html,
+Writes index.html, research.html, publications.html, teaching.html, resume.html,
 redirect pages for retired URLs, and sitemap.xml into the repo root.
 """
 import html
@@ -15,7 +15,7 @@ import data as D
 import figures
 
 ROOT = Path(__file__).resolve().parent.parent
-ASSET_V = "5"  # bump to bust browser caches for styles.css / script.js
+ASSET_V = "6"  # bump to bust browser caches for styles.css / script.js
 
 GALLERY_DIR = ROOT / "assets" / "gallery"
 GALLERY_EXT = {".jpg", ".jpeg", ".png", ".webp"}
@@ -49,14 +49,59 @@ def gallery_items():
     return items
 
 
+TEACHING_DIR = ROOT / "assets" / "teaching"
+TEACHING_EXT = {".pdf", ".zip", ".m", ".py", ".ipynb", ".asc", ".txt"}
+# Filename prefix -> section on the Teaching page, in display order.
+MATERIAL_KINDS = [
+    ("syllabus", "Syllabus"),
+    ("lecture", "Lecture slides"),
+    ("lab", "Lab handouts"),
+    ("notes", "Notes &amp; worked examples"),
+    ("other", "Other"),
+]
+
+
+def teaching_files(slug):
+    """Files in assets/teaching/<slug>/, with titles from materials.json when present."""
+    folder = TEACHING_DIR / slug
+    if not folder.is_dir():
+        return []
+    meta = {}
+    meta_file = folder / "materials.json"
+    if meta_file.is_file():
+        try:
+            meta = json.loads(meta_file.read_text())
+        except json.JSONDecodeError as e:
+            print(f"  ! {slug}/materials.json ignored ({e})")
+    kinds = {k for k, _ in MATERIAL_KINDS}
+    items = []
+    for f in sorted(folder.iterdir()):
+        if f.suffix.lower() not in TEACHING_EXT:
+            continue
+        info = meta.get(f.name, {})
+        prefix = f.stem.split("-", 1)[0].lower()
+        kind = info.get("kind") or (prefix if prefix in kinds else "other")
+        title = info.get("title") or f.stem.replace("-", " ").replace("_", " ").strip().capitalize()
+        size = f.stat().st_size
+        items.append({
+            "src": f"assets/teaching/{slug}/{f.name}",
+            "title": html.escape(str(title)),
+            "note": html.escape(str(info.get("note", ""))),
+            "kind": kind,
+            "meta": f"{f.suffix[1:].upper()} · {size / 1e6:.1f} MB" if size >= 1e5 else f"{f.suffix[1:].upper()} · {max(1, round(size / 1e3))} KB",
+        })
+    return items
+
+
 NAV = [
     ("index.html", "About"),
     ("research.html", "Research"),
     ("publications.html", "Publications"),
+    ("teaching.html", "Teaching"),
     ("resume.html", "CV"),
 ]
 if gallery_items():
-    NAV.insert(3, ("gallery.html", "Gallery"))
+    NAV.insert(4, ("gallery.html", "Gallery"))
 
 ICONS = {
     "mail": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.4V17h16V7.4l-8 5.3-8-5.3ZM5.2 7 12 11.5 18.8 7H5.2Z"/></svg>',
@@ -68,6 +113,53 @@ ICONS = {
     "sun": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg>',
     "moon": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg>',
 }
+
+# Lecture symbols: 24x24 stroke icons, drawn in currentColor.
+LECTURE_ICONS = {
+    "bolt": '<path d="M13 2 5 13h6l-1 9 8-12h-6l1-8Z"/>',
+    "source": '<circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M12 8.5v4M10 10.5h4M10 15h4"/>',
+    "node": '<circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M3 12h7M14 12h7M12 3v7M5 12l2.5-2M5 12l2.5 2M19 12l-2.5-2M19 12l-2.5 2M12 5l-2 2.5M12 5l2 2.5"/>',
+    "divider": '<path d="M12 2v3l-3 1.5 6 2-6 2 3 1.5v1l-3 1.5 6 2-6 2 3 1.5v3M12 12.5h7"/><circle cx="19.5" cy="12.5" r="1" fill="currentColor"/>',
+    "node-v": '<path d="M3 19h18"/><path d="M6 19V8h12v11"/><circle cx="6" cy="8" r="1.6" fill="currentColor"/><circle cx="18" cy="8" r="1.6" fill="currentColor"/><path d="M12 5v6"/><path d="M10 7h4"/>',
+    "mesh": '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M12 4v16"/><path d="M8.5 9.5a2.5 2.5 0 1 1-1 3.6M7 13.5l.6-1.6 1.5.7"/><path d="M15.5 9.5a2.5 2.5 0 1 1-1 3.6M14 13.5l.6-1.6 1.5.7"/>',
+    "thevenin": '<circle cx="5" cy="12" r="3"/><path d="M5 9V5h3l1.5-2 2 4 2-4 2 4 1.5-2H21M5 15v4h16"/><circle cx="21" cy="5" r="1" fill="currentColor"/><circle cx="21" cy="19" r="1" fill="currentColor"/>',
+    "peak": '<path d="M3 21V3M3 21h18"/><path d="M4 19c4-14 8-14 16-6"/><circle cx="10" cy="8.6" r="1.6" fill="currentColor"/>',
+    "capacitor": '<path d="M2 12h8M14 12h8M10 5v14M14 5v14"/>',
+    "inductor": '<path d="M1 15h3a2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0 2.5 2.5 0 0 1 5 0h4"/>',
+    "battery": '<path d="M2 12h7M15 12h7M9 6v12M12 9v6M15 6v12"/>',
+    "decay": '<path d="M3 3v18h18"/><path d="M5 5c2 7 5 12 15 13"/>',
+    "step": '<path d="M3 3v18h18"/><path d="M5 19c2-9 6-12 15-12"/><path d="M5 7h15" stroke-dasharray="2 2"/>',
+    "sine": '<path d="M2 12h20" opacity=".4"/><path d="M2 12c2-8 5-8 7 0s5 8 7 0 4-6 6-4"/>',
+    "phasor": '<path d="M4 20V4M4 20h16"/><path d="M4 20 16 8M11 8h5v5"/>',
+    "ac-source": '<circle cx="12" cy="12" r="8"/><path d="M7.5 12c1.2-3.5 3.3-3.5 4.5 0s3.3 3.5 4.5 0"/>',
+    "phasor-diagram": '<path d="M3 20h18"/><path d="M3 20 18 9M14 8.5l4 .5-1.5 3.8"/><path d="M3 20V7M1.5 9 3 6.5 4.5 9"/><path d="M9 20a6 6 0 0 0-1-3.5"/>',
+    "spectrum": '<path d="M3 21h18"/><path d="M5 21V6M9 21v-8M13 21v-5M17 21v-3M21 21v-1.5"/>',
+    "bode": '<path d="M3 3v18h18"/><path d="M5 8h7l8 10"/>',
+    "opamp": '<path d="M6 4v16l14-8Z"/><path d="M2 8h4M2 16h4M20 12h2M8.5 8h2M8.5 16h2M9.5 15v2"/>',
+    "diffamp": '<path d="M7 5v14l12-7Z"/><path d="M2 9h5M2 15h5M19 12h3M4 9V5h15v7"/>',
+    "square": '<path d="M2 17h4V7h5v10h5V7h6"/>',
+    "andgate": '<path d="M7 5h5a7 7 0 0 1 0 14H7Z"/><path d="M2 9h5M2 15h5M19 12h3"/>',
+    "table": '<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9.5 3v18M15.5 3v18"/>',
+}
+
+
+def lec_icon(name):
+    return (f'<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" '
+            f'stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">{LECTURE_ICONS[name]}</svg>')
+
+
+def lecture_row(slug, n, title, icon, filename):
+    """One row in the Lectures panel; the whole row downloads the PDF."""
+    path = TEACHING_DIR / slug / "lectures" / filename
+    if not path.is_file():
+        raise SystemExit(f"Missing lecture file: {path}")
+    mb = path.stat().st_size / 1e6
+    return (f'                        <li><a class="lec-link" href="assets/teaching/{slug}/lectures/{filename}" download>'
+            f'<span class="lec-icon">{lec_icon(icon)}</span>'
+            f'<span class="lec-text"><span class="lec-num">Lecture {n}</span><span class="lec-title">{html.escape(title)}</span></span>'
+            f'<span class="lec-dl"><span class="lec-size">PDF · {mb:.1f} MB</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg></span>'
+            f'</a></li>')
+
 
 LINKS = [
     ("mailto:" + D.PERSON["email"], "mail", "Email"),
@@ -410,6 +502,32 @@ def build_index():
          body, person_jsonld())
 
 
+def talks_section():
+    """Embedded recorded talks (TALKS in data.py)."""
+    if not D.TALKS:
+        return ""
+    items = "\n".join(
+        f"""                <figure class="talk">
+                    <div class="video">
+                        <iframe src="https://www.youtube-nocookie.com/embed/{t['youtube']}" title="{t['title']}"
+                            loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <figcaption>
+                        <b>{t['title']}</b>
+                        <span>{t['event']}</span>
+                        <span class="muted small">Video: {t['source']} · <a href="https://www.youtube.com/watch?v={t['youtube']}" target="_blank" rel="noopener">Watch on YouTube</a></span>
+                    </figcaption>
+                </figure>""" for t in D.TALKS
+    )
+    return f"""        <section class="wrap block" id="talks" aria-labelledby="talks-h">
+            <h2 id="talks-h">Talks</h2>
+            <div class="talks">
+{items}
+            </div>
+        </section>"""
+
+
 def build_research():
     by_theme = {}
     for p in D.PUBS:
@@ -453,6 +571,7 @@ def build_research():
                 {' '.join(f'<a href="#{t["id"]}">{t["title"]}</a>' for t in D.THEMES)}
             </nav>
         </section>
+{talks_section()}
 {chr(10).join(sections)}
         <section class="wrap block" aria-labelledby="industry-h">
             <h2 id="industry-h">Industry work</h2>
@@ -619,6 +738,86 @@ def build_gallery():
     return True
 
 
+def build_teaching():
+    courses = []
+    for c in D.TEACHING:
+        files = teaching_files(c["slug"])
+        facts = "\n".join(f"                <div><dt>{k}</dt><dd>{v}</dd></div>" for k, v in c["facts"])
+        groups = []
+        for kind, label in MATERIAL_KINDS:
+            group = [f for f in files if f["kind"] == kind]
+            if not group:
+                continue
+            rows = "\n".join(
+                f"""                            <li>
+                                <a href="{f['src']}" download>{f['title']}</a>
+                                <span class="chip-note">{f['meta']}</span>
+                                {f'<p class="muted small">{f["note"]}</p>' if f["note"] else ''}
+                            </li>""" for f in group
+            )
+            groups.append(f"""                    <div class="materials">
+                        <h4>{label}</h4>
+                        <ul class="file-list">
+{rows}
+                        </ul>
+                    </div>""")
+        materials = "\n".join(groups)
+        units = "\n".join(
+            f"""                <div class="lec-unit">
+                    <h4>{label}</h4>
+                    <ol class="lec-list">
+{chr(10).join(lecture_row(c['slug'], *lec) for lec in lectures)}
+                    </ol>
+                </div>""" for label, lectures in c.get("lectures", [])
+        )
+        count = sum(len(ls) for _, ls in c.get("lectures", []))
+        count_label = f"{count} lecture{'s' if count != 1 else ''}"
+        lecture_panel = f"""            <div class="lec-panel" aria-labelledby="{c['slug']}-lec-h">
+                <div class="lec-panel-head">
+                    <h3 id="{c['slug']}-lec-h">Lectures</h3>
+                    <span class="chip-note">{count_label}</span>
+                </div>
+{units}
+                <p class="muted small lec-credit">{c['lectures_credit']}</p>
+            </div>""" if units else ""
+        materials_block = f"""
+            <div class="course-materials">
+                <h3>Materials</h3>
+{materials}
+            </div>""" if materials else ""
+        courses.append(f"""        <section class="wrap block course" id="{c['slug']}" aria-labelledby="{c['slug']}-h">
+            <div class="course-grid">
+                <aside class="course-card">
+                    <span class="label">{c['code']}</span>
+                    <h2 id="{c['slug']}-h">{c['title']}</h2>
+                    <p class="cv-org"><b>{c['org']}</b></p>
+                    <p class="muted small">{c['role']} · <span class="nowrap">{c['when']}</span></p>
+                    <p>{c['about']}</p>
+                    <dl class="course-facts">
+{facts}
+                    </dl>
+                </aside>
+{lecture_panel}
+            </div>{materials_block}
+        </section>""")
+    earlier = "\n".join(f"                <li><time>{w}</time><p>{t}</p></li>" for w, t in D.TEACHING_EARLIER)
+    body = f"""        <section class="wrap page-head">
+            <h1>Teaching</h1>
+            <p class="lede">I taught circuits to engineering undergraduates at Texas A&amp;M as a Graduate Assistant Lecturer
+                throughout my Ph.D. Click a lecture to download its slides.</p>
+        </section>
+{chr(10).join(courses)}
+        <section class="wrap block" aria-labelledby="earlier-h">
+            <h2 id="earlier-h">Earlier teaching</h2>
+            <ul class="dated">
+{earlier}
+            </ul>
+        </section>"""
+    page("teaching.html", "Teaching · Ramy Rady",
+         "Lecture slides from ECEN 215, Principles of Electrical Engineering, which Ramy Rady taught at Texas A&M.",
+         body)
+
+
 def build_404():
     body = """        <section class="wrap page-head">
             <h1>Page not found</h1>
@@ -627,6 +826,7 @@ def build_404():
                 <a href="/">About</a>
                 <a href="/research.html">Research</a>
                 <a href="/publications.html">Publications</a>
+                <a href="/teaching.html">Teaching</a>
                 <a href="/resume.html">CV</a>
             </nav>
             <p class="muted">If you followed a link from somewhere else, tell me at
@@ -655,7 +855,7 @@ def build_redirects():
 
 def build_sitemap(has_gallery=False):
     today = date.today().isoformat()
-    pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("resume.html", "0.8")]
+    pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("teaching.html", "0.7"), ("resume.html", "0.8")]
     if has_gallery:
         pages.append(("gallery.html", "0.6"))
     urls = "\n".join(
@@ -672,6 +872,7 @@ if __name__ == "__main__":
     build_research()
     build_publications()
     build_resume()
+    build_teaching()
     has_gallery = build_gallery()
     build_404()
     build_redirects()

@@ -79,10 +79,59 @@ NEWS = [
 HONORS = [
     ("2024", "ISSCC Student Travel Grant"),
     ("2023", "Best Student Paper Award Finalist, IEEE Radio &amp; Wireless Week (RWW)"),
-    ("2023", "Three-Minute Thesis Finalist, IEEE RFIC Symposium"),
+    ("2023", '<a href="research.html#talks">Three-Minute Thesis Finalist</a>, IEEE RFIC Symposium'),
     ("2019–2024", "Graduate Research Scholarship and Quality Graduate Student Award, Texas A&amp;M"),
-    ("2019–2024", "Graduate Assistant Lecturer teaching fellowship, Texas A&amp;M"),
+    ("2019–2024", '<a href="teaching.html">Graduate Assistant Lecturer</a> teaching fellowship, Texas A&amp;M'),
     ("During Ph.D.", "IEEE MTT-S Student Ambassador"),
+]
+
+# Teaching. Course facts are from the Texas A&M catalog; the role from the CV.
+# Downloadable files are read from assets/teaching/<slug>/ (see the README there).
+TEACHING = [
+    {
+        "slug": "ecen215",
+        "code": "ECEN 215",
+        "title": "Principles of Electrical Engineering",
+        "org": "Texas A&amp;M University",
+        "dept": "Department of Electrical &amp; Computer Engineering",
+        "when": "2019–2024",
+        "role": "Graduate Assistant Lecturer",
+        "about": "Fundamentals of electric circuit analysis and an introduction to electronics, "
+                 "for engineering majors outside electrical and computer engineering.",
+        "facts": [
+            ("Format", "3 credits: 2 hours of lecture and 2 hours of lab each week"),
+            ("Audience", "Undergraduate engineering majors other than ECE"),
+            ("Prerequisites", "MATH 251 or 253, and PHYS 207 or 208"),
+            ("Taught", "Spring 2022 lectures; instructor of record in Spring 2024 (sections 501–503)"),
+            ("Textbook", "Allan R. Hambley, <em>Electrical Engineering: Principles and Applications</em>, 7th ed."),
+        ],
+        # Lectures I wrote: (number, title, icon, file). Files live in assets/teaching/<slug>/lectures/;
+        # icons are drawn in build.py (LECTURE_ICONS).
+        "lectures_credit": "Slides by Ramy Rady.",
+        "lectures": [
+            ("DC circuits", [
+                (6, "Thevenin, Norton, and power transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
+                (8, "Resistive circuits revision: worked examples", "mesh", "lecture-08-resistive-circuits-revision.pdf"),
+            ]),
+            ("Capacitors, inductors, and transients", [
+                (12, "Capacitors, inductors, and transient response", "capacitor", "lecture-12-capacitors-inductors-transients.pdf"),
+            ]),
+        ],
+    },
+]
+
+# Recorded talks, embedded on the Research page. "youtube" is the video ID.
+TALKS = [
+    {
+        "youtube": "PKXa2FhZcvg",
+        "title": "My Ph.D. research in three minutes",
+        "event": "Three-Minute Thesis (3MT&reg;) finalist, IEEE Microwave Week 2023",
+        "source": "IEEE Microwave Theory and Technology Society",
+    },
+]
+
+TEACHING_EARLIER = [
+    ("2015–2017", "Teaching and Research Assistant, undergraduate microelectronic circuits, Istanbul Sehir University"),
 ]
 
 MEDIA = [
