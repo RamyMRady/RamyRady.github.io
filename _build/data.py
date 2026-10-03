@@ -79,7 +79,7 @@ NEWS = [
 HONORS = [
     ("2024", "ISSCC Student Travel Grant"),
     ("2023", "Best Student Paper Award Finalist, IEEE Radio &amp; Wireless Week (RWW)"),
-    ("2023", '<a href="teaching.html#talks">Three-Minute Thesis Finalist</a>, IEEE RFIC Symposium'),
+    ("2023", '<a href="research.html#talks">Three-Minute Thesis Finalist</a>, IEEE RFIC Symposium'),
     ("2019–2024", "Graduate Research Scholarship and Quality Graduate Student Award, Texas A&amp;M"),
     ("2019–2024", '<a href="teaching.html">Graduate Assistant Lecturer</a> teaching fellowship, Texas A&amp;M'),
     ("During Ph.D.", "IEEE MTT-S Student Ambassador"),
@@ -116,7 +116,7 @@ TEACHING = [
     },
 ]
 
-# Recorded talks, embedded on the Teaching page. "youtube" is the video ID.
+# Recorded talks, embedded on the Research page. "youtube" is the video ID.
 TALKS = [
     {
         "youtube": "PKXa2FhZcvg",

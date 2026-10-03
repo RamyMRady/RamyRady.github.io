@@ -502,6 +502,32 @@ def build_index():
          body, person_jsonld())
 
 
+def talks_section():
+    """Embedded recorded talks (TALKS in data.py)."""
+    if not D.TALKS:
+        return ""
+    items = "\n".join(
+        f"""                <figure class="talk">
+                    <div class="video">
+                        <iframe src="https://www.youtube-nocookie.com/embed/{t['youtube']}" title="{t['title']}"
+                            loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    </div>
+                    <figcaption>
+                        <b>{t['title']}</b>
+                        <span>{t['event']}</span>
+                        <span class="muted small">Video: {t['source']} · <a href="https://www.youtube.com/watch?v={t['youtube']}" target="_blank" rel="noopener">Watch on YouTube</a></span>
+                    </figcaption>
+                </figure>""" for t in D.TALKS
+    )
+    return f"""        <section class="wrap block" id="talks" aria-labelledby="talks-h">
+            <h2 id="talks-h">Talks</h2>
+            <div class="talks">
+{items}
+            </div>
+        </section>"""
+
+
 def build_research():
     by_theme = {}
     for p in D.PUBS:
@@ -545,6 +571,7 @@ def build_research():
                 {' '.join(f'<a href="#{t["id"]}">{t["title"]}</a>' for t in D.THEMES)}
             </nav>
         </section>
+{talks_section()}
 {chr(10).join(sections)}
         <section class="wrap block" aria-labelledby="industry-h">
             <h2 id="industry-h">Industry work</h2>
@@ -774,33 +801,12 @@ def build_teaching():
             </div>{materials_block}
         </section>""")
     earlier = "\n".join(f"                <li><time>{w}</time><p>{t}</p></li>" for w, t in D.TEACHING_EARLIER)
-    talk_items = "\n".join(
-        f"""                <figure class="talk">
-                    <div class="video">
-                        <iframe src="https://www.youtube-nocookie.com/embed/{t['youtube']}" title="{t['title']}"
-                            loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    </div>
-                    <figcaption>
-                        <b>{t['title']}</b>
-                        <span>{t['event']}</span>
-                        <span class="muted small">Video: {t['source']} · <a href="https://www.youtube.com/watch?v={t['youtube']}" target="_blank" rel="noopener">Watch on YouTube</a></span>
-                    </figcaption>
-                </figure>""" for t in D.TALKS
-    )
-    talks = f"""        <section class="wrap block" id="talks" aria-labelledby="talks-h">
-            <h2 id="talks-h">Talks</h2>
-            <div class="talks">
-{talk_items}
-            </div>
-        </section>""" if D.TALKS else ""
     body = f"""        <section class="wrap page-head">
             <h1>Teaching</h1>
             <p class="lede">I taught circuits to engineering undergraduates at Texas A&amp;M as a Graduate Assistant Lecturer
                 throughout my Ph.D. Click a lecture to download its slides.</p>
         </section>
 {chr(10).join(courses)}
-{talks}
         <section class="wrap block" aria-labelledby="earlier-h">
             <h2 id="earlier-h">Earlier teaching</h2>
             <ul class="dated">
