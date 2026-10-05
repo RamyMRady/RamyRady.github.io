@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noise figure, explained with one receiver chain · Ramy Rady</title>
+    <meta name="description" content="What the Friis formula really says, and why the first stage of a receiver gets most of the design effort.">
+    <meta name="author" content="Ramy Rady">
+    <link rel="canonical" href="https://www.ramyrady.com/note-noise-figure.html">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ramy Rady">
+    <meta property="og:title" content="Noise figure, explained with one receiver chain · Ramy Rady">
+    <meta property="og:description" content="What the Friis formula really says, and why the first stage of a receiver gets most of the design effort.">
+    <meta property="og:url" content="https://www.ramyrady.com/note-noise-figure.html">
+    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Noise figure, explained with one receiver chain · Ramy Rady">
+    <meta name="twitter:description" content="What the Friis formula really says, and why the first stage of a receiver gets most of the design effort.">
+    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+    <link rel="stylesheet" href="styles.css?v=7">
+    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Noise figure, explained with one receiver chain",
+  "description": "What the Friis formula really says, and why the first stage of a receiver gets most of the design effort.",
+  "datePublished": "2026-09",
+  "author": {
+    "@type": "Person",
+    "name": "Ramy Rady",
+    "url": "https://www.ramyrady.com"
+  }
+}
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">Ramy Rady</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="teaching.html">Teaching</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="resume.html">CV</a></li>
+                </ul>
+                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+    <main id="main">
+        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">Note · RF circuits</p>
+                <h1>Noise figure, explained with one receiver chain</h1>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-09">September 2026</time> · 3 min read</p>
+            </header>
+            <div class="note-body">
+<p>Every receiver datasheet quotes a noise figure, and every RF course derives the Friis formula. What usually gets lost is the intuition: why one stage gets almost all the attention, and why a short piece of cable in the wrong place can cost as much as a bad amplifier. This note works through one example chain to show both.</p>
+<h2>What noise figure measures</h2>
+<p>Noise factor F is how much a block degrades the signal-to-noise ratio, measured with a source at the standard temperature T<sub>0</sub> = 290 K:</p>
+<div class="eq">F = SNR<sub>in</sub> / SNR<sub>out</sub>,&nbsp;&nbsp; NF = 10·log<sub>10</sub>(F) dB<span class="label">(1)</span></div>
+<p>A perfect, noiseless block has F = 1, or 0 dB. A block with NF = 3 dB adds as much noise as the source already had. Note that F is a ratio of powers and NF is the same thing in decibels. The math below uses F, and the datasheets use NF, so you convert back and forth constantly.</p>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Never add noise figures in dB.</strong> Convert NF and gain to linear ratios first, apply Friis, then convert the total back to dB.</p></aside>
+<h2>The Friis formula</h2>
+<p>For blocks in cascade, each with noise factor F<sub>i</sub> and available gain G<sub>i</sub> (both as linear ratios):</p>
+<div class="eq">F<sub>total</sub> = F<sub>1</sub> + (F<sub>2</sub> − 1)/G<sub>1</sub> + (F<sub>3</sub> − 1)/(G<sub>1</sub>G<sub>2</sub>) + …<span class="label">(2)</span></div>
+<p>Read it as: each stage's added noise is divided by all the gain in front of it. Once the signal has been amplified, later stages have a much harder time hurting it.</p>
+<h2>One receiver chain, worked through</h2>
+<p>Take a simple three-stage receiver: a low-noise amplifier (LNA), a mixer, and an IF amplifier.</p>
+<div class="tw">
+<table>
+<thead><tr><th>Stage</th><th>NF</th><th>Gain</th><th>F (linear)</th><th>Term in eq. (2)</th></tr></thead>
+<tbody>
+<tr><td>LNA</td><td>1.5 dB</td><td>20 dB</td><td>1.413</td><td>1.413</td></tr>
+<tr><td>Mixer</td><td>10 dB</td><td>8 dB</td><td>10.0</td><td>9.0 / 100 = 0.090</td></tr>
+<tr><td>IF amplifier</td><td>4 dB</td><td>30 dB</td><td>2.512</td><td>1.512 / 631 = 0.002</td></tr>
+<tr><td><strong>Total</strong></td><td><strong>1.78 dB</strong></td><td></td><td><strong>1.505</strong></td><td></td></tr>
+</tbody>
+</table>
+</div>
+<p>The mixer has a 10 dB noise figure, which looks terrible on its own. Behind 20 dB of LNA gain it adds only about 0.3 dB to the total. The IF amplifier barely registers. The receiver's noise figure is essentially the LNA's noise figure plus a small penalty.</p>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Think in noise temperature below about 1 dB.</strong> T<sub>e</sub> = 290·(F − 1) K. A 0.5 dB amplifier is about 35 K, which makes small differences between very quiet stages easier to compare.</p></aside>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 560 150" role="img" aria-label="Bar chart of each stage's contribution to total noise factor: LNA 1.413, mixer 0.090, IF amplifier 0.002.">
+<text class="ff" x="80" y="35" text-anchor="end" font-size="13">LNA</text><rect class="fa" x="90" y="18" width="376.8" height="24" rx="2"/><text class="fm" x="474.8" y="35" font-size="12">1.413</text><text class="ff" x="80" y="75" text-anchor="end" font-size="13">Mixer</text><rect class="fm" x="90" y="58" width="24.0" height="24" rx="2"/><text class="fm" x="122.0" y="75" font-size="12">0.090</text><text class="ff" x="80" y="115" text-anchor="end" font-size="13">IF amp</text><rect class="fm" x="90" y="98" width="1.5" height="24" rx="2"/><text class="fm" x="99.5" y="115" font-size="12">0.002</text>
+</svg>
+</div>
+<figcaption>Figure 1. Each stage's term in the Friis sum, drawn to the same scale. The LNA's term dominates even though the mixer is the noisiest block.</figcaption>
+</figure>
+<h2>Where a cable belongs</h2>
+<p>A passive, lossy block at T<sub>0</sub> has a noise factor equal to its loss: a 2 dB loss means NF = 2 dB. Put 2 dB of cable or filter loss <em>before</em> the LNA and it adds directly to the total, giving 3.78 dB. Put the same loss <em>after</em> the LNA and it is divided by 20 dB of gain, adding under 0.02 dB. This is why antennas often have the LNA mounted right at the feed, and why the input filter's loss is fought over so hard.</p>
+<h2>From noise figure to sensitivity</h2>
+<p>The thermal noise floor at room temperature is −174 dBm/Hz. A receiver's sensitivity, the weakest signal it can detect, follows directly:</p>
+<div class="eq">P<sub>min</sub> = −174 dBm/Hz + 10·log<sub>10</sub>(B) + NF + SNR<sub>min</sub><span class="label">(3)</span></div>
+<p>For our chain with a 20 MHz bandwidth (73 dB) and a demodulator that needs 10 dB SNR: P<sub>min</sub> = −174 + 73 + 1.78 + 10 ≈ −89 dBm. Every dB saved in the LNA, or in the loss in front of it, is a dB of sensitivity.</p>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Check whether a mixer NF is SSB or DSB.</strong> A double-sideband figure is about 3 dB lower than the single-sideband figure for the same mixer. Mixing them up hides 3 dB in your budget.</p></aside>
+<h2>Takeaways</h2>
+<p>Spend the design effort on the first stage and on anything lossy in front of it. Give the first stage enough gain that later stages stop mattering, but not so much that it compresses on strong signals. Linearity is the other side of this tradeoff, and a good topic for another note.</p>
+<h2>Further reading</h2>
+<ol class="refs">
+<li>H. T. Friis, “Noise figures of radio receivers,” <em>Proc. IRE</em>, vol. 32, no. 7, pp. 419–422, 1944.</li>
+<li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2011.</li>
+</ol>
+<p class="endnote">Questions or corrections? Get in touch through the contact links on the <a href="index.html#contact">contact</a> section.</p>
+            </div>
+        </article>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>© 2026 Ramy Rady</p>
+            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
+        </div>
+        <div class="wrap site-status">
+            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 05 October 2026</p>
+            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
+        </div>
+    </footer>
+    <script src="script.js?v=7"></script>
+</body>
+</html>

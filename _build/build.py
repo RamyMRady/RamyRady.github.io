@@ -15,7 +15,7 @@ import data as D
 import figures
 
 ROOT = Path(__file__).resolve().parent.parent
-ASSET_V = "6"  # bump to bust browser caches for styles.css / script.js
+ASSET_V = "7"  # bump to bust browser caches for styles.css / script.js
 
 GALLERY_DIR = ROOT / "assets" / "gallery"
 GALLERY_EXT = {".jpg", ".jpeg", ".png", ".webp"}
@@ -47,6 +47,29 @@ def gallery_items():
             "group": group,
         })
     return items
+
+
+NOTES_FILE = ROOT / "_build" / "notes.json"
+MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+          "August", "September", "October", "November", "December"]
+
+
+def notes_data():
+    """Intro text and published notes from _build/notes.json, newest first.
+    Entries with "draft": true are left out."""
+    if not NOTES_FILE.is_file():
+        return "", []
+    data = json.loads(NOTES_FILE.read_text())
+    items = [n for n in data["notes"] if not n.get("draft")]
+    items.sort(key=lambda n: n["title"])
+    items.sort(key=lambda n: n["date"], reverse=True)
+    return data.get("intro", ""), items
+
+
+def month_name(ym, short=False):
+    y, m = ym.split("-")
+    name = MONTHS[int(m) - 1]
+    return f"{name[:3] if short else name} {y}"
 
 
 TEACHING_DIR = ROOT / "assets" / "teaching"
@@ -102,6 +125,8 @@ NAV = [
 ]
 if gallery_items():
     NAV.insert(4, ("gallery.html", "Gallery"))
+if notes_data()[1]:
+    NAV.insert(4, ("notes.html", "Notes"))
 
 ICONS = {
     "mail": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm1 2.4V17h16V7.4l-8 5.3-8-5.3ZM5.2 7 12 11.5 18.8 7H5.2Z"/></svg>',
@@ -738,6 +763,68 @@ def build_gallery():
     return True
 
 
+def build_notes():
+    """notes.html plus one note-<id>.html per note. Returns the pages written."""
+    intro, items = notes_data()
+    if not items:
+        return []
+    rows = []
+    for n in items:
+        tip = n.get("type") == "tip"
+        tags = "".join(f'<span class="tag">{html.escape(t)}</span>' for t in n.get("tags", []))
+        rows.append(f"""                <li{' class="is-tip"' if tip else ''}>
+                    <time datetime="{n['date']}">{month_name(n['date'], short=True)}</time>
+                    <div>
+                        <h2>{'<span class="kind">Tip</span>' if tip else ''}<a href="note-{n['id']}.html">{html.escape(n['title'])}</a></h2>
+                        <p>{html.escape(n.get('summary', ''))}</p>
+                        <div class="tags">{tags}</div>
+                    </div>
+                </li>""")
+    body = f"""        <section class="wrap page-head">
+            <h1>Notes</h1>
+            <p class="lede">{html.escape(intro)}</p>
+        </section>
+        <section class="wrap block">
+            <ul class="note-list">
+{chr(10).join(rows)}
+            </ul>
+        </section>"""
+    page("notes.html", "Notes · Ramy Rady",
+         "Explanations and practical tips on microwave photonics, silicon photonics, and analog/RF circuit design by Ramy Rady.",
+         body)
+
+    written = ["notes.html"]
+    for n in items:
+        tip = n.get("type") == "tip"
+        words = len(re.sub(r"<[^>]+>", " ", n["body"]).split())
+        meta = f'<time datetime="{n["date"]}">{month_name(n["date"])}</time>'
+        if not tip:
+            meta += f" · {max(1, round(words / 220))} min read"
+        path = f"note-{n['id']}.html"
+        body = f"""        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">{'Tip' if tip else 'Note'}{' · ' + html.escape(n['section']) if n.get('section') else ''}</p>
+                <h1>{html.escape(n['title'])}</h1>
+                <p class="note-meta">Ramy Rady · {meta}</p>
+            </header>
+            <div class="note-body">
+{n['body']}
+            </div>
+        </article>"""
+        ld = {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "headline": n["title"],
+            "description": n.get("summary", ""),
+            "datePublished": n["date"],
+            "author": {"@type": "Person", "name": "Ramy Rady", "url": D.SITE_URL},
+        }
+        page(path, f"{n['title']} · Ramy Rady", html.escape(n.get("summary", "")), body, ld)
+        written.append(path)
+    return written
+
+
 def build_teaching():
     courses = []
     for c in D.TEACHING:
@@ -853,11 +940,12 @@ def build_redirects():
 """)
 
 
-def build_sitemap(has_gallery=False):
+def build_sitemap(has_gallery=False, note_pages=()):
     today = date.today().isoformat()
     pages = [("", "1.0"), ("research.html", "0.8"), ("publications.html", "0.8"), ("teaching.html", "0.7"), ("resume.html", "0.8")]
     if has_gallery:
         pages.append(("gallery.html", "0.6"))
+    pages += [(p, "0.7" if p == "notes.html" else "0.6") for p in note_pages]
     urls = "\n".join(
         f"  <url>\n    <loc>{D.SITE_URL}/{p}</loc>\n    <lastmod>{today}</lastmod>\n    <priority>{pr}</priority>\n  </url>"
         for p, pr in pages
@@ -874,7 +962,8 @@ if __name__ == "__main__":
     build_resume()
     build_teaching()
     has_gallery = build_gallery()
+    note_pages = build_notes()
     build_404()
     build_redirects()
-    build_sitemap(has_gallery)
+    build_sitemap(has_gallery, note_pages)
     print("Built", ", ".join(p for p, _ in NAV), "+", len(D.REDIRECTS), "redirects + sitemap.xml")

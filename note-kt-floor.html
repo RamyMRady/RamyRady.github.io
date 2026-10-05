@@ -3,32 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page not found · Ramy Rady</title>
-    <meta name="description" content="That page does not exist on ramyrady.com.">
+    <title>Sanity-check any receiver with −174 dBm/Hz · Ramy Rady</title>
+    <meta name="description" content="The thermal noise floor gives you a sensitivity estimate in ten seconds.">
     <meta name="author" content="Ramy Rady">
-    <link rel="canonical" href="https://www.ramyrady.com/404.html">
-    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://www.ramyrady.com/note-kt-floor.html">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Ramy Rady">
-    <meta property="og:title" content="Page not found · Ramy Rady">
-    <meta property="og:description" content="That page does not exist on ramyrady.com.">
-    <meta property="og:url" content="https://www.ramyrady.com/404.html">
+    <meta property="og:title" content="Sanity-check any receiver with −174 dBm/Hz · Ramy Rady">
+    <meta property="og:description" content="The thermal noise floor gives you a sensitivity estimate in ten seconds.">
+    <meta property="og:url" content="https://www.ramyrady.com/note-kt-floor.html">
     <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Page not found · Ramy Rady">
-    <meta name="twitter:description" content="That page does not exist on ramyrady.com.">
+    <meta name="twitter:title" content="Sanity-check any receiver with −174 dBm/Hz · Ramy Rady">
+    <meta name="twitter:description" content="The thermal noise floor gives you a sensitivity estimate in ten seconds.">
     <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
     <link rel="stylesheet" href="styles.css?v=7">
     <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Sanity-check any receiver with −174 dBm/Hz",
+  "description": "The thermal noise floor gives you a sensitivity estimate in ten seconds.",
+  "datePublished": "2026-09",
+  "author": {
+    "@type": "Person",
+    "name": "Ramy Rady",
+    "url": "https://www.ramyrady.com"
+  }
+}
+    </script>
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -55,19 +68,20 @@
         </div>
     </header>
     <main id="main">
-        <section class="wrap page-head">
-            <h1>Page not found</h1>
-            <p class="lede">That link is broken or the page has moved. A few pages that do exist:</p>
-            <nav class="toc" aria-label="Main pages">
-                <a href="/">About</a>
-                <a href="/research.html">Research</a>
-                <a href="/publications.html">Publications</a>
-                <a href="/teaching.html">Teaching</a>
-                <a href="/resume.html">CV</a>
-            </nav>
-            <p class="muted">If you followed a link from somewhere else, tell me at
-                <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a> and I will fix it.</p>
-        </section>
+        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">Tip · RF basics</p>
+                <h1>Sanity-check any receiver with −174 dBm/Hz</h1>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-09">September 2026</time></p>
+            </header>
+            <div class="note-body">
+<p>At 290 K, thermal noise is −174 dBm in every hertz of bandwidth. Add 10·log<sub>10</sub>(B), the noise figure, and the SNR your demodulator needs, and you have the receiver's sensitivity.</p>
+<div class="eq">P<sub>min</sub> ≈ −174 + 10·log<sub>10</sub>(B) + NF + SNR<sub>min</sub>  dBm</div>
+<p>Useful bandwidth values to remember: 1 MHz is 60 dB, 20 MHz is 73 dB, 100 MHz is 80 dB, 1 GHz is 90 dB.</p>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Use it to check a datasheet claim.</strong> If a 100 MHz receiver claims −100 dBm sensitivity with 10 dB SNR, the floor alone is −174 + 80 + 10 = −84 dBm before any noise figure. Reaching −100 dBm would need a noise figure of −16 dB, which is impossible. Something in the claim is off.</p></aside>
+            </div>
+        </article>
     </main>
     <footer class="site-footer">
         <div class="wrap footer-inner">
