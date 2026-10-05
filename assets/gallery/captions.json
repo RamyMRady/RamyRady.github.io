@@ -1,0 +1,57 @@
+{
+  "01-automatic-tuning-setup.jpg": {
+    "title": "Automatic tuning setup",
+    "caption": "The full bench: heater-control boards, the photonic chip on its carrier, and fiber alignment stages. February 2023.",
+    "group": "chips"
+  },
+  "02-heater-control-board.jpg": {
+    "title": "Heater-control board",
+    "caption": "Multichannel DAC board that drives the on-chip heaters, with the Arduino that runs the tuning loop.",
+    "group": "chips"
+  },
+  "03-optical-bench-alignment.jpg": {
+    "title": "Fiber alignment on the optical bench",
+    "caption": "Precision stages position fibers over the grating couplers of the photonic chip.",
+    "group": "chips"
+  },
+  "04-pic-test-board-probing.jpg": {
+    "title": "Photonic chip under test",
+    "caption": "Silicon photonic chip on its RF test board during probing. July 2022.",
+    "group": "chips"
+  },
+  "05-rf-probe-landing.jpg": {
+    "title": "Landing the probes",
+    "caption": "RF probe and fiber array positioned over the chip under the microscope light.",
+    "group": "chips"
+  },
+  "06-wire-bonded-pic.jpg": {
+    "title": "Wire-bonded photonic chip",
+    "caption": "The PIC bonded to the board, with RF connectors on either side.",
+    "group": "chips"
+  },
+  "07-chip-under-microscope.jpg": {
+    "title": "Chip under the microscope",
+    "caption": "Close-up of the die and its bond pads through the probe-station microscope.",
+    "group": "chips"
+  },
+  "08-microscope-camera-view.jpg": {
+    "title": "Microscope camera view",
+    "caption": "Live camera view of the chip used to align probes during measurement.",
+    "group": "chips"
+  },
+  "09-filter-wide-sweep.jpg": {
+    "title": "Wide wavelength sweep",
+    "caption": "Measured insertion loss of a ring-resonator filter across a wide sweep, showing the comb of resonances.",
+    "group": "chips"
+  },
+  "10-filter-resonances.jpg": {
+    "title": "Resonances up close",
+    "caption": "A narrower sweep of the same measurement, showing individual resonance dips.",
+    "group": "chips"
+  },
+  "11-optical-spectrum-analyzer.jpg": {
+    "title": "Optical spectrum check",
+    "caption": "Checking the optical spectrum on an Anritsu MS9710B during link testing.",
+    "group": "chips"
+  }
+}
