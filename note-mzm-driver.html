@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How a Mach–Zehnder modulator driver sets the limits of a radio-over-fiber link · Ramy Rady</title>
+    <meta name="description" content="Why Vπ, bias point, and the driver&#x27;s output swing decide most of an analog photonic link&#x27;s gain and dynamic range.">
+    <meta name="author" content="Ramy Rady">
+    <link rel="canonical" href="https://www.ramyrady.com/note-mzm-driver.html">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ramy Rady">
+    <meta property="og:title" content="How a Mach–Zehnder modulator driver sets the limits of a radio-over-fiber link · Ramy Rady">
+    <meta property="og:description" content="Why Vπ, bias point, and the driver&#x27;s output swing decide most of an analog photonic link&#x27;s gain and dynamic range.">
+    <meta property="og:url" content="https://www.ramyrady.com/note-mzm-driver.html">
+    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="How a Mach–Zehnder modulator driver sets the limits of a radio-over-fiber link · Ramy Rady">
+    <meta name="twitter:description" content="Why Vπ, bias point, and the driver&#x27;s output swing decide most of an analog photonic link&#x27;s gain and dynamic range.">
+    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+    <link rel="stylesheet" href="styles.css?v=7">
+    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How a Mach–Zehnder modulator driver sets the limits of a radio-over-fiber link",
+  "description": "Why Vπ, bias point, and the driver's output swing decide most of an analog photonic link's gain and dynamic range.",
+  "datePublished": "2026-10",
+  "author": {
+    "@type": "Person",
+    "name": "Ramy Rady",
+    "url": "https://www.ramyrady.com"
+  }
+}
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">Ramy Rady</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="teaching.html">Teaching</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="resume.html">CV</a></li>
+                </ul>
+                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+    <main id="main">
+        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">Note · Microwave photonics</p>
+                <h1>How a Mach–Zehnder modulator driver sets the limits of a radio-over-fiber link</h1>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-10">October 2026</time> · 3 min read</p>
+            </header>
+            <div class="note-body">
+<p>A radio-over-fiber (RoF) link carries an RF signal as the intensity of light. You put a microwave signal on an optical carrier at one end, send it through fiber, and recover it with a photodiode at the other end. On paper the fiber is almost lossless and has huge bandwidth. In practice, the link's gain, noise figure, and dynamic range are set mostly by two components: the modulator and the circuit that drives it.</p>
+<p>This note walks through why, using the most common setup: a Mach–Zehnder modulator (MZM) with direct detection.</p>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 640 170" role="img" aria-label="Block diagram: laser feeds a Mach-Zehnder modulator driven by an RF driver; light travels through fiber to a photodiode that outputs the RF signal.">
+<defs>
+<marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fm" d="M0,0 L10,5 L0,10 z"/></marker>
+</defs>
+<!-- laser -->
+<rect class="fsu sr" x="10" y="90" width="80" height="44" rx="3"/>
+<text class="ff" x="50" y="117" text-anchor="middle" font-size="13">Laser</text>
+<!-- optical path -->
+<line class="sa" x1="90" y1="112" x2="170" y2="112" stroke-width="2.5"/>
+<!-- MZM -->
+<rect class="fsu sa" x="170" y="84" width="140" height="56" rx="3"/>
+<path class="fn sa" d="M180,112 L200,98 L280,98 L300,112 L280,126 L200,126 Z" stroke-width="1.5"/>
+<text class="fm" x="240" y="156" text-anchor="middle" font-size="12">MZM (V<tspan baseline-shift="sub" font-size="9">π</tspan>, bias φ)</text>
+<!-- driver -->
+<path class="fb ss" d="M210,20 L270,20 L240,58 Z" stroke-width="1.5"/>
+<text class="fs" x="240" y="36" text-anchor="middle" font-size="11">Driver</text>
+<line class="ss" x1="240" y1="58" x2="240" y2="84" stroke-width="1.5" marker-end="url(#arr)"/>
+<text class="fs" x="140" y="34" text-anchor="end" font-size="12">RF in</text>
+<line class="ss" x1="146" y1="30" x2="208" y2="30" stroke-width="1.5" marker-end="url(#arr)"/>
+<!-- fiber -->
+<path class="fn sa" d="M310,112 C350,112 360,80 400,80 C440,80 440,112 480,112" stroke-width="2.5"/>
+<text class="fm" x="400" y="70" text-anchor="middle" font-size="12">Fiber</text>
+<!-- photodiode -->
+<rect class="fsu sr" x="480" y="90" width="76" height="44" rx="3"/>
+<text class="ff" x="518" y="110" text-anchor="middle" font-size="13">PD</text>
+<text class="fm" x="518" y="126" text-anchor="middle" font-size="11">I<tspan baseline-shift="sub" font-size="8">dc</tspan></text>
+<line class="ss" x1="556" y1="112" x2="626" y2="112" stroke-width="1.5" marker-end="url(#arr)"/>
+<text class="fs" x="600" y="102" text-anchor="middle" font-size="12">RF out</text>
+</svg>
+</div>
+<figcaption>Figure 1. An intensity-modulated, direct-detection RoF link. Optical paths are teal and electrical paths are orange.</figcaption>
+</figure>
+<h2>The modulator's transfer curve</h2>
+<p>An MZM splits light into two arms, shifts the phase of one relative to the other with an applied voltage, and recombines them. The output intensity follows a raised cosine:</p>
+<div class="eq">P<sub>out</sub> = (P<sub>in</sub> / 2) · [1 + cos(π·V/V<sub>π</sub> + φ)]<span class="label">(1)</span></div>
+<p>Here V<sub>π</sub> is the voltage that swings the output from fully on to fully off, and φ is the bias phase. For an analog link you bias at <em>quadrature</em> (φ = π/2), where the curve is steepest and the second-order distortion cancels. Around that point, a small RF voltage maps to a nearly linear change in light intensity.</p>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Use the second harmonic as a bias monitor.</strong> At exact quadrature the second harmonic cancels. If it starts growing, the bias has drifted, so it makes a sensitive error signal for a bias-control loop.</p></aside>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 520 220" role="img" aria-label="Raised cosine MZM transfer curve with the quadrature bias point marked at the steepest part of the curve.">
+<line class="sr" x1="50" y1="180" x2="500" y2="180"/>
+<line class="sr" x1="50" y1="20" x2="50" y2="180"/>
+<text class="fm" x="275" y="208" text-anchor="middle" font-size="12">Drive voltage V</text>
+<text class="fm" x="20" y="100" text-anchor="middle" font-size="12" transform="rotate(-90 20 100)">P_out</text>
+<path class="fn sa" d="M50.0,30.0L53.4,30.1L56.8,30.2L60.1,30.5L63.5,30.9L66.9,31.3L70.2,31.9L73.6,32.6L77.0,33.4L80.4,34.3L83.8,35.3L87.1,36.4L90.5,37.6L93.9,38.9L97.2,40.3L100.6,41.8L104.0,43.4L107.4,45.0L110.8,46.8L114.1,48.6L117.5,50.5L120.9,52.5L124.3,54.5L127.6,56.7L131.0,58.9L134.4,61.1L137.8,63.4L141.1,65.8L144.5,68.2L147.9,70.7L151.2,73.2L154.6,75.8L158.0,78.4L161.4,81.0L164.8,83.7L168.1,86.3L171.5,89.0L174.9,91.8L178.2,94.5L181.6,97.3L185.0,100.0L188.4,102.7L191.8,105.5L195.1,108.2L198.5,111.0L201.9,113.7L205.2,116.3L208.6,119.0L212.0,121.6L215.4,124.2L218.8,126.8L222.1,129.3L225.5,131.8L228.9,134.2L232.2,136.6L235.6,138.9L239.0,141.1L242.4,143.3L245.8,145.5L249.1,147.5L252.5,149.5L255.9,151.4L259.2,153.2L262.6,155.0L266.0,156.6L269.4,158.2L272.8,159.7L276.1,161.1L279.5,162.4L282.9,163.6L286.2,164.7L289.6,165.7L293.0,166.6L296.4,167.4L299.8,168.1L303.1,168.7L306.5,169.1L309.9,169.5L313.2,169.8L316.6,169.9L320.0,170.0L323.4,169.9L326.7,169.8L330.1,169.5L333.5,169.1L336.9,168.7L340.2,168.1L343.6,167.4L347.0,166.6L350.4,165.7L353.8,164.7L357.1,163.6L360.5,162.4L363.9,161.1L367.2,159.7L370.6,158.2L374.0,156.6L377.4,155.0L380.8,153.2L384.1,151.4L387.5,149.5L390.9,147.5L394.2,145.5L397.6,143.3L401.0,141.1L404.4,138.9L407.8,136.6L411.1,134.2L414.5,131.8L417.9,129.3L421.2,126.8L424.6,124.2L428.0,121.6L431.4,119.0L434.8,116.3L438.1,113.7L441.5,111.0L444.9,108.2L448.2,105.5L451.6,102.7L455.0,100.0" stroke-width="2.5"/>
+<line class="sr" x1="185" y1="20" x2="185" y2="180" stroke-dasharray="4 4"/>
+<circle class="fs" cx="185" cy="100" r="5"/>
+<text class="fs" x="195" y="94" font-size="12">Quadrature bias</text>
+<text class="fm" x="185" y="196" text-anchor="middle" font-size="11">V<tspan baseline-shift="sub" font-size="8">π</tspan>/2</text>
+<text class="fm" x="320" y="196" text-anchor="middle" font-size="11">V<tspan baseline-shift="sub" font-size="8">π</tspan></text>
+<text class="fm" x="455" y="196" text-anchor="middle" font-size="11">3V<tspan baseline-shift="sub" font-size="8">π</tspan>/2</text>
+</svg>
+</div>
+<figcaption>Figure 2. Equation (1) over one and a half periods, with φ = 0 so the curve starts at its peak. Biasing at V<sub>π</sub>/2 puts the operating point where the slope is largest and even-order distortion is zero.</figcaption>
+</figure>
+<h2>Why V<sub>π</sub> dominates the link gain</h2>
+<p>The slope of the transfer curve at quadrature is proportional to π/V<sub>π</sub>. For an intensity-modulated link with direct detection, the small-signal RF gain scales as</p>
+<div class="eq">G ∝ (π · I<sub>dc</sub> · R / V<sub>π</sub>)²<span class="label">(2)</span></div>
+<p>where I<sub>dc</sub> is the average photocurrent and R is the source and load resistance. The square is what matters: halving V<sub>π</sub> buys 6 dB of link gain, the same as doubling the received optical power. Many passive analog links show net loss, often 20 dB or more, so this improvement has a direct effect on noise figure.</p>
+<p>This is also where the driver comes in. In silicon depletion-mode modulators, V<sub>π</sub>·L is typically a few V·cm. A short device has a large V<sub>π</sub>, and a long one has more RF loss and harder velocity matching. The driver has to supply enough swing to use the modulator well without overloading it.</p>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>DC V<sub>π</sub> is not RF V<sub>π</sub>.</strong> Electrode loss and velocity mismatch make the effective V<sub>π</sub> rise with frequency. Check which one a datasheet quotes before you size the driver swing.</p></aside>
+<h2>What the driver has to do</h2>
+<div class="tw">
+<table>
+<thead><tr><th>Requirement</th><th>Why it matters</th><th>Typical design response</th></tr></thead>
+<tbody>
+<tr><td>Large output swing</td><td>Link gain depends on V<sub>drive</sub>/V<sub>π</sub></td><td>Stacked or cascoded output stages to get past the CMOS breakdown limit</td></tr>
+<tr><td>Wide, flat bandwidth</td><td>The traveling-wave electrode is a lossy transmission line</td><td>Distributed or segmented drivers, matched termination</td></tr>
+<tr><td>Linearity</td><td>Driver distortion adds to the modulator's own cosine nonlinearity</td><td>Back off from compression, consider predistortion</td></tr>
+<tr><td>Low noise</td><td>Driver noise is amplified by the same link gain as the signal</td><td>Low-noise front stage ahead of the power stage</td></tr>
+</tbody>
+</table>
+</div>
+<h2>Dynamic range: where the cosine catches up with you</h2>
+<p>Quadrature bias cancels even-order distortion, but the cosine still produces third-order intermodulation. That sets the link's spurious-free dynamic range (SFDR), usually quoted in dB·Hz<sup>2/3</sup> so you can compare links measured at different noise bandwidths. A driver that compresses before the modulator does will reduce SFDR on its own. A good co-design keeps the driver's third-order intercept well above the modulator's.</p>
+<h2>Takeaways</h2>
+<p>The fiber is rarely the limiting part of an RoF link. The modulator's V<sub>π</sub> sets the gain, its cosine response sets the linearity, and the driver decides how much of both you actually get.</p>
+<h2>Further reading</h2>
+<ol class="refs">
+<li>C. H. Cox III, <em>Analog Optical Links: Theory and Practice</em>, Cambridge University Press, 2004.</li>
+</ol>
+<p class="endnote">Questions or corrections? Get in touch through the contact links on the <a href="index.html#contact">contact</a> section.</p>
+            </div>
+        </article>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>© 2026 Ramy Rady</p>
+            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
+        </div>
+        <div class="wrap site-status">
+            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 05 October 2026</p>
+            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
+        </div>
+    </footer>
+    <script src="script.js?v=7"></script>
+</body>
+</html>

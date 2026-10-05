@@ -110,11 +110,16 @@ TEACHING = [
         "lectures_credit": "Slides by Ramy Rady.",
         "lectures": [
             ("DC circuits", [
+                (1, "Introduction to electrical engineering", "bolt", "lecture-01-introduction-to-electrical-engineering.pdf"),
+                (2, "Voltage, current, power, and the passive sign convention", "source", "lecture-02-voltage-current-power.pdf"),
+                (3, "Sources, Kirchhoff's laws, and voltage and current dividers", "divider", "lecture-03-kirchhoffs-laws-dividers.pdf"),
                 (6, "Thevenin, Norton, and power transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
                 (8, "Resistive circuits revision: worked examples", "mesh", "lecture-08-resistive-circuits-revision.pdf"),
             ]),
             ("Capacitors, inductors, and transients", [
+                (7, "Capacitors and inductors: switched-circuit examples", "inductor", "lecture-07-capacitors-inductors-examples.pdf"),
                 (12, "Capacitors, inductors, and transient response", "capacitor", "lecture-12-capacitors-inductors-transients.pdf"),
+                (13, "Step and natural response of RC and RL circuits", "step", "lecture-13-step-natural-response.pdf"),
             ]),
         ],
     },

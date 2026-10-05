@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatic tuning of silicon photonic ring filters · Ramy Rady</title>
+    <meta name="description" content="How a small control loop finds each ring&#x27;s resonance and holds it there despite fabrication variation and temperature drift.">
+    <meta name="author" content="Ramy Rady">
+    <link rel="canonical" href="https://www.ramyrady.com/note-ring-auto-tuning.html">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ramy Rady">
+    <meta property="og:title" content="Automatic tuning of silicon photonic ring filters · Ramy Rady">
+    <meta property="og:description" content="How a small control loop finds each ring&#x27;s resonance and holds it there despite fabrication variation and temperature drift.">
+    <meta property="og:url" content="https://www.ramyrady.com/note-ring-auto-tuning.html">
+    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Automatic tuning of silicon photonic ring filters · Ramy Rady">
+    <meta name="twitter:description" content="How a small control loop finds each ring&#x27;s resonance and holds it there despite fabrication variation and temperature drift.">
+    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+    <link rel="stylesheet" href="styles.css?v=7">
+    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Automatic tuning of silicon photonic ring filters",
+  "description": "How a small control loop finds each ring's resonance and holds it there despite fabrication variation and temperature drift.",
+  "datePublished": "2026-10",
+  "author": {
+    "@type": "Person",
+    "name": "Ramy Rady",
+    "url": "https://www.ramyrady.com"
+  }
+}
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">Ramy Rady</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="teaching.html">Teaching</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="resume.html">CV</a></li>
+                </ul>
+                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+    <main id="main">
+        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">Note · Silicon photonics</p>
+                <h1>Automatic tuning of silicon photonic ring filters</h1>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-10">October 2026</time> · 2 min read</p>
+            </header>
+            <div class="note-body">
+<p>Silicon ring resonators make excellent tunable filters, but they don't stay where you put them. Fabrication variation puts every ring at a slightly different wavelength, and temperature moves it by roughly 0.07–0.08 nm per kelvin, which is about a linewidth for every couple of degrees. A chip with several rings needs an automatic way to find each resonance and hold it there. This note describes, at a high level, how I did that for the reconfigurable filters in my Ph.D. work.</p>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 640 180" role="img" aria-label="Control loop: a tunable laser feeds the ring-filter chip; monitor photodiodes and an ADC report to a controller, which sets the heaters through a 16-channel DAC.">
+<defs><marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="fm" d="M0,0 L10,5 L0,10 z"/></marker></defs>
+<rect class="fsu sr" x="10" y="22" width="110" height="46" rx="3"/><text class="ff" x="65" y="50" text-anchor="middle" font-size="13">Tunable laser</text>
+<line class="sa" x1="120" y1="45" x2="168" y2="45" stroke-width="2.5" marker-end="url(#arr2)"/>
+<rect class="fsu sa" x="170" y="14" width="250" height="62" rx="3"/><text class="ff" x="295" y="40" text-anchor="middle" font-size="13">Ring-filter chip</text><text class="fm" x="295" y="60" text-anchor="middle" font-size="11">heaters on every ring</text>
+<line class="sa" x1="420" y1="45" x2="565" y2="45" stroke-width="2.5"/><line class="sa" x1="565" y1="45" x2="565" y2="118" stroke-width="2.5" marker-end="url(#arr2)"/><text class="fm" x="490" y="37" text-anchor="middle" font-size="11">monitor taps</text>
+<rect class="fsu sr" x="490" y="120" width="140" height="46" rx="3"/><text class="ff" x="560" y="141" text-anchor="middle" font-size="12">Monitor photodiodes</text><text class="fm" x="560" y="157" text-anchor="middle" font-size="11">and ADC</text>
+<line class="ss" x1="490" y1="143" x2="452" y2="143" stroke-width="1.5" marker-end="url(#arr2)"/>
+<rect class="fb ss" x="330" y="120" width="120" height="46" rx="3"/><text class="fs" x="390" y="141" text-anchor="middle" font-size="12">Controller</text><text class="fm" x="390" y="157" text-anchor="middle" font-size="11">search and lock</text>
+<line class="ss" x1="330" y1="143" x2="292" y2="143" stroke-width="1.5" marker-end="url(#arr2)"/>
+<rect class="fsu sr" x="170" y="120" width="120" height="46" rx="3"/><text class="ff" x="230" y="141" text-anchor="middle" font-size="12">16-channel DAC</text><text class="fm" x="230" y="157" text-anchor="middle" font-size="11">heater drive</text>
+<line class="ss" x1="230" y1="120" x2="230" y2="78" stroke-width="1.5" marker-end="url(#arr2)"/>
+</svg>
+</div>
+<figcaption>Figure 1. The tuning loop. The controller reads each ring's monitor photodiode and sets that ring's heater through the DAC.</figcaption>
+</figure>
+<h2>The hardware</h2>
+<p>Each ring has a thermal phase shifter (a resistive heater) and a small monitor tap that sends part of the ring's light to a photodiode. A 16-channel, 16-bit DAC board that I designed drives the heaters, and a microcontroller reads the photodiodes, runs the search, and steps the tunable laser to the wavelengths of interest.</p>
+<figure>
+<img src="assets/gallery/02-heater-control-board.jpg" alt="Heater-control board with its DAC channels and the microcontroller that runs the tuning loop" loading="lazy">
+<figcaption>Figure 2. The heater-control board with the microcontroller that runs the loop.</figcaption>
+</figure>
+<h2>How the search works</h2>
+<ol>
+<li><strong>Coarse search.</strong> Sweep each ring's heater across a wide range and find the setting where its monitor reads highest, which is where the ring sits on resonance.</li>
+<li><strong>Fine search.</strong> Sweep a narrow window around that point with smaller steps.</li>
+<li><strong>Iterate.</strong> Heat from one ring shifts its neighbours, so the whole set is re-tuned in several passes, each with a narrower window, until every ring stops moving.</li>
+</ol>
+<p>Each photodiode reading combines many samples through a median filter, so a single noisy sample cannot pull a ring off resonance. When a monitor signal is too weak to trust, the ring keeps its last good setting instead of jumping somewhere new.</p>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Remember that heater power goes as voltage squared.</strong> A linear DAC sweep moves the resonance slowly at low codes and quickly at high codes, so step sizes that work at one end of the range are wrong at the other.</p></aside>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Tune one ring and you detune its neighbours.</strong> Thermal crosstalk is why a single pass is never enough. Plan for iterative passes from the start.</p></aside>
+<h2>What it enabled</h2>
+<p>The same loop configured band-pass and notch responses on demand and kept them stable during measurements. The results are in my papers on automated tuning of silicon photonic filters and on tunable mm-wave photonic receiver front ends, listed on the <a href="publications.html">Publications</a> page.</p>
+<figure>
+<img src="assets/gallery/01-automatic-tuning-setup.jpg" alt="Full automatic tuning bench with control boards, photonic chip and fiber alignment stages" loading="lazy">
+<figcaption>Figure 3. The full tuning bench.</figcaption>
+</figure>
+<h2>More details</h2>
+<p>This page is an overview. For details on the hardware, the algorithm, or the measured results, email me at <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.</p>
+            </div>
+        </article>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>© 2026 Ramy Rady</p>
+            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
+        </div>
+        <div class="wrap site-status">
+            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 05 October 2026</p>
+            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
+        </div>
+    </footer>
+    <script src="script.js?v=7"></script>
+</body>
+</html>

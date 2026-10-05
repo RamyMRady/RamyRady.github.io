@@ -15,6 +15,7 @@
     --accent-ink: #ffffff;
     --accent-soft: rgba(11, 110, 153, 0.08);
     --accent-line: rgba(11, 110, 153, 0.35);
+    --signal: #c2410c;
 
     --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
     --sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -37,6 +38,7 @@
         --accent-ink: #06121f;
         --accent-soft: rgba(92, 198, 242, 0.1);
         --accent-line: rgba(92, 198, 242, 0.4);
+    --signal: #fb923c;
         color-scheme: dark;
     }
 }
@@ -53,6 +55,7 @@
     --accent-ink: #06121f;
     --accent-soft: rgba(92, 198, 242, 0.1);
     --accent-line: rgba(92, 198, 242, 0.4);
+    --signal: #fb923c;
     color-scheme: dark;
 }
 
@@ -579,3 +582,51 @@ details summary { cursor: pointer; font-weight: 500; color: var(--ink); }
 .tile figcaption { display: grid; gap: 3px; font-size: 14.5px; }
 .tile figcaption b { color: var(--ink); font-weight: 600; }
 .tile figcaption span { color: var(--muted); font-size: 13.5px; }
+
+/* ---------- notes ---------- */
+
+.note-list { list-style: none; border-top: 1px solid var(--rule); }
+.note-list li { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 4px 20px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+.note-list time { padding-top: 4px; }
+.note-list h2 { font-size: 21px; margin-bottom: 4px; }
+.note-list .is-tip h2 { font-size: 18px; }
+.note-list h2 a { color: var(--ink); }
+.note-list h2 a:hover { color: var(--accent); text-decoration: none; }
+.note-list p { color: var(--muted); margin-bottom: 8px; }
+.kind { font: 600 11px/1 var(--sans); letter-spacing: .08em; text-transform: uppercase; color: var(--signal); margin-right: 8px; vertical-align: 3px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag { font-size: 12px; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 3px; }
+@media (max-width: 560px) { .note-list li { grid-template-columns: 1fr; } }
+
+.note-page { max-width: 760px; padding-top: 40px; }
+.note-page .back { font-size: 14px; }
+.note-head { display: grid; gap: 10px; margin: 20px 0 28px; }
+.eyebrow { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.note-meta { font-size: 14px; color: var(--muted); }
+.note-body { font-size: 17.5px; line-height: 1.7; }
+.note-body > p, .note-body > ul, .note-body > ol { margin: 0 0 18px; }
+.note-body ul, .note-body ol { padding-left: 24px; }
+.note-body li { margin-bottom: 6px; }
+.note-body h2 { margin: 40px 0 10px; }
+.note-body h3 { margin: 28px 0 6px; }
+.note-body .eq { font-family: var(--mono); font-size: 15px; background: var(--surface-2); padding: 14px 18px; margin: 8px 0 22px; overflow-x: auto; white-space: nowrap; border-radius: 4px; }
+.note-body .eq .label { color: var(--muted); float: right; margin-left: 24px; }
+.note-body figure { margin: 28px 0; }
+.note-body .svgwrap { overflow-x: auto; }
+.note-body .svgwrap svg { display: block; width: 100%; min-width: 520px; height: auto; }
+.note-body figure img { margin: 0 auto; border-radius: 6px; border: 1px solid var(--rule); }
+.note-body figcaption { font-size: 13.5px; color: var(--muted); margin-top: 10px; }
+.note-body .tw { overflow-x: auto; margin: 8px 0 24px; }
+.note-body table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+.note-body th, .note-body td { text-align: left; padding: 8px 12px 8px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.note-body th { font-size: 12px; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.note-body .callout { background: var(--surface-2); padding: 14px 18px 2px; margin: 8px 0 24px; border-radius: 4px; font-size: 16.5px; }
+.note-body .callout p { margin: 0 0 12px; }
+.note-body .callout-label { font: 600 11px/1.4 var(--sans); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 4px; }
+.note-body .pitfall .callout-label { color: var(--signal); }
+.note-body .refs { font-size: 14.5px; color: var(--muted); padding-left: 20px; }
+.note-body .endnote { border-top: 1px solid var(--rule); margin-top: 40px; padding-top: 18px; font-size: 14.5px; color: var(--muted); }
+.note-body svg text { font-family: var(--sans); }
+.note-body .fa { fill: var(--accent); } .note-body .fs { fill: var(--signal); } .note-body .fm { fill: var(--muted); }
+.note-body .ff { fill: var(--ink); } .note-body .fsu { fill: var(--surface-2); } .note-body .fb { fill: var(--bg); } .note-body .fn { fill: none; }
+.note-body .sa { stroke: var(--accent); } .note-body .ss { stroke: var(--signal); } .note-body .sr { stroke: var(--rule); } .note-body .sm { stroke: var(--muted); }
