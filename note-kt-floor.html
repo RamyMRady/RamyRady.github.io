@@ -2,96 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sanity-check any receiver with −174 dBm/Hz · Ramy Rady</title>
-    <meta name="description" content="The thermal noise floor gives you a sensitivity estimate in ten seconds.">
-    <meta name="author" content="Ramy Rady">
-    <link rel="canonical" href="https://www.ramyrady.com/note-kt-floor.html">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Ramy Rady">
-    <meta property="og:title" content="Sanity-check any receiver with −174 dBm/Hz · Ramy Rady">
-    <meta property="og:description" content="The thermal noise floor gives you a sensitivity estimate in ten seconds.">
-    <meta property="og:url" content="https://www.ramyrady.com/note-kt-floor.html">
-    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Sanity-check any receiver with −174 dBm/Hz · Ramy Rady">
-    <meta name="twitter:description" content="The thermal noise floor gives you a sensitivity estimate in ten seconds.">
-    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-    <link rel="stylesheet" href="styles.css?v=7">
-    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Sanity-check any receiver with −174 dBm/Hz",
-  "description": "The thermal noise floor gives you a sensitivity estimate in ten seconds.",
-  "datePublished": "2026-09",
-  "author": {
-    "@type": "Person",
-    "name": "Ramy Rady",
-    "url": "https://www.ramyrady.com"
-  }
-}
-    </script>
+    <title>Moved · Ramy Rady</title>
+    <meta name="robots" content="noindex">
+    <link rel="canonical" href="https://www.ramyrady.com/note-noise-figure.html">
+    <meta http-equiv="refresh" content="0; url=note-noise-figure.html#sensitivity">
 </head>
 <body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-        <div class="wrap header-inner">
-            <a class="brand" href="index.html">Ramy Rady</a>
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
-            </button>
-            <nav id="site-nav" class="site-nav" aria-label="Main">
-                <ul>
-                <li><a href="index.html">About</a></li>
-                <li><a href="research.html">Research</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="teaching.html">Teaching</a></li>
-                <li><a href="notes.html">Notes</a></li>
-                <li><a href="resume.html">CV</a></li>
-                </ul>
-                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
-                </button>
-            </nav>
-        </div>
-    </header>
-    <main id="main">
-        <article class="wrap note-page">
-            <a class="back" href="notes.html">← All notes</a>
-            <header class="note-head">
-                <p class="eyebrow">Tip · RF basics</p>
-                <h1>Sanity-check any receiver with −174 dBm/Hz</h1>
-                <p class="note-meta">Ramy Rady · <time datetime="2026-09">September 2026</time></p>
-            </header>
-            <div class="note-body">
-<p>At 290 K, thermal noise is −174 dBm in every hertz of bandwidth. Add 10·log<sub>10</sub>(B), the noise figure, and the SNR your demodulator needs, and you have the receiver's sensitivity.</p>
-<div class="eq">P<sub>min</sub> ≈ −174 + 10·log<sub>10</sub>(B) + NF + SNR<sub>min</sub>  dBm</div>
-<p>Useful bandwidth values to remember: 1 MHz is 60 dB, 20 MHz is 73 dB, 100 MHz is 80 dB, 1 GHz is 90 dB.</p>
-<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Use it to check a datasheet claim.</strong> If a 100 MHz receiver claims −100 dBm sensitivity with 10 dB SNR, the floor alone is −174 + 80 + 10 = −84 dBm before any noise figure. Reaching −100 dBm would need a noise figure of −16 dB, which is impossible. Something in the claim is off.</p></aside>
-            </div>
-        </article>
-    </main>
-    <footer class="site-footer">
-        <div class="wrap footer-inner">
-            <p>© 2026 Ramy Rady</p>
-            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
-        </div>
-        <div class="wrap site-status">
-            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 05 October 2026</p>
-            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
-        </div>
-    </footer>
-    <script src="script.js?v=7"></script>
+    <p>This page has moved to <a href="note-noise-figure.html#sensitivity">note-noise-figure.html#sensitivity</a>.</p>
 </body>
 </html>
