@@ -380,4 +380,6 @@ REDIRECTS = {
     "project-optical-receivers.html": "research.html#lowpower",
     "project-rf-transmitters.html": "research.html#lowpower",
     "project-arvr-drivers.html": "resume.html#experience",
+    "note-dont-add-db.html": "note-noise-figure.html#db-arithmetic",
+    "note-kt-floor.html": "note-noise-figure.html#sensitivity",
 }
