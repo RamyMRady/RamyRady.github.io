@@ -179,7 +179,9 @@ def lecture_row(slug, n, title, icon, filename):
     if not path.is_file():
         raise SystemExit(f"Missing lecture file: {path}")
     mb = path.stat().st_size / 1e6
-    return (f'                        <li><a class="lec-link" href="assets/teaching/{slug}/lectures/{filename}" download>'
+    # Save the download under the displayed number; the file path keeps its original name so old links work.
+    save_as = re.sub(r"^lecture-\d+", f"{slug}-lecture-{n:02d}", filename)
+    return (f'                        <li><a class="lec-link" href="assets/teaching/{slug}/lectures/{filename}" download="{save_as}">'
             f'<span class="lec-icon">{lec_icon(icon)}</span>'
             f'<span class="lec-text"><span class="lec-num">Lecture {n}</span><span class="lec-title">{html.escape(title)}</span></span>'
             f'<span class="lec-dl"><span class="lec-size">PDF · {mb:.1f} MB</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 19h14"/></svg></span>'
