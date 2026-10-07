@@ -107,9 +107,35 @@ TEACHING = [
         ],
         # Lectures I wrote: (number, title, icon, file). Files live in assets/teaching/<slug>/lectures/;
         # icons are drawn in build.py (LECTURE_ICONS).
-        "lectures_credit": "Selected lectures I wrote and taught. Slides by Ramy Rady.",
+        "lectures_credit": "Lectures I wrote and taught: the full set of lecture notes (1–24) and my slide decks.",
         "lectures": [
-            ("DC circuits, capacitors, inductors, and transients", [
+            ("Lecture notes", [
+                (1, "Overview of Electrical Engineering and Fundamental Concepts", "bolt", "lecture-01-notes-overview-of-electrical-engineering-and-fundamental-concepts.pdf"),
+                (2, "Circuit Elements: Sources and Resistors", "source", "lecture-02-notes-circuit-elements-sources-and-resistors.pdf"),
+                (3, "Nodes, Loops, and Kirchhoff's Laws", "node", "lecture-03-notes-nodes-loops-and-kirchhoffs-laws.pdf"),
+                (4, "Voltage Divider, Equivalent Resistance, Practical Sources", "divider", "lecture-04-notes-voltage-divider-equivalent-resistance-practical-sources.pdf"),
+                (5, "Techniques of Circuit Analysis: Node Voltage Method", "node", "lecture-05-notes-techniques-of-circuit-analysis-node-voltage-method.pdf"),
+                (6, "Mesh Current Method", "mesh", "lecture-06-notes-mesh-current-method.pdf"),
+                (7, "Thevenin Equivalent Circuit", "thevenin", "lecture-07-notes-thevenin-equivalent-circuit.pdf"),
+                (8, "Maximum Power Transfer", "peak", "lecture-08-notes-maximum-power-transfer.pdf"),
+                (9, "Capacitance and Inductance", "capacitor", "lecture-09-notes-capacitance-and-inductance.pdf"),
+                (10, "Capacitors and Inductors in Series and Parallel", "inductor", "lecture-10-notes-capacitors-and-inductors-in-series-and-parallel.pdf"),
+                (11, "Transients: RL Circuits and the Time Constant", "decay", "lecture-11-notes-transients-rl-circuits-and-the-time-constant.pdf"),
+                (12, "Natural Response of an RC Circuit", "decay", "lecture-12-notes-natural-response-of-an-rc-circuit.pdf"),
+                (13, "Step Response of an RC Circuit", "step", "lecture-13-notes-step-response-of-an-rc-circuit.pdf"),
+                (14, "Sinusoidal Steady State Response", "sine", "lecture-14-notes-sinusoidal-steady-state-response.pdf"),
+                (15, "Phasors and Impedance", "phasor", "lecture-15-notes-phasors-and-impedance.pdf"),
+                (16, "AC Circuit Analysis with Phasors", "mesh", "lecture-16-notes-ac-circuit-analysis-with-phasors.pdf"),
+                (17, "Phasor Diagrams", "phasor", "lecture-17-notes-phasor-diagrams.pdf"),
+                (18, "Frequency Response and Bode Plots", "spectrum", "lecture-18-notes-frequency-response-and-bode-plots.pdf"),
+                (19, "Bode Plots", "bode", "lecture-19-notes-bode-plots.pdf"),
+                (20, "Operational Amplifiers", "opamp", "lecture-20-notes-operational-amplifiers.pdf"),
+                (21, "Op-Amp Circuits: Difference Amplifier", "diffamp", "lecture-21-notes-op-amp-circuits-difference-amplifier.pdf"),
+                (22, "Logic Circuits", "square", "lecture-22-notes-logic-circuits.pdf"),
+                (23, "Combinational Logic Circuits", "andgate", "lecture-23-notes-combinational-logic-circuits.pdf"),
+                (24, "Logic Expressions from Truth Tables", "table", "lecture-24-notes-logic-expressions-from-truth-tables.pdf"),
+            ]),
+            ("Slides", [
                 (1, "Intro. To EE", "bolt", "lecture-01-introduction-to-electrical-engineering.pdf"),
                 (2, "Voltage and Current", "source", "lecture-02-voltage-current-power.pdf"),
                 (3, "Kirchhoff's laws", "divider", "lecture-03-kirchhoffs-laws-dividers.pdf"),
