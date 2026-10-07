@@ -109,17 +109,15 @@ TEACHING = [
         # icons are drawn in build.py (LECTURE_ICONS).
         "lectures_credit": "Selected lectures I wrote and taught. Slides by Ramy Rady.",
         "lectures": [
-            ("DC circuits", [
+            ("DC circuits, capacitors, inductors, and transients", [
                 (1, "Intro. To EE", "bolt", "lecture-01-introduction-to-electrical-engineering.pdf"),
                 (2, "Voltage and Current", "source", "lecture-02-voltage-current-power.pdf"),
                 (3, "Kirchhoff's laws", "divider", "lecture-03-kirchhoffs-laws-dividers.pdf"),
-                (4, "Thevenin, Norton, Power Transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
-                (5, "Resistive Circuits Revision", "mesh", "lecture-08-resistive-circuits-revision.pdf"),
-            ]),
-            ("Capacitors, inductors, and transients", [
-                (6, "Capacitor, Inductor, Transient", "capacitor", "lecture-12-capacitors-inductors-transients.pdf"),
+                (6, "Thevenin, Norton, Power Transfer", "thevenin", "lecture-06-thevenin-norton-power-transfer.pdf"),
                 (7, "Capacitor, Inductor, Transient", "inductor", "lecture-07-capacitors-inductors-examples.pdf"),
-                (8, "Step and Natural Response", "step", "lecture-13-step-natural-response.pdf"),
+                (8, "Resistive Circuits Revision", "mesh", "lecture-08-resistive-circuits-revision.pdf"),
+                (12, "Capacitor, Inductor, Transient", "capacitor", "lecture-12-capacitors-inductors-transients.pdf"),
+                (13, "Step and Natural Response", "step", "lecture-13-step-natural-response.pdf"),
             ]),
         ],
     },
