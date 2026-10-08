@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-    <link rel="stylesheet" href="styles.css?v=7">
+    <link rel="stylesheet" href="styles.css?v=9">
     <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
     <script type="application/ld+json">
 {
@@ -66,19 +66,20 @@
             </nav>
         </div>
     </header>
+    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/ring-auto-tuning.html#L1" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
     <main id="main">
         <article class="wrap note-page">
             <a class="back" href="notes.html">← All notes</a>
             <header class="note-head">
-                <p class="eyebrow">Note · Silicon photonics</p>
+                <p class="eyebrow">Note · Photonics</p>
                 <h1>Automatic tuning of silicon photonic ring filters</h1>
-                <p class="note-meta">Ramy Rady · <time datetime="2026-10">October 2026</time> · 2 min read</p>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-10">October 2026</time> · 3 min read</p>
             </header>
             <div class="note-body">
 <p>Silicon ring resonators make excellent tunable filters, but they don't stay where you put them. Fabrication variation puts every ring at a slightly different wavelength, and temperature moves it by roughly 0.07–0.08 nm per kelvin, which is about a linewidth for every couple of degrees. A chip with several rings needs an automatic way to find each resonance and hold it there. This note describes, at a high level, how I did that for the reconfigurable filters in my Ph.D. work.</p>
-<h2>The hardware</h2>
+<h2 id="the-hardware">The hardware<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/ring-auto-tuning.html#L2" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
 <p>Each ring has a thermal phase shifter (a resistive heater) and a small monitor tap that sends part of the ring's light to a photodiode. A 16-channel, 16-bit DAC board that I designed drives the heaters, and a microcontroller reads the photodiodes, runs the search, and steps the tunable laser to the wavelengths of interest.</p>
-<h2>How the search works</h2>
+<h2 id="how-the-search-works">How the search works<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/ring-auto-tuning.html#L4" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
 <ol>
 <li><strong>Coarse search.</strong> Sweep each ring's heater across a wide range and find the setting where its monitor reads highest, which is where the ring sits on resonance.</li>
 <li><strong>Fine search.</strong> Sweep a narrow window around that point with smaller steps.</li>
@@ -87,10 +88,20 @@
 <p>Each photodiode reading combines many samples through a median filter, so a single noisy sample cannot pull a ring off resonance. When a monitor signal is too weak to trust, the ring keeps its last good setting instead of jumping somewhere new.</p>
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Remember that heater power goes as voltage squared.</strong> A linear DAC sweep moves the resonance slowly at low codes and quickly at high codes, so step sizes that work at one end of the range are wrong at the other.</p></aside>
 <aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Tune one ring and you detune its neighbours.</strong> Thermal crosstalk is why a single pass is never enough. Plan for iterative passes from the start.</p></aside>
-<h2>What it enabled</h2>
+<div class="widget" data-widget="tuning"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<h2 id="what-it-enabled">What it enabled<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/ring-auto-tuning.html#L14" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
 <p>The same loop configured band-pass and notch responses on demand and kept them stable during measurements. The results are in my papers on automated tuning of silicon photonic filters and on tunable mm-wave photonic receiver front ends, listed on the <a href="publications.html">Publications</a> page.</p>
-<h2>More details</h2>
+<section class="qa">
+<h2 id="questions">Questions &amp; answers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/ring-auto-tuning.html#L17" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<details><summary>Why not store the right heater setting in a lookup table?</summary><p>Because the right setting changes with ambient temperature, with the laser wavelength, with aging, and with what the neighbouring heaters are doing. A table gets you close at power-up; a closed loop keeps you there.</p></details>
+<details><summary>Why filter the photodiode readings?</summary><p>A single noisy sample near the peak can look like a better setting than the true peak. Combining several samples, with a median rather than a mean, rejects outliers so the loop does not chase noise.</p></details>
+<details><summary>Can the loop lock onto the wrong resonance?</summary><p>Yes. A heater can move a ring by more than one free spectral range, and every resonance looks the same to the monitor. Start from a known point, limit the search range to less than one FSR, and track continuously.</p></details>
+<details><summary>Why is heater power, not voltage, what matters?</summary><p>The resonance moves with temperature, which follows the power dissipated in the heater, V<sup>2</sup>/R. Equal voltage steps therefore give small shifts at low voltage and large shifts at high voltage. The figure above plots the response against voltage so you can see it.</p></details>
+<details><summary>Can I get the code or the board design?</summary><p>This page stays at the overview level. Email me at <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a> and say what you are building.</p></details>
+</section>
+<h2 id="more-details">More details<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/ring-auto-tuning.html#L24" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
 <p>This page is an overview. For details on the hardware, the algorithm, or the measured results, email me at <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.</p>
+<p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>
             </div>
         </article>
     </main>
@@ -104,6 +115,7 @@
             <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
         </div>
     </footer>
-    <script src="script.js?v=7"></script>
+    <script src="script.js?v=9"></script>
+    <script src="notes.js?v=9" defer></script>
 </body>
 </html>

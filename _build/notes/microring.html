@@ -1,85 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Microring resonators for circuit designers · Ramy Rady</title>
-    <meta name="description" content="Resonance, Q, and free spectral range, described with the LC-tank intuition analog engineers already have.">
-    <meta name="author" content="Ramy Rady">
-    <link rel="canonical" href="https://www.ramyrady.com/note-microring.html">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Ramy Rady">
-    <meta property="og:title" content="Microring resonators for circuit designers · Ramy Rady">
-    <meta property="og:description" content="Resonance, Q, and free spectral range, described with the LC-tank intuition analog engineers already have.">
-    <meta property="og:url" content="https://www.ramyrady.com/note-microring.html">
-    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Microring resonators for circuit designers · Ramy Rady">
-    <meta name="twitter:description" content="Resonance, Q, and free spectral range, described with the LC-tank intuition analog engineers already have.">
-    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-    <link rel="stylesheet" href="styles.css?v=9">
-    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "Microring resonators for circuit designers",
-  "description": "Resonance, Q, and free spectral range, described with the LC-tank intuition analog engineers already have.",
-  "datePublished": "2026-08",
-  "author": {
-    "@type": "Person",
-    "name": "Ramy Rady",
-    "url": "https://www.ramyrady.com"
-  }
-}
-    </script>
-</head>
-<body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-        <div class="wrap header-inner">
-            <a class="brand" href="index.html">Ramy Rady</a>
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
-            </button>
-            <nav id="site-nav" class="site-nav" aria-label="Main">
-                <ul>
-                <li><a href="index.html">About</a></li>
-                <li><a href="research.html">Research</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="teaching.html">Teaching</a></li>
-                <li><a href="notes.html">Notes</a></li>
-                <li><a href="resume.html">CV</a></li>
-                </ul>
-                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
-                </button>
-            </nav>
-        </div>
-    </header>
-    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L1" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
-    <main id="main">
-        <article class="wrap note-page">
-            <a class="back" href="notes.html">← All notes</a>
-            <header class="note-head">
-                <p class="eyebrow">Note · Photonics</p>
-                <h1>Microring resonators for circuit designers</h1>
-                <p class="note-meta">Ramy Rady · <time datetime="2026-08">August 2026</time> · 4 min read</p>
-            </header>
-            <div class="note-body">
 <p>If you design analog or RF circuits, you already understand most of a microring resonator. It behaves like an LC tank: it stores energy at a resonant frequency, it has a Q, and how strongly you couple to it decides whether it is over-, under-, or critically loaded. This note maps the photonics vocabulary onto the circuit ideas you already have.</p>
-<h2 id="the-structure">The structure<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L2" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>The structure</h2>
 <p>A microring is a waveguide bent into a closed loop, placed next to a straight “bus” waveguide. Light in the bus couples partly into the ring through the gap between them. Light that travels around the ring and arrives back in phase with itself builds up. That is resonance.</p>
-<h2 id="when-does-it-resonate">When does it resonate?<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L4" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>When does it resonate?</h2>
 <p>The ring resonates when a whole number of wavelengths fit around its circumference L = 2πR:</p>
 <div class="eq">m · λ<sub>res</sub> = n<sub>eff</sub> · L,&nbsp;&nbsp; m = 1, 2, 3, …<span class="label">(1)</span></div>
 <p>Unlike an LC tank, a ring has many resonances, one for each integer m. The spacing between neighboring resonances is the free spectral range (FSR), set by the group index n<sub>g</sub>:</p>
@@ -94,7 +16,7 @@
 <figcaption>Figure 1. Through-port transmission of a ring near critical coupling (R = 10 µm, n<sub>g</sub> = 4.2, loaded Q = 10,000). The FSR is 9.1 nm. The linewidth is drawn wider than scale, about 6× the 0.155 nm FWHM, so the dips are visible.</figcaption>
 </figure>
 <div class="widget" data-widget="ring"><noscript>This interactive figure needs JavaScript.</noscript></div>
-<h2 id="the-lc-tank-dictionary">The LC-tank dictionary<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L19" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>The LC-tank dictionary</h2>
 <div class="tw">
 <table>
 <thead><tr><th>LC tank</th><th>Microring</th><th>Notes</th></tr></thead>
@@ -110,41 +32,24 @@
 <p>The loaded Q combines the two loss paths the same way parallel resistors do:</p>
 <div class="eq">1/Q<sub>L</sub> = 1/Q<sub>i</sub> + 1/Q<sub>c</sub><span class="label">(3)</span></div>
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>A deep dip doesn't tell you which side of critical coupling you're on.</strong> Over- and under-coupled rings with the same extinction look identical in transmission. Compare two gap sizes or measure the phase response to tell them apart.</p></aside>
-<h2 id="numbers-for-a-typical-silicon-ring">Numbers for a typical silicon ring<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L35" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>Numbers for a typical silicon ring</h2>
 <p>A ring with R = 10 µm has L ≈ 62.8 µm. With n<sub>g</sub> ≈ 4.2 at 1550 nm, eq. (2) gives an FSR of about 9.1 nm. A loaded Q of 10,000 gives a linewidth of 1550/10,000 = 0.155 nm, so the finesse (FSR divided by linewidth) is about 59. Those are realistic values for a modulator or filter ring.</p>
-<h2 id="the-catch-temperature">The catch: temperature<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L37" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>The catch: temperature</h2>
 <p>Silicon's refractive index changes with temperature (dn/dT ≈ 1.8×10<sup>−4</sup> per K), which moves the resonance by roughly 0.07–0.08 nm per kelvin near 1550 nm. With a 0.155 nm linewidth, a drift of about 2 K moves the ring a full linewidth off resonance. In circuit terms, it is like an LC tank whose capacitor drifts by a few percent with every degree. That is why practical ring circuits include a heater and a feedback loop to hold the ring on resonance.</p>
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Count FSRs when you tune.</strong> A heater can shift a ring by more than one FSR. Track the resonance continuously from a known starting point, or the loop can lock onto the neighboring resonance.</p></aside>
-<h2 id="takeaways">Takeaways<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L40" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>Takeaways</h2>
 <p>Treat a ring as a high-Q tank with periodic resonances. Q, coupling, and matching mean the same things you already know. The new parts are the comb of resonances and the strong temperature sensitivity, which turns every ring into a small control-loop problem.</p>
 <section class="qa">
-<h2 id="questions">Questions &amp; answers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L43" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="questions">Questions &amp; answers</h2>
 <details><summary>How do I tell over-coupling from under-coupling?</summary><p>Not from the transmission dip alone: the same r and a swapped give the same extinction. Measure the phase response (it wraps by 2π when over-coupled and not when under-coupled), compare devices with two different gaps, or watch how the dip changes as you add loss. In the figure above, swap the two sliders and the curve stays the same.</p></details>
 <details><summary>Why does a ring have many resonances when an LC tank has one?</summary><p>Any wavelength for which a whole number of wavelengths fits around the ring resonates (eq. 1). Each integer m gives one resonance, so the spectrum is a comb with spacing equal to the FSR.</p></details>
 <details><summary>What limits the intrinsic Q?</summary><p>Light lost on each trip: scattering from sidewall roughness, material absorption (including free carriers in doped modulator rings), and radiation at tight bends. In silicon wire rings, sidewall scattering usually dominates.</p></details>
 <details><summary>How fast can a ring modulator be?</summary><p>The optical bandwidth is f<sub>0</sub>/Q. At 1550 nm (193.4 THz) a loaded Q of 10,000 gives about 19 GHz, a photon lifetime of roughly 8 ps. The junction's RC time constant sets a second limit, and the slower of the two dominates.</p></details>
 <details><summary>Why not just design the ring at the right wavelength?</summary><p>Fabrication variation is too large. A width or thickness error of a few nanometres shifts the resonance by a comparable amount, which is many linewidths. Every practical design includes tuning, usually a heater with a control loop.</p></details>
 </section>
-<h2 id="further-reading">Further reading<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/microring.html#L50" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>Further reading</h2>
 <ol class="refs">
 <li>W. Bogaerts et al., “Silicon microring resonators,” <em>Laser &amp; Photonics Reviews</em>, vol. 6, no. 1, pp. 47–73, 2012.</li>
 <li>L. Chrostowski and M. Hochberg, <em>Silicon Photonics Design</em>, Cambridge University Press, 2015.</li>
 </ol>
 <p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>
-            </div>
-        </article>
-    </main>
-    <footer class="site-footer">
-        <div class="wrap footer-inner">
-            <p>© 2026 Ramy Rady</p>
-            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
-        </div>
-        <div class="wrap site-status">
-            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 07 October 2026</p>
-            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
-        </div>
-    </footer>
-    <script src="script.js?v=9"></script>
-    <script src="notes.js?v=9" defer></script>
-</body>
-</html>

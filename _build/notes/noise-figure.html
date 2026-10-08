@@ -1,81 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RF essentials: noise figure, link budgets, and the numbers worth memorizing · Ramy Rady</title>
-    <meta name="description" content="dB arithmetic, power in 50 Ω, noise figure through one receiver chain, sensitivity, and the wavelength, antenna, cable, and propagation numbers every RF engineer should know.">
-    <meta name="author" content="Ramy Rady">
-    <link rel="canonical" href="https://www.ramyrady.com/note-noise-figure.html">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
-    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="Ramy Rady">
-    <meta property="og:title" content="RF essentials: noise figure, link budgets, and the numbers worth memorizing · Ramy Rady">
-    <meta property="og:description" content="dB arithmetic, power in 50 Ω, noise figure through one receiver chain, sensitivity, and the wavelength, antenna, cable, and propagation numbers every RF engineer should know.">
-    <meta property="og:url" content="https://www.ramyrady.com/note-noise-figure.html">
-    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="RF essentials: noise figure, link budgets, and the numbers worth memorizing · Ramy Rady">
-    <meta name="twitter:description" content="dB arithmetic, power in 50 Ω, noise figure through one receiver chain, sensitivity, and the wavelength, antenna, cable, and propagation numbers every RF engineer should know.">
-    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-    <link rel="stylesheet" href="styles.css?v=9">
-    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "RF essentials: noise figure, link budgets, and the numbers worth memorizing",
-  "description": "dB arithmetic, power in 50 Ω, noise figure through one receiver chain, sensitivity, and the wavelength, antenna, cable, and propagation numbers every RF engineer should know.",
-  "datePublished": "2026-09",
-  "author": {
-    "@type": "Person",
-    "name": "Ramy Rady",
-    "url": "https://www.ramyrady.com"
-  }
-}
-    </script>
-</head>
-<body>
-    <a class="skip-link" href="#main">Skip to content</a>
-    <header class="site-header">
-        <div class="wrap header-inner">
-            <a class="brand" href="index.html">Ramy Rady</a>
-            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
-                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
-            </button>
-            <nav id="site-nav" class="site-nav" aria-label="Main">
-                <ul>
-                <li><a href="index.html">About</a></li>
-                <li><a href="research.html">Research</a></li>
-                <li><a href="publications.html">Publications</a></li>
-                <li><a href="teaching.html">Teaching</a></li>
-                <li><a href="notes.html">Notes</a></li>
-                <li><a href="resume.html">CV</a></li>
-                </ul>
-                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
-                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
-                </button>
-            </nav>
-        </div>
-    </header>
-    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L1" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
-    <main id="main">
-        <article class="wrap note-page">
-            <a class="back" href="notes.html">← All notes</a>
-            <header class="note-head">
-                <p class="eyebrow">Note · RF</p>
-                <h1>RF essentials: noise figure, link budgets, and the numbers worth memorizing</h1>
-                <p class="note-meta">Ramy Rady · <time datetime="2026-09">September 2026</time> · 17 min read</p>
-            </header>
-            <div class="note-body">
 <p>Fast estimates catch most RF design mistakes before a simulator does. This note collects the essentials in one place: the dB arithmetic and power levels you use every day, noise figure worked through one receiver chain, and the numbers worth memorizing for wavelength, antennas, cables, noise, and propagation, each with the formula behind it.</p>
 <nav class="toc" aria-label="Contents"><p class="toc-label">Contents</p><ol>
 <li><a href="#symbols">Symbols used</a></li>
@@ -95,7 +17,7 @@
 <li><a href="#optics">Optical numbers</a></li>
 <li><a href="#summary">Summary</a></li>
 </ol></nav>
-<h2 id="symbols"><span class="secnum">1</span>Symbols used<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L20" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="symbols"><span class="secnum">1</span>Symbols used</h2>
 <div class="tw"><table class="symtab"><thead><tr><th>Symbol</th><th>Meaning</th><th>Units</th></tr></thead><tbody>
 <tr><td><math><mi>F</mi></math></td><td>Noise factor, a linear ratio (<math><mi>F</mi><mo>≥</mo><mn>1</mn></math>)</td><td>—</td></tr>
 <tr><td><math><mtext>NF</mtext></math></td><td>Noise figure, <math><mn>10</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mi>F</mi></math></td><td>dB</td></tr>
@@ -112,7 +34,7 @@
 <tr><td><math><mi>δ</mi></math></td><td>Skin depth</td><td>m</td></tr>
 </tbody></table></div>
 
-<h2 id="db-arithmetic"><span class="secnum">2</span>Quick dB arithmetic<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L37" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="db-arithmetic"><span class="secnum">2</span>Quick dB arithmetic</h2>
 <p>A ratio in decibels is defined on power, so a voltage (or current) ratio picks up a factor of two:</p>
 <div class="eq math"><math display="block"><msub><mi>G</mi><mtext>dB</mtext></msub><mo>=</mo><mn>10</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mfrac><msub><mi>P</mi><mn>2</mn></msub><msub><mi>P</mi><mn>1</mn></msub></mfrac><mo>=</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mfrac><msub><mi>V</mi><mn>2</mn></msub><msub><mi>V</mi><mn>1</mn></msub></mfrac></math><span class="label">(1)</span></div>
 <p>Most link-budget mistakes are caught by a quick mental check. These ratios cover nearly every case:</p>
@@ -134,7 +56,7 @@
 
 <div class="widget" data-widget="db"><noscript>This interactive figure needs JavaScript.</noscript></div>
 
-<h2 id="power"><span class="secnum">3</span>Power and voltage in 50 Ω<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L59" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="power"><span class="secnum">3</span>Power and voltage in 50 Ω</h2>
 <p>With a sine wave into a resistance <math><mi>R</mi></math>, <math><mi>P</mi><mo>=</mo><msubsup><mi>V</mi><mtext>rms</mtext><mn>2</mn></msubsup><mo>/</mo><mi>R</mi></math> and <math><msub><mi>V</mi><mtext>pp</mtext></msub><mo>=</mo><mn>2</mn><msqrt><mn>2</mn></msqrt><mspace width="0.1em"></mspace><msub><mi>V</mi><mtext>rms</mtext></msub></math>. In 50 Ω:</p>
 <div class="tw"><table><thead><tr><th>Power</th><th></th><th><math><msub><mi>V</mi><mtext>rms</mtext></msub></math></th><th><math><msub><mi>V</mi><mtext>pp</mtext></msub></math></th></tr></thead><tbody>
 <tr><td>+30 dBm</td><td>1 W</td><td>7.07 V</td><td>20 V</td></tr>
@@ -151,7 +73,7 @@
 <li>Field-strength meters use dBµV: in 50 Ω, <strong>dBµV = dBm + 107</strong>.</li>
 </ul>
 
-<h2 id="definition"><span class="secnum">4</span>What noise figure measures<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L76" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="definition"><span class="secnum">4</span>What noise figure measures</h2>
 <p>The noise factor <math><mi>F</mi></math> is how much a block degrades the signal-to-noise ratio, measured with a source at the standard temperature <math><msub><mi>T</mi><mn>0</mn></msub><mo>=</mo><mn>290</mn><mtext>&#x2009;K</mtext></math>:</p>
 <div class="eq math"><math display="block"><mi>F</mi><mo>=</mo><mfrac><msub><mtext>SNR</mtext><mtext>in</mtext></msub><msub><mtext>SNR</mtext><mtext>out</mtext></msub></mfrac><mo separator="true">,</mo><mspace width="2em"></mspace><mtext>NF</mtext><mo>=</mo><mn>10</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mi>F</mi><mspace width="0.3em"></mspace><mtext>dB</mtext></math><span class="label">(2)</span></div>
 <ul class="steps">
@@ -164,12 +86,12 @@
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Think in kelvin for quiet stages.</strong> A 0.5 dB amplifier has <math><mi>F</mi><mo>≈</mo><mn>1.122</mn></math>, so <math><msub><mi>T</mi><mi>e</mi></msub><mo>≈</mo><mn>290</mn><mo>×</mo><mn>0.122</mn><mo>≈</mo><mn>35</mn></math> K. A 0.7 dB part is about 51 K. The 0.2 dB difference becomes a 45% difference in added noise.</p></aside>
 <aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Never add noise figures in dB.</strong> Convert <math><mtext>NF</mtext></math> and gain to linear ratios first, apply Friis (eq. 4), then convert the total back to dB.</p></aside>
 
-<h2 id="friis"><span class="secnum">5</span>The Friis formula<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L89" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="friis"><span class="secnum">5</span>The Friis formula</h2>
 <p>For <math><mi>n</mi></math> blocks in cascade, each with noise factor <math><msub><mi>F</mi><mi>i</mi></msub></math> and available gain <math><msub><mi>G</mi><mi>i</mi></msub></math>, both linear:</p>
 <div class="eq math"><math display="block"><msub><mi>F</mi><mtext>tot</mtext></msub><mo>=</mo><msub><mi>F</mi><mn>1</mn></msub><mo>+</mo><mfrac><mrow><msub><mi>F</mi><mn>2</mn></msub><mo>−</mo><mn>1</mn></mrow><msub><mi>G</mi><mn>1</mn></msub></mfrac><mo>+</mo><mfrac><mrow><msub><mi>F</mi><mn>3</mn></msub><mo>−</mo><mn>1</mn></mrow><mrow><msub><mi>G</mi><mn>1</mn></msub><msub><mi>G</mi><mn>2</mn></msub></mrow></mfrac><mo>+</mo><mo>⋯</mo><mo>=</mo><msub><mi>F</mi><mn>1</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>2</mn></mrow><mi>n</mi></munderover><mfrac><mrow><msub><mi>F</mi><mi>i</mi></msub><mo>−</mo><mn>1</mn></mrow><mrow><munderover><mo>∏</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>i</mi><mo>−</mo><mn>1</mn></mrow></munderover><msub><mi>G</mi><mi>j</mi></msub></mrow></mfrac></math><span class="label">(4)</span></div>
 <p>Read it as: <strong>each stage's added noise, <math><msub><mi>F</mi><mi>i</mi></msub><mo>−</mo><mn>1</mn></math>, is divided by all the gain in front of it.</strong> Once the signal has been amplified, later stages have a much harder time hurting it. The same formula in noise temperature is <math><msub><mi>T</mi><mtext>tot</mtext></msub><mo>=</mo><msub><mi>T</mi><mn>1</mn></msub><mo>+</mo><msub><mi>T</mi><mn>2</mn></msub><mo>/</mo><msub><mi>G</mi><mn>1</mn></msub><mo>+</mo><mo>⋯</mo></math>.</p>
 
-<h2 id="worked-chain"><span class="secnum">6</span>One receiver chain, worked through<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L94" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="worked-chain"><span class="secnum">6</span>One receiver chain, worked through</h2>
 <p>Take a simple three-stage receiver: a low-noise amplifier (LNA) → mixer → IF amplifier.</p>
 <div class="tw">
 <table>
@@ -199,7 +121,7 @@
 
 <div class="widget" data-widget="friis"><noscript>This interactive figure needs JavaScript.</noscript></div>
 
-<h2 id="lossy"><span class="secnum">7</span>Where a cable belongs<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L124" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="lossy"><span class="secnum">7</span>Where a cable belongs</h2>
 <p>A passive, lossy block at <math><msub><mi>T</mi><mn>0</mn></msub></math> has a noise factor equal to its loss, and a gain equal to its inverse:</p>
 <div class="eq math"><math display="block"><mi>F</mi><mo>=</mo><mi>L</mi><mo separator="true">,</mo><mspace width="1.5em"></mspace><mi>G</mi><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><mspace width="2em"></mspace><mo>⇒</mo><mspace width="2em"></mspace><mtext>NF</mtext><mo>=</mo><msub><mi>L</mi><mtext>dB</mtext></msub></math><span class="label">(5)</span></div>
 <p>Add 2 dB of cable or filter loss (<math><mi>L</mi><mo>≈</mo><mn>1.585</mn></math>) to the chain above:</p>
@@ -214,7 +136,7 @@
 </ul>
 <p>This is why antennas often have the LNA mounted right at the feed, and why the input filter's loss is fought over so hard.</p>
 
-<h2 id="sensitivity"><span class="secnum">8</span>From noise figure to sensitivity<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L139" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="sensitivity"><span class="secnum">8</span>From noise figure to sensitivity</h2>
 <p>The thermal noise power density from a matched source at <math><msub><mi>T</mi><mn>0</mn></msub></math> is:</p>
 <div class="eq math"><math display="block"><mi>k</mi><msub><mi>T</mi><mn>0</mn></msub><mo>=</mo><mo stretchy="false">(</mo><mn>1.38</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>23</mn></mrow></msup><mo stretchy="false">)</mo><mo>×</mo><mn>290</mn><mo>≈</mo><mn>4.0</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>21</mn></mrow></msup><mtext>&#x2009;W/Hz</mtext><mo>≈</mo><mn>−174</mn><mtext>&#x2009;dBm/Hz</mtext></math><span class="label">(6)</span></div>
 <p>A receiver's sensitivity, the weakest signal it can detect, follows directly:</p>
@@ -229,7 +151,7 @@
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Use eq. (7) to check a datasheet claim.</strong> A 100 MHz receiver claims −100 dBm sensitivity with 10 dB SNR. The floor plus SNR alone is −174 + 80 + 10 = −84 dBm, before any noise figure. Reaching −100 dBm would need <math><mtext>NF</mtext><mo>=</mo><mn>−16</mn></math> dB, which is impossible since <math><mi>F</mi><mo>≥</mo><mn>1</mn></math>. Something in the claim is off.</p></aside>
 <aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Check whether a mixer NF is SSB or DSB.</strong> A double-sideband figure is about 3 dB lower than the single-sideband figure for the same mixer. Mixing them up hides 3 dB in your budget.</p></aside>
 
-<h2 id="noise"><span class="secnum">9</span>Noise you can count on<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L154" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="noise"><span class="secnum">9</span>Noise you can count on</h2>
 <div class="tw"><table><thead><tr><th>Quantity</th><th>Formula</th><th>Value at room temperature</th></tr></thead><tbody>
 <tr><td>Thermal noise floor</td><td><math><mi>k</mi><msub><mi>T</mi><mn>0</mn></msub></math></td><td><strong>−174 dBm/Hz</strong>; +10 log<sub>10</sub>(B) for a bandwidth B</td></tr>
 <tr><td>Thermal voltage</td><td><math><mi>k</mi><mi>T</mi><mo>/</mo><mi>q</mi></math></td><td><strong>25.9 mV</strong> at 300 K (“26 mV”)</td></tr>
@@ -240,7 +162,7 @@
 </tbody></table></div>
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>kT/C does not depend on the resistor.</strong> A larger switch resistance makes the noise denser but limits its bandwidth by the same factor, so the total sampled noise is set by the capacitor alone. To halve the noise voltage in a sampling circuit you need four times the capacitance.</p></aside>
 
-<h2 id="wavelength"><span class="secnum">10</span>Frequency and wavelength<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L165" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="wavelength"><span class="secnum">10</span>Frequency and wavelength</h2>
 <p>A wave travels one wavelength in one period. In free space it moves at the speed of light, so</p>
 <div class="eq math"><math display="block"><mi>λ</mi><mo>=</mo><mfrac><mi>c</mi><mi>f</mi></mfrac><mspace width="2em"></mspace><mo>⇒</mo><mspace width="2em"></mspace><msub><mi>λ</mi><mtext>m</mtext></msub><mo>≈</mo><mfrac><mn>300</mn><msub><mi>f</mi><mtext>MHz</mtext></msub></mfrac></math><span class="label">(8)</span></div>
 <p>The second form is the one to memorize: divide 300 by the frequency in MHz and you get the wavelength in metres.</p>
@@ -252,7 +174,7 @@
 <aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Amateur radio bands are named by wavelength.</strong> The “20 m band” is 14.000–14.350 MHz, where 300 ÷ 14.2 ≈ 21 m. The “40 m band” is near 7 MHz and the “2 m band” near 144 MHz. If someone gives you a length in metres for a band, they mean the wavelength, not the antenna.</p></aside>
 <div class="widget" data-widget="wavelength"><noscript>This interactive figure needs JavaScript.</noscript></div>
 
-<h2 id="antennas"><span class="secnum">11</span>Antenna lengths<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L177" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="antennas"><span class="secnum">11</span>Antenna lengths</h2>
 <p>The simplest resonant antenna, the <strong>half-wave dipole</strong>, is two wires fed in the middle with a total length of about half a wavelength. A <strong>quarter-wave monopole</strong> is one of those halves standing over a ground plane, which acts as a mirror for the other half. Real wires have thickness and their ends have fringing capacitance, so resonance happens about 5% short of the ideal length:</p>
 <div class="eq math"><math display="block"><msub><mi>L</mi><mrow><mi>λ</mi><mo>/</mo><mn>2</mn></mrow></msub><mo>≈</mo><mn>0.95</mn><mo>×</mo><mfrac><mi>λ</mi><mn>2</mn></mfrac><mo>≈</mo><mfrac><mn>143</mn><msub><mi>f</mi><mtext>MHz</mtext></msub></mfrac><mtext>&#x2009;m</mtext><mo separator="true">,</mo><mspace width="2em"></mspace><msub><mi>L</mi><mrow><mi>λ</mi><mo>/</mo><mn>4</mn></mrow></msub><mo>≈</mo><mfrac><mn>71</mn><msub><mi>f</mi><mtext>MHz</mtext></msub></mfrac><mtext>&#x2009;m</mtext></math><span class="label">(9)</span></div>
 <div class="tw"><table><thead><tr><th>Frequency</th><th>Use</th><th><math><mi>λ</mi></math></th><th>Half-wave dipole</th><th>Quarter-wave monopole</th></tr></thead><tbody>
@@ -277,7 +199,7 @@
 <li>An antenna much smaller than <math><mi>λ</mi><mo>/</mo><mn>10</mn></math> is “electrically small”: its radiation resistance drops roughly as the square of its size, so ohmic loss and matching loss take over.</li>
 </ul>
 
-<h2 id="lines"><span class="secnum">12</span>Cables, boards, and when a wire becomes a line<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L202" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="lines"><span class="secnum">12</span>Cables, boards, and when a wire becomes a line</h2>
 <p>In a cable or on a circuit board the wave travels slower, by the square root of the effective dielectric constant, so the wavelength shrinks by the same factor:</p>
 <div class="eq math"><math display="block"><mi>v</mi><mo>=</mo><mfrac><mi>c</mi><msqrt><msub><mi>ε</mi><mtext>eff</mtext></msub></msqrt></mfrac><mo separator="true">,</mo><mspace width="2em"></mspace><msub><mi>λ</mi><mi>g</mi></msub><mo>=</mo><mfrac><msub><mi>λ</mi><mn>0</mn></msub><msqrt><msub><mi>ε</mi><mtext>eff</mtext></msub></msqrt></mfrac></math><span class="label">(10)</span></div>
 <div class="tw"><table><thead><tr><th>Medium</th><th><math><msub><mi>ε</mi><mtext>eff</mtext></msub></math></th><th>Velocity</th><th>Delay</th></tr></thead><tbody>
@@ -294,7 +216,7 @@
 <li><strong>Digital edges:</strong> the useful bandwidth of an edge is about <math><mn>0.35</mn><mo>/</mo><msub><mi>t</mi><mi>r</mi></msub></math> (10–90% rise time). A 35 ps edge reaches 10 GHz even if the data rate is far lower.</li>
 </ul>
 
-<h2 id="metals"><span class="secnum">13</span>Metals and free space<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L219" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="metals"><span class="secnum">13</span>Metals and free space</h2>
 <p>At high frequency, current crowds into a thin layer at the surface of a conductor, the skin depth:</p>
 <div class="eq math"><math display="block"><mi>δ</mi><mo>=</mo><msqrt><mfrac><mi>ρ</mi><mrow><mi>π</mi><mi>f</mi><msub><mi>μ</mi><mn>0</mn></msub></mrow></mfrac></msqrt><mspace width="2em"></mspace><msub><mi>δ</mi><mtext>Cu</mtext></msub><mo>≈</mo><mfrac><mrow><mn>66</mn><mtext>&#x2009;µm</mtext></mrow><msqrt><msub><mi>f</mi><mtext>MHz</mtext></msub></msqrt></mfrac></math><span class="label">(11)</span></div>
 <ul class="steps">
@@ -303,7 +225,7 @@
 <li>Free space has a wave impedance of <math><msqrt><msub><mi>μ</mi><mn>0</mn></msub><mo>/</mo><msub><mi>ε</mi><mn>0</mn></msub></msqrt><mo>≈</mo><mn>377</mn></math> Ω.</li>
 </ul>
 
-<h2 id="path-loss"><span class="secnum">14</span>How far a signal goes<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L228" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="path-loss"><span class="secnum">14</span>How far a signal goes</h2>
 <p>Between two isotropic antennas in free space, the loss grows with the square of both distance and frequency (Friis):</p>
 <div class="eq math"><math display="block"><msub><mtext>FSPL</mtext><mtext>dB</mtext></msub><mo>=</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><msub><mi>d</mi><mtext>km</mtext></msub><mo>+</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><msub><mi>f</mi><mtext>MHz</mtext></msub><mo>+</mo><mn>32.45</mn></math><span class="label">(12)</span></div>
 <ul class="steps">
@@ -312,7 +234,7 @@
 <li>The frequency term reflects a smaller antenna aperture at higher frequency, not extra loss in the air. With fixed-size dish antennas at both ends, higher frequency actually gains.</li>
 </ul>
 
-<h2 id="optics"><span class="secnum">15</span>Optical numbers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L237" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="optics"><span class="secnum">15</span>Optical numbers</h2>
 <div class="tw"><table><thead><tr><th>Quantity</th><th>Rule</th><th>Value</th></tr></thead><tbody>
 <tr><td>Frequency of 1550 nm</td><td><math><mi>f</mi><mo>=</mo><mi>c</mi><mo>/</mo><mi>λ</mi></math></td><td><strong>193.4 THz</strong> (1310 nm: 228.8 THz)</td></tr>
 <tr><td>Photon energy</td><td><math><mi>E</mi><mo stretchy="false">[</mo><mtext>eV</mtext><mo stretchy="false">]</mo><mo>≈</mo><mn>1.24</mn><mo>/</mo><mi>λ</mi><mo stretchy="false">[</mo><mtext>µm</mtext><mo stretchy="false">]</mo></math></td><td>0.80 eV at 1550 nm</td></tr>
@@ -326,7 +248,7 @@
 
 <section class="qa">
 
-<h2 id="summary"><span class="secnum">16</span>Summary<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L251" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="summary"><span class="secnum">16</span>Summary</h2>
 <div class="tw"><table><thead><tr><th>Result</th><th>Equation</th><th></th></tr></thead><tbody>
 <tr><td>dB on power vs. voltage</td><td><math><mn>10</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mfrac><msub><mi>P</mi><mn>2</mn></msub><msub><mi>P</mi><mn>1</mn></msub></mfrac><mo>=</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mfrac><msub><mi>V</mi><mn>2</mn></msub><msub><mi>V</mi><mn>1</mn></msub></mfrac></math></td><td>(1)</td></tr>
 <tr><td>Noise factor and figure</td><td><math><mi>F</mi><mo>=</mo><msub><mtext>SNR</mtext><mtext>in</mtext></msub><mo>/</mo><msub><mtext>SNR</mtext><mtext>out</mtext></msub><mo separator="true">,</mo><mspace width="0.6em"></mspace><mtext>NF</mtext><mo>=</mo><mn>10</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mi>F</mi></math></td><td>(2)</td></tr>
@@ -349,7 +271,7 @@
 
 <section class="qa">
 <section class="qa">
-<h2 id="questions">Questions &amp; answers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L274" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2 id="questions">Questions &amp; answers</h2>
 <details><summary>Why is noise figure defined with a 290 K source?</summary><p>It is a convention, chosen as roughly room temperature, so that numbers from different labs and datasheets compare directly (k·290 K ≈ 4.0 × 10<sup>−21</sup> W/Hz, or −174 dBm/Hz). When the real source is much colder, like an antenna looking at the sky, work in noise temperature instead: the noise figure alone no longer tells you the SNR.</p></details>
 <details><summary>Can a noise figure be negative?</summary><p>Not for a linear two-port fed from a 290 K source: F ≥ 1, so NF ≥ 0 dB. A negative number on a datasheet means a different definition (for example a cooled reference) or a measurement error.</p></details>
 <details><summary>Why does loss in front of the LNA count dB for dB?</summary><p>A passive, lossy block at 290 K has F = L (eq. 5), and as the first stage its noise is not divided by any gain. Try it in the receiver budget above: move 2 dB of loss before and after the LNA.</p></details>
@@ -360,7 +282,7 @@
 <details><summary>How is noise figure measured on a real chip?</summary><p>Most often with the Y-factor method: a calibrated noise source is switched on and off and the ratio of output powers gives F. The note on post-silicon measurement walks through it with a calculator.</p></details>
 </section>
 
-<h2 id="further-reading">Further reading<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/noise-figure.html#L285" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h2>Further reading</h2>
 <ol class="refs">
 <li>H. T. Friis, “Noise figures of radio receivers,” <em>Proc. IRE</em>, vol. 32, no. 7, pp. 419–422, 1944.</li>
 <li>B. Razavi, <em>RF Microelectronics</em>, 2nd ed., Prentice Hall, 2011.</li>
@@ -370,20 +292,3 @@
 <li><em>The ARRL Antenna Book</em>, American Radio Relay League (any recent edition), for practical wire antennas.</li>
 </ol>
 <p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>
-            </div>
-        </article>
-    </main>
-    <footer class="site-footer">
-        <div class="wrap footer-inner">
-            <p>© 2026 Ramy Rady</p>
-            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
-        </div>
-        <div class="wrap site-status">
-            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 07 October 2026</p>
-            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
-        </div>
-    </footer>
-    <script src="script.js?v=9"></script>
-    <script src="notes.js?v=9" defer></script>
-</body>
-</html>
