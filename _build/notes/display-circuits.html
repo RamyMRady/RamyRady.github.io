@@ -1,0 +1,185 @@
+<p>A phone or watch display is a large analog circuit: millions of transistors on glass, each holding a voltage that sets a current through a light-emitting diode, refreshed dozens of times a second, and powered from rails that must stay quiet enough that the eye never sees them move. This note covers the circuits that make that work: the pixel driver, the LEDs it drives and how to model them, the driver chip that feeds the columns, and the switched-capacitor converters and LDOs that power it all.</p>
+<nav class="toc" aria-label="Contents"><p class="toc-label">Contents</p><ol>
+<li><a href="#organization">How a display is organized</a></li>
+<li><a href="#backplanes">Thin-film transistors</a></li>
+<li><a href="#pixel">The 2T1C pixel</a></li>
+<li><a href="#compensation">Compensating the pixel</a></li>
+<li><a href="#led">LEDs and how to model them</a></li>
+<li><a href="#ddic">The display driver IC</a></li>
+<li><a href="#power">Power: rails and converters</a></li>
+<li><a href="#sc">Switched-capacitor converters</a></li>
+<li><a href="#ldo">LDO design</a></li>
+</ol></nav>
+
+<h2 id="organization"><span class="secnum">1</span>How a display is organized</h2>
+<p>An active-matrix display is a grid. Each row has a <strong>gate (scan) line</strong> and each column a <strong>data (source) line</strong>. One row at a time, the gate line turns on that row's switch transistors, every column writes its data voltage into the selected pixels, and the row turns off and holds the value on a storage capacitor until the next frame.</p>
+<div class="eq math"><math display="block"><msub><mi>t</mi><mtext>line</mtext></msub><mo>≈</mo><mfrac><mn>1</mn><mrow><msub><mi>f</mi><mtext>frame</mtext></msub><mo>×</mo><msub><mi>N</mi><mtext>rows</mtext></msub></mrow></mfrac><mspace width="2em"></mspace><mtext>2400 rows at 120 Hz</mtext><mo>⇒</mo><msub><mi>t</mi><mtext>line</mtext></msub><mo>≈</mo><mn>3.5</mn><mtext>&#x2009;µs</mtext></math><span class="label">(1)</span></div>
+<p>Everything in the column path, the driver's output buffer, the long resistive-capacitive data line, and the pixel's switch, must settle inside that line time, minus blanking and compensation phases.</p>
+<ul class="steps">
+<li><strong>LCD:</strong> the liquid crystal is a capacitor whose voltage sets how much backlight passes. One transistor and one capacitor per subpixel (1T1C); voltage-driven.</li>
+<li><strong>OLED and micro-LED:</strong> each subpixel emits its own light in proportion to <em>current</em>. The pixel circuit must turn a stored voltage into an accurate current for a whole frame.</li>
+</ul>
+
+<h2 id="backplanes"><span class="secnum">2</span>Thin-film transistors</h2>
+<p>The pixel transistors are thin-film transistors (TFTs) deposited on glass or polyimide. Their properties set what the pixel circuit has to correct:</p>
+<div class="tw"><table><thead><tr><th>Technology</th><th>Mobility (cm²/V·s)</th><th>Strength</th><th>Weakness</th></tr></thead><tbody>
+<tr><td>Amorphous silicon (a-Si)</td><td>≈ 0.5–1</td><td>Uniform, cheap, large area</td><td>Slow; threshold drifts under bias stress</td></tr>
+<tr><td>Low-temperature polysilicon (LTPS)</td><td>≈ 50–100+</td><td>Fast, CMOS (n and p)</td><td>Grain boundaries make the threshold vary from TFT to TFT</td></tr>
+<tr><td>Oxide (IGZO)</td><td>≈ 10–20</td><td>Very low leakage, uniform</td><td>n-type only; threshold shifts with light and bias</td></tr>
+<tr><td>LTPO (LTPS + oxide)</td><td>both</td><td>LTPS drivers with oxide switches</td><td>More process steps</td></tr>
+</tbody></table></div>
+<p>LTPO is what lets watches and phones drop the refresh rate to 1–10 Hz for static content: an oxide switch leaks so little that the stored voltage barely moves over a long frame.</p>
+
+<h2 id="pixel"><span class="secnum">3</span>The 2T1C pixel</h2>
+<p>The simplest current-driving pixel has two transistors and one capacitor. The switch T1 connects the data line to the storage capacitor C<sub>st</sub> while the row is selected. The drive transistor T2 then converts the stored gate voltage into the LED current, operating in saturation:</p>
+<div class="eq math"><math display="block"><msub><mi>I</mi><mtext>LED</mtext></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msub><mi>μ</mi><mtext>eff</mtext></msub><msub><mi>C</mi><mtext>ox</mtext></msub><mfrac><mi>W</mi><mi>L</mi></mfrac><msup><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mtext>GS</mtext></msub><mo>−</mo><msub><mi>V</mi><mtext>th</mtext></msub><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></math><span class="label">(2)</span></div>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 520 210" role="img" aria-label="2T1C pixel: data line through switch T1 to the gate of drive transistor T2 and storage capacitor; T2 drives the LED between ELVDD and ELVSS.">
+<g class="sm" stroke-width="1.6" fill="none">
+<path d="M40 30V190"/><path d="M40 90H90"/><path d="M90 78V102M98 78V102"/><path d="M98 90H170"/><path d="M94 40V78"/><path d="M60 40H250"/>
+<path d="M170 90V130"/><path d="M160 130H180M160 138H180"/><path d="M170 138V170"/>
+<path d="M260 30H300V70"/><path d="M290 82V108M298 78V112"/><path d="M170 95H290"/><path d="M300 120V140"/>
+<path d="M285 140H315L300 160Z"/><path d="M285 160H315"/><path d="M300 160V190"/>
+</g>
+<g font-size="12.5">
+<text class="ff" x="22" y="24">Data</text><text class="ff" x="100" y="34">Scan (row select)</text><text class="ff" x="104" y="122">T1</text>
+<text class="ff" x="186" y="140">C<tspan font-size="9" dy="3">st</tspan></text><text class="ff" x="310" y="98">T2 (drive)</text>
+<text class="ff" x="262" y="24">ELVDD</text><text class="ff" x="336" y="160">LED</text><text class="ff" x="286" y="204">ELVSS</text>
+<text class="fs" x="330" y="120">I = ½k(V<tspan font-size="9" dy="3">GS</tspan><tspan dy="-3"> − V</tspan><tspan font-size="9" dy="3">th</tspan><tspan dy="-3">)²</tspan></text>
+</g>
+<g class="ss" stroke-width="1.5" fill="none"><path d="M318 146l12 -10M325 136h5v5"/><path d="M318 156l12 -10M325 146h5v5"/></g>
+</svg>
+</div>
+<figcaption>Figure 1. A 2T1C pixel (drawn with an n-type drive transistor). The storage capacitor holds T2's gate voltage for the whole frame after T1 turns off.</figcaption>
+</figure>
+<p>The square law is the problem. A threshold error <math><mi>Δ</mi><msub><mi>V</mi><mtext>th</mtext></msub></math> changes the current by</p>
+<div class="eq math"><math display="block"><mfrac><mrow><mi>Δ</mi><mi>I</mi></mrow><mi>I</mi></mfrac><mo>≈</mo><mo>−</mo><mfrac><mrow><mn>2</mn><mspace width="0.1em"></mspace><mi>Δ</mi><msub><mi>V</mi><mtext>th</mtext></msub></mrow><mrow><msub><mi>V</mi><mtext>GS</mtext></msub><mo>−</mo><msub><mi>V</mi><mtext>th</mtext></msub></mrow></mfrac></math><span class="label">(3)</span></div>
+<p>With 1 V of overdrive, a 50 mV threshold difference is a 10% brightness difference. The eye notices a few percent between neighbouring areas as blotchy non-uniformity (“mura”), and dark gray levels, which use small overdrive, are the worst.</p>
+<div class="widget" data-widget="pixels"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<p>Other errors add to the threshold spread: threshold drift with time (bias stress in a-Si and oxide), IR drop along the ELVDD supply mesh so pixels far from the feed see less V<sub>GS</sub>, OLED aging that raises the diode's voltage and lowers its efficiency, and charge injection and clock feedthrough from T1 when it turns off.</p>
+
+<h2 id="compensation"><span class="secnum">4</span>Compensating the pixel</h2>
+<h3>Internal compensation: sample the threshold inside the pixel</h3>
+<p>Most LTPS phone OLEDs use a pixel with around seven transistors and one capacitor (7T1C). With a p-type drive transistor, the sequence is:</p>
+<ul class="steps">
+<li><strong>Initialize:</strong> reset the drive transistor's gate and the LED anode to known voltages.</li>
+<li><strong>Sample and program:</strong> connect the drive transistor as a diode while the data voltage is applied to its source. Its gate settles to <math><msub><mi>V</mi><mtext>data</mtext></msub><mo>−</mo><mrow><mo>|</mo><msub><mi>V</mi><mtext>th</mtext></msub><mo>|</mo></mrow></math>, storing the threshold on C<sub>st</sub>.</li>
+<li><strong>Emit:</strong> switch the source to ELVDD. Now <math><msub><mi>V</mi><mtext>SG</mtext></msub><mo>=</mo><msub><mi>V</mi><mtext>ELVDD</mtext></msub><mo>−</mo><msub><mi>V</mi><mtext>data</mtext></msub><mo>+</mo><mrow><mo>|</mo><msub><mi>V</mi><mtext>th</mtext></msub><mo>|</mo></mrow></math>, and the threshold cancels:</li>
+</ul>
+<div class="eq math"><math display="block"><msub><mi>I</mi><mtext>LED</mtext></msub><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><msup><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mtext>SG</mtext></msub><mo>−</mo><mrow><mo>|</mo><msub><mi>V</mi><mtext>th</mtext></msub><mo>|</mo></mrow><mo stretchy="false">)</mo></mrow><mn>2</mn></msup><mo>=</mo><mfrac><mi>k</mi><mn>2</mn></mfrac><msup><mrow><mo stretchy="false">(</mo><msub><mi>V</mi><mtext>ELVDD</mtext></msub><mo>−</mo><msub><mi>V</mi><mtext>data</mtext></msub><mo stretchy="false">)</mo></mrow><mn>2</mn></msup></math><span class="label">(4)</span></div>
+<p>The cost is time: the diode-connected transistor must settle within the line time, and that slows down at low currents. A separate emission-control transistor also lets the panel turn rows off for part of a frame, which is how many OLEDs dim with PWM.</p>
+<h3>External compensation: measure and correct in the driver</h3>
+<p>Large OLED TVs add a sense transistor and sense line to each subpixel. The driver periodically measures each drive transistor's current (and the OLED's voltage), and corrects the data value digitally. It handles threshold and mobility variation and slow aging, at the cost of an extra line per column and a sensing ADC in the driver.</p>
+<h3>Current programming</h3>
+<p>Programming the pixel with a current instead of a voltage corrects threshold and mobility at once, but small currents charge the long data line slowly, so dark gray levels settle too late. Chaji's thesis (reference 1) develops faster schemes for exactly this problem.</p>
+
+<h2 id="led"><span class="secnum">5</span>LEDs and how to model them</h2>
+<p>For circuit design, an LED (organic or inorganic) is a diode with a series resistance, a small leakage path, and a capacitance:</p>
+<div class="eq math"><math display="block"><mi>I</mi><mo>=</mo><msub><mi>I</mi><mi>S</mi></msub><mrow><mo>(</mo><msup><mi>e</mi><mrow><mo stretchy="false">(</mo><mi>V</mi><mo>−</mo><mi>I</mi><msub><mi>R</mi><mi>S</mi></msub><mo stretchy="false">)</mo><mo>/</mo><mi>n</mi><msub><mi>V</mi><mi>T</mi></msub></mrow></msup><mo>−</mo><mn>1</mn><mo>)</mo></mrow><mo>+</mo><mfrac><mrow><mi>V</mi><mo>−</mo><mi>I</mi><msub><mi>R</mi><mi>S</mi></msub></mrow><msub><mi>R</mi><mi>P</mi></msub></mfrac></math><span class="label">(5)</span></div>
+<ul class="steps">
+<li><strong>Turn-on voltage</strong> follows the photon energy: roughly 1.8–2.0 V for red, 2.6–3.0 V for green and blue InGaN. The ideality factor <math><mi>n</mi></math> is often 1.5–3 in real devices.</li>
+<li><strong>The capacitance</strong> (an OLED is a thin film between two electrodes, often several femtofarads per square micron) has to be charged to the turn-on voltage before light appears, which matters for short PWM pulses and low gray levels.</li>
+<li><strong>Efficiency</strong> splits into how many electrons make photons (internal quantum efficiency, IQE) and how many photons escape (light extraction): <math><mtext>EQE</mtext><mo>=</mo><mtext>IQE</mtext><mo>×</mo><msub><mi>η</mi><mtext>extraction</mtext></msub></math>.</li>
+</ul>
+<p>The standard model for IQE is the ABC model: carriers recombine through defects (rate <math><mi>A</mi><mi>n</mi></math>), radiatively (<math><mi>B</mi><msup><mi>n</mi><mn>2</mn></msup></math>), or by Auger processes (<math><mi>C</mi><msup><mi>n</mi><mn>3</mn></msup></math>). Only the middle term makes light:</p>
+<div class="eq math"><math display="block"><mtext>IQE</mtext><mo>=</mo><mfrac><mrow><mi>B</mi><msup><mi>n</mi><mn>2</mn></msup></mrow><mrow><mi>A</mi><mi>n</mi><mo>+</mo><mi>B</mi><msup><mi>n</mi><mn>2</mn></msup><mo>+</mo><mi>C</mi><msup><mi>n</mi><mn>3</mn></msup></mrow></mfrac><mo separator="true">,</mo><mspace width="1.5em"></mspace><msub><mi>A</mi><mtext>eff</mtext></msub><mo>≈</mo><msub><mi>A</mi><mn>0</mn></msub><mo>+</mo><mfrac><mrow><mn>4</mn><mi>S</mi></mrow><mi>d</mi></mfrac></math><span class="label">(6)</span></div>
+<p>For a square micro-LED of side <math><mi>d</mi></math>, damaged sidewalls add non-radiative recombination with surface velocity <math><mi>S</mi></math>, in proportion to perimeter over area, <math><mn>4</mn><mo>/</mo><mi>d</mi></math>. Shrinking the LED raises <math><mi>A</mi></math>, and efficiency at the low current densities a display uses falls sharply. Sidewall passivation (reference 4) recovers much of it.</p>
+<div class="widget" data-widget="led"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Drive micro-LEDs with pulse width, not just amplitude.</strong> InGaN LEDs shift color with current, and their efficiency collapses at very low current. Holding the current at an efficient level and setting brightness with pulse width (PWM), or combining PWM with a few current levels, keeps color and efficiency stable. Reference 3 is one LTPS pixel that does this.</p></aside>
+
+<h2 id="ddic"><span class="secnum">6</span>The display driver IC</h2>
+<p>A mobile display driver IC (DDIC) takes video over MIPI DSI (or eDP for laptops), stores or buffers it, and drives a thousand or more data columns. Its main blocks:</p>
+<ul class="steps">
+<li><strong>Timing controller:</strong> generates the scan and emission timing, and on many panels drives a gate driver built from TFTs on the glass itself (gate-on-array), a shift register that uses bootstrapped capacitors to swing its outputs past the supply.</li>
+<li><strong>Gamma:</strong> maps 8–10 bit codes to voltages on the panel's nonlinear brightness curve, usually with a tapped resistor string per color.</li>
+<li><strong>Source amplifiers:</strong> a rail-to-rail class-AB buffer per column that drives the data line's distributed resistance and capacitance. Its offset must be a fraction of one gray step, so drivers use offset cancellation or chopping between frames.</li>
+</ul>
+<p>Settling sets the speed requirement. To settle within half an LSB of an N-bit level through a single time constant τ:</p>
+<div class="eq math"><math display="block"><msub><mi>t</mi><mtext>settle</mtext></msub><mo>=</mo><mi>τ</mi><mspace width="0.17em"></mspace><mi>ln</mi><mo>&#x2061;</mo><mspace width="0.17em"></mspace><msup><mn>2</mn><mrow><mi>N</mi><mo>+</mo><mn>1</mn></mrow></msup><mspace width="2em"></mspace><mi>N</mi><mo>=</mo><mn>10</mn><mo>⇒</mo><msub><mi>t</mi><mtext>settle</mtext></msub><mo>≈</mo><mn>7.6</mn><mspace width="0.1em"></mspace><mi>τ</mi></math><span class="label">(7)</span></div>
+<p>With a few microseconds per line and part of it used by compensation, the column's RC and the buffer's slew rate leave little margin, especially at the far end of a long data line.</p>
+
+<h2 id="power"><span class="secnum">7</span>Power: rails and converters</h2>
+<div class="tw"><table><thead><tr><th>Rail</th><th>Typical level</th><th>Feeds</th><th>Usually made by</th></tr></thead><tbody>
+<tr><td>ELVDD</td><td>about +4 to +5 V</td><td>Drive transistors and LEDs (positive side)</td><td>Inductive boost converter</td></tr>
+<tr><td>ELVSS</td><td>a few volts negative</td><td>LED cathodes (common)</td><td>Inverting buck-boost</td></tr>
+<tr><td>AVDD</td><td>about 5–7 V</td><td>Source amplifiers, gamma</td><td>Boost or charge pump</td></tr>
+<tr><td>VGH / VGL</td><td>several volts above and below</td><td>Gate driver high and low levels</td><td>Charge pumps</td></tr>
+<tr><td>Analog references</td><td>precise, quiet</td><td>Gamma reference, bias</td><td>LDOs after the converters</td></tr>
+</tbody></table></div>
+<p>The panel current depends on the image: a white screen can draw several times what a dark one does. ELVDD and ELVSS must therefore hold their voltage across large, fast load steps, because the voltage across every pixel depends on them. Ripple shows up directly as flicker or banding.</p>
+
+<h2 id="sc"><span class="secnum">8</span>Switched-capacitor converters</h2>
+<p>A switched-capacitor (SC) converter moves charge with capacitors and switches only, no inductor, which makes it small and easy to integrate. Its ideal output is a fixed ratio of the input (2:1, 1:2, 3:2, …). Under load the output drops as if through an output resistance, which has two limits (Seeman and Sanders, reference 5):</p>
+<div class="eq math"><math display="block"><msub><mi>R</mi><mtext>SSL</mtext></msub><mo>=</mo><munder><mo>∑</mo><mi>i</mi></munder><mfrac><msubsup><mi>a</mi><mrow><mi>c</mi><mo separator="true">,</mo><mi>i</mi></mrow><mn>2</mn></msubsup><mrow><msub><mi>C</mi><mi>i</mi></msub><msub><mi>f</mi><mtext>sw</mtext></msub></mrow></mfrac><mo separator="true">,</mo><mspace width="1.2em"></mspace><msub><mi>R</mi><mtext>FSL</mtext></msub><mo>=</mo><mn>2</mn><munder><mo>∑</mo><mi>i</mi></munder><msub><mi>R</mi><mi>i</mi></msub><msubsup><mi>a</mi><mrow><mi>r</mi><mo separator="true">,</mo><mi>i</mi></mrow><mn>2</mn></msubsup><mo separator="true">,</mo><mspace width="1.2em"></mspace><msub><mi>R</mi><mtext>out</mtext></msub><mo>≈</mo><msqrt><msubsup><mi>R</mi><mtext>SSL</mtext><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>R</mi><mtext>FSL</mtext><mn>2</mn></msubsup></msqrt></math><span class="label">(8)</span></div>
+<ul class="steps">
+<li><strong>Slow-switching limit (SSL):</strong> the capacitors fully charge and discharge each cycle; loss comes from charge sharing and falls as <math><mn>1</mn><mo>/</mo><mo stretchy="false">(</mo><mi>C</mi><msub><mi>f</mi><mtext>sw</mtext></msub><mo stretchy="false">)</mo></math>. The <math><msub><mi>a</mi><mi>c</mi></msub></math> are each capacitor's charge per unit of output charge.</li>
+<li><strong>Fast-switching limit (FSL):</strong> the capacitors barely change voltage; loss is set by switch resistance, independent of frequency.</li>
+<li>For a 2:1 series-parallel converter with one flying capacitor and four switches, <math><msub><mi>R</mi><mtext>SSL</mtext></msub><mo>=</mo><mn>1</mn><mo>/</mo><mo stretchy="false">(</mo><mn>4</mn><mi>C</mi><msub><mi>f</mi><mtext>sw</mtext></msub><mo stretchy="false">)</mo></math> and <math><msub><mi>R</mi><mtext>FSL</mtext></msub><mo>=</mo><mn>2</mn><msub><mi>R</mi><mtext>on</mtext></msub></math>. Switching faster than the corner where they meet only adds gate-drive loss.</li>
+</ul>
+<div class="widget" data-widget="sc"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>An SC converter is efficient only near its ratio.</strong> Regulating the output below <math><mi>M</mi><msub><mi>V</mi><mtext>in</mtext></msub></math> is done by raising the output resistance, which burns power exactly like a linear regulator: <math><mi>η</mi><mo>≤</mo><msub><mi>V</mi><mtext>out</mtext></msub><mo>/</mo><mo stretchy="false">(</mo><mi>M</mi><msub><mi>V</mi><mtext>in</mtext></msub><mo stretchy="false">)</mo></math>. Converters for wide input ranges switch between several ratios.</p></aside>
+
+<h2 id="ldo"><span class="secnum">9</span>LDO design</h2>
+<p>A low-dropout regulator (LDO) is an error amplifier, a pass transistor (usually PMOS so the dropout can be a few hundred millivolts), and a feedback divider. Display drivers use LDOs after the switching converters to give the gamma references and analog blocks a supply free of switching ripple.</p>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 520 190" role="img" aria-label="LDO: error amplifier compares a reference with a divided output and drives the gate of a PMOS pass transistor between VIN and VOUT; output capacitor and load.">
+<g class="sm" stroke-width="1.6" fill="none">
+<path d="M60 70L120 100L60 130Z"/><path d="M30 85H60"/><path d="M120 100H240V60"/>
+<path d="M200 30H330"/><path d="M240 60H262M262 48V72M270 44V76"/><path d="M270 50H300V30M270 70H300V110"/>
+<path d="M300 110H420"/><path d="M360 110V125"/><path d="M350 125H370M350 132H370"/><path d="M360 132V160"/>
+<path d="M410 110V160"/><path d="M300 110V120"/><path d="M294 120h12v18h-12z"/><path d="M300 138V146"/><path d="M294 146h12v18h-12z"/><path d="M300 164V172"/>
+<path d="M300 142H40V115H60"/>
+</g>
+<g font-size="12.5">
+<text class="ff" x="10" y="80">V<tspan font-size="9" dy="3">REF</tspan></text><text class="ff" x="70" y="104">EA</text>
+<text class="ff" x="200" y="24">V<tspan font-size="9" dy="3">IN</tspan></text><text class="ff" x="310" y="64">pass device</text>
+<text class="ff" x="425" y="114">V<tspan font-size="9" dy="3">OUT</tspan></text><text class="ff" x="374" y="134">C<tspan font-size="9" dy="3">out</tspan></text><text class="ff" x="418" y="150">load</text>
+<text class="fm" x="312" y="134">R<tspan font-size="9" dy="3">1</tspan></text><text class="fm" x="312" y="160">R<tspan font-size="9" dy="3">2</tspan></text>
+</g>
+</svg>
+</div>
+<figcaption>Figure 2. An LDO regulator. The loop holds the divided output equal to the reference: V<sub>OUT</sub> = V<sub>REF</sub>(1 + R<sub>1</sub>/R<sub>2</sub>).</figcaption>
+</figure>
+<p>The specifications and the equations behind them:</p>
+<div class="tw"><table><thead><tr><th>Specification</th><th>What sets it</th></tr></thead><tbody>
+<tr><td>Dropout</td><td>Pass device on-resistance at full load: <math><msub><mi>V</mi><mtext>DO</mtext></msub><mo>=</mo><msub><mi>I</mi><mtext>max</mtext></msub><msub><mi>R</mi><mtext>on</mtext></msub></math></td></tr>
+<tr><td>Load regulation</td><td><math><mi>Δ</mi><msub><mi>V</mi><mtext>out</mtext></msub><mo>/</mo><mi>Δ</mi><msub><mi>I</mi><mtext>L</mtext></msub><mo>≈</mo><msub><mi>R</mi><mrow><mtext>out,open</mtext></mrow></msub><mo>/</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>T</mi><mo stretchy="false">)</mo></math>, with loop gain <math><mi>T</mi></math></td></tr>
+<tr><td>Load transient</td><td><math><mi>Δ</mi><mi>V</mi><mo>≈</mo><mi>Δ</mi><msub><mi>I</mi><mtext>L</mtext></msub><mspace width="0.1em"></mspace><mi>Δ</mi><mi>t</mi><mo>/</mo><msub><mi>C</mi><mtext>out</mtext></msub></math>, where <math><mi>Δ</mi><mi>t</mi></math> ≈ loop response time (about <math><mn>1</mn><mo>/</mo><msub><mtext>BW</mtext><mtext>cl</mtext></msub></math>) plus gate slewing time</td></tr>
+<tr><td>PSRR</td><td>At low frequency, roughly the loop gain; above the loop bandwidth, the output capacitor and the pass device's parasitics</td></tr>
+<tr><td>Quiescent current</td><td>Error amplifier and divider bias; a tradeoff against speed</td></tr>
+</tbody></table></div>
+<h3>Stability</h3>
+<p>The loop has at least two poles: the output pole <math><mn>1</mn><mo>/</mo><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><msub><mi>R</mi><mtext>L</mtext></msub><msub><mi>C</mi><mtext>out</mtext></msub><mo stretchy="false">)</mo></math>, which moves by orders of magnitude with load current, and the pole at the large gate of the pass device. Two families of solutions:</p>
+<ul class="steps">
+<li><strong>External capacitor (µF):</strong> the output pole is dominant and the loop's unity-gain frequency is <math><mo>≈</mo><msub><mi>g</mi><mtext>m,loop</mtext></msub><mo>/</mo><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><msub><mi>C</mi><mtext>out</mtext></msub><mo stretchy="false">)</mo></math>. The gate pole must sit above it; historically the capacitor's ESR zero helped.</li>
+<li><strong>Capacitor-less (on-chip, pF to nF):</strong> the output pole is fast, so the gate node is made dominant with Miller compensation and techniques such as damping-factor control (reference 6). These LDOs settle in nanoseconds but rely on a fast loop for transients.</li>
+</ul>
+<p>Phase margin follows from where the second pole sits: <math><mtext>PM</mtext><mo>≈</mo><msup><mn>90</mn><mo>∘</mo></msup><mo>−</mo><mi>arctan</mi><mo>&#x2061;</mo><mo stretchy="false">(</mo><msub><mi>f</mi><mtext>UGB</mtext></msub><mo>/</mo><msub><mi>f</mi><msub><mi>p</mi><mn>2</mn></msub></msub><mo stretchy="false">)</mo></math>.</p>
+<div class="widget" data-widget="ldo"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Check stability at minimum and maximum load.</strong> The output pole moves with load current, and so does the pass device's transconductance. An LDO that is stable at full load can ring at 10 µA. Sweep load current in every AC and transient simulation.</p></aside>
+
+<section class="qa">
+<h2 id="questions">Questions &amp; answers</h2>
+<details><summary>Why are OLED pixels current-driven when LCD pixels are voltage-driven?</summary><p>A liquid crystal responds to the voltage across it and draws almost no current, so storing a voltage is enough. An OLED's brightness is proportional to the current through it, and its voltage for a given current varies from pixel to pixel and with age, so the pixel must turn a stored voltage into a controlled current.</p></details>
+<details><summary>Why are dark gray levels the hardest to make uniform?</summary><p>From eq. (3), the brightness error scales with ΔV<sub>th</sub> divided by the overdrive. Dark levels use small overdrive, so the same threshold error is a larger fraction. In the panel simulation above, lower the gray level and watch the spread grow.</p></details>
+<details><summary>When would I choose a switched-capacitor converter over an inductive one?</summary><p>When the conversion ratio is fixed or nearly fixed, the current is modest, and size or integration matters, such as gate-driver rails or a 2:1 step-down on chip. For wide ratios, high currents, or tight regulation over a wide input range, an inductive converter is more efficient.</p></details>
+<details><summary>Why put an LDO after a switching converter instead of just using the converter?</summary><p>Switching converters leave ripple at their switching frequency and its harmonics. An LDO with good PSRR at those frequencies removes it, giving references and amplifiers a quiet supply, at the cost of the dropout voltage times the load current in efficiency.</p></details>
+<details><summary>Where can I go deeper on pixel circuits?</summary><p>Start with the review by Nathan, Chaji, and Ashtiani (reference 2), then Chaji's thesis (reference 1) for the circuits and their analysis. For micro-LEDs, follow the SID Digest papers on PWM pixel circuits (reference 3).</p></details>
+</section>
+
+<h2>Further reading</h2>
+<ol class="refs">
+<li>G. R. Chaji, “Thin-film transistor integration for biomedical imaging and AMOLED displays,” Ph.D. thesis, University of Waterloo, 2008. <a href="https://uwspace.uwaterloo.ca/handle/10012/3667" target="_blank" rel="noopener">UWSpace</a></li>
+<li>A. Nathan, G. R. Chaji, and S. J. Ashtiani, “Driving schemes for a-Si and LTPS AMOLED displays,” <em>J. Display Technol.</em>, vol. 1, no. 2, 2005. <a href="https://doi.org/10.1109/JDT.2005.858913" target="_blank" rel="noopener">doi:10.1109/JDT.2005.858913</a></li>
+<li>Kim et al., “PWM pixel circuit with LTPS TFTs for micro-LED displays,” <em>SID Symp. Dig. Tech. Papers</em>, 2019. <a href="https://doi.org/10.1002/sdtp.12887" target="_blank" rel="noopener">doi:10.1002/sdtp.12887</a></li>
+<li>M. S. Wong et al., “Size-independent peak efficiency of III-nitride micro-light-emitting-diodes using chemical treatment and sidewall passivation,” <em>Appl. Phys. Express</em>, vol. 12, 097004, 2019. <a href="https://doi.org/10.7567/1882-0786/ab3949" target="_blank" rel="noopener">doi:10.7567/1882-0786/ab3949</a></li>
+<li>M. D. Seeman and S. R. Sanders, “Analysis and optimization of switched-capacitor DC–DC converters,” <em>IEEE Trans. Power Electron.</em>, vol. 23, no. 2, 2008. <a href="https://doi.org/10.1109/TPEL.2007.915182" target="_blank" rel="noopener">doi:10.1109/TPEL.2007.915182</a>. See also M. D. Seeman, “A design methodology for switched-capacitor DC-DC converters,” Ph.D. thesis, UC Berkeley, 2009. <a href="https://www2.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-78.html" target="_blank" rel="noopener">EECS-2009-78</a></li>
+<li>K. N. Leung and P. K. T. Mok, “A capacitor-free CMOS low-dropout regulator with damping-factor-control frequency compensation,” <em>IEEE J. Solid-State Circuits</em>, vol. 38, no. 10, 2003. <a href="https://doi.org/10.1109/JSSC.2003.817256" target="_blank" rel="noopener">doi:10.1109/JSSC.2003.817256</a></li>
+<li>P. Hazucha et al., “Area-efficient linear regulator with ultra-fast load regulation,” <em>IEEE J. Solid-State Circuits</em>, vol. 40, no. 4, 2005. <a href="https://doi.org/10.1109/JSSC.2004.842831" target="_blank" rel="noopener">doi:10.1109/JSSC.2004.842831</a></li>
+<li>G. A. Rincón-Mora, <em>Analog IC Design with Low-Dropout Regulators</em>, 2nd ed., McGraw-Hill, 2014.</li>
+<li>ISSCC 2026 Tutorial T1, “Fundamentals of Energy-Efficient LDO Regulator Designs.” <a href="https://www.isscc.org" target="_blank" rel="noopener">isscc.org</a></li>
+<li>T. Tsujimura, <em>OLED Display Fundamentals and Applications</em>, 2nd ed., Wiley, 2017; J.-H. Lee, D. N. Liu, and S.-T. Wu, <em>Introduction to Flat Panel Displays</em>, 2nd ed., Wiley, 2020.</li>
+</ol>
+<p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>

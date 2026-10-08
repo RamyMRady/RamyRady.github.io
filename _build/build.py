@@ -7,6 +7,7 @@ redirect pages for retired URLs, and sitemap.xml into the repo root.
 """
 import html
 import json
+import os
 from datetime import date
 import re
 from pathlib import Path
@@ -15,7 +16,7 @@ import data as D
 import figures
 
 ROOT = Path(__file__).resolve().parent.parent
-ASSET_V = "7"  # bump to bust browser caches for styles.css / script.js
+ASSET_V = "9"  # bump to bust browser caches for styles.css / script.js
 
 GALLERY_DIR = ROOT / "assets" / "gallery"
 GALLERY_EXT = {".jpg", ".jpeg", ".png", ".webp"}
@@ -50,6 +51,9 @@ def gallery_items():
 
 
 NOTES_FILE = ROOT / "_build" / "notes.json"
+NOTES_DIR = ROOT / "_build" / "notes"  # one HTML body per note: <id>.html
+# Category tabs on notes.html, in this order; a note's "category" in notes.json picks its tab.
+NOTE_CATEGORIES = ["Photonics", "RF", "SerDes", "Measurement", "Display & power", "Chip design"]
 MONTHS = ["January", "February", "March", "April", "May", "June", "July",
           "August", "September", "October", "November", "December"]
 
@@ -60,7 +64,11 @@ def notes_data():
     if not NOTES_FILE.is_file():
         return "", []
     data = json.loads(NOTES_FILE.read_text())
-    items = [n for n in data["notes"] if not n.get("draft")]
+    # INCLUDE_DRAFTS=1 builds drafts too, for a local preview only.
+    items = [n for n in data["notes"] if not n.get("draft") or os.environ.get("INCLUDE_DRAFTS")]
+    for n in items:
+        src = NOTES_DIR / f"{n['id']}.html"
+        n["body"] = src.read_text() if src.is_file() else n.get("body", "")
     items.sort(key=lambda n: n["title"])
     items.sort(key=lambda n: n["date"], reverse=True)
     return data.get("intro", ""), items
@@ -287,8 +295,61 @@ def footer():
 """
 
 
-def page(path, title, desc, body, jsonld=None):
-    out = head(path, title, desc, jsonld) + header(path) + f'    <main id="main">\n{body}\n    </main>\n' + footer()
+# ---------- edit links (shown only in edit mode; see script.js) ----------
+
+REPO = "RamyMRady/RamyRady.github.io"
+DATA_FILE = "_build/data.py"
+# Section id on each page -> the data.py variable that fills it.
+EDIT_MAP = {
+    "index.html": {"news-h": "NEWS", "research-h": "THEMES", "pubs-h": "PUBS", "honors-h": "HONORS", "contact-h": "PERSON"},
+    "research.html": {"talks-h": "TALKS", "industry-h": "EXPERIENCE", "*": "THEMES"},
+    "publications.html": {"*": "PUBS"},
+    "teaching.html": {"ecen215-h": "TEACHING", "earlier-h": "TEACHING_EARLIER"},
+    "resume.html": {"exp-h": "EXPERIENCE", "edu-h": "EDUCATION", "hon-h": "HONORS", "media-h": "MEDIA", "pub-h": "PUBS", "skills-h": "SKILLS"},
+}
+PAGE_EDIT = {"index.html": "BIO", "research.html": "THEMES", "publications.html": "PUBS", "teaching.html": "TEACHING", "resume.html": "EXPERIENCE"}
+
+
+def edit_url(path, line=1):
+    """Opens the file in GitHub's web editor at that line."""
+    return f"https://github.dev/{REPO}/blob/main/{path}#L{line}"
+
+
+def data_line(name):
+    for i, line in enumerate((ROOT / DATA_FILE).read_text().splitlines(), 1):
+        if line.startswith(f"{name} = "):
+            return i
+    return 1
+
+
+def edit_link(url, label="Edit this section"):
+    return (f'<a class="edit-link" href="{url}" target="_blank" rel="noopener" hidden '
+            f'aria-label="{label}" title="{label}">✎<span class="edit-text">Edit</span></a>')
+
+
+def add_section_edits(path, body):
+    m = EDIT_MAP.get(path)
+    if not m:
+        return body
+    def sub(mo):
+        var = m.get(mo.group(2), m.get("*"))
+        if not var:
+            return mo.group(0)
+        return mo.group(1) + mo.group(3) + edit_link(edit_url(DATA_FILE, data_line(var))) + "</h2>"
+    return re.sub(r'(<h2[^>]*\bid="([^"]+)"[^>]*>)(.*?)</h2>', sub, body, flags=re.S)
+
+
+def page(path, title, desc, body, jsonld=None, edit=None, scripts=()):
+    body = add_section_edits(path, body)
+    if edit is None and path in PAGE_EDIT:
+        edit = edit_url(DATA_FILE, data_line(PAGE_EDIT[path]))
+    bar = (f'    <div class="edit-bar" hidden><span>Edit mode</span>'
+           f'<a href="{edit}" target="_blank" rel="noopener">✎ Edit this page</a>'
+           f'<a href="?edit=off">Exit</a></div>\n') if edit else ""
+    extra = "".join(f'    <script src="{s}?v={ASSET_V}" defer></script>\n' for s in scripts)
+    out = head(path, title, desc, jsonld) + header(path) + bar + f'    <main id="main">\n{body}\n    </main>\n' + footer()
+    if extra:
+        out = out.replace("</body>", extra + "</body>")
     (ROOT / path).write_text(out)
 
 
@@ -765,18 +826,44 @@ def build_gallery():
     return True
 
 
+def slug(text):
+    return re.sub(r"[^a-z0-9]+", "-", re.sub(r"<[^>]+>", "", text).lower()).strip("-")[:48] or "section"
+
+
+def note_section_edits(body, src_path):
+    """Give every <h2> an id (for links and questions) and an edit link to its line in the source."""
+    out, seen = [], set()
+    for i, line in enumerate(body.splitlines(), 1):
+        def sub(mo):
+            attrs, inner = mo.group(1), mo.group(2)
+            m = re.search(r'\bid="([^"]+)"', attrs)
+            hid = m.group(1) if m else slug(inner)
+            while hid in seen:
+                hid += "-2"
+            seen.add(hid)
+            if not m:
+                attrs += f' id="{hid}"'
+            return f"<h2{attrs}>{inner}{edit_link(edit_url(src_path, i))}</h2>"
+        out.append(re.sub(r"<h2([^>]*)>(.*?)</h2>", sub, line))
+    return "\n".join(out)
+
+
 def build_notes():
     """notes.html plus one note-<id>.html per note. Returns the pages written."""
     intro, items = notes_data()
     if not items:
         return []
     rows = []
+    cats = [c for c in NOTE_CATEGORIES if any(n.get("category") == c for n in items)]
+    cats += sorted({n["category"] for n in items if n.get("category") and n["category"] not in cats})
     for n in items:
         tip = n.get("type") == "tip"
         tags = "".join(f'<span class="tag">{html.escape(t)}</span>' for t in n.get("tags", []))
-        rows.append(f"""                <li{' class="is-tip"' if tip else ''}>
+        cat = n.get("category", "")
+        rows.append(f"""                <li{' class="is-tip"' if tip else ''} data-cat="{slug(cat)}">
                     <time datetime="{n['date']}">{month_name(n['date'], short=True)}</time>
                     <div>
+                        <p class="note-cat">{html.escape(cat)}</p>
                         <h2>{'<span class="kind">Tip</span>' if tip else ''}<a href="note-{n['id']}.html">{html.escape(n['title'])}</a></h2>
                         <p>{html.escape(n.get('summary', ''))}</p>
                         <div class="tags">{tags}</div>
@@ -787,13 +874,17 @@ def build_notes():
             <p class="lede">{html.escape(intro)}</p>
         </section>
         <section class="wrap block">
+            <div class="note-filters" role="group" aria-label="Filter notes by category">
+                <button type="button" class="note-filter" data-cat="all" aria-pressed="true">All <span>{len(items)}</span></button>
+{chr(10).join(f'                <button type="button" class="note-filter" data-cat="{slug(c)}" aria-pressed="false">{html.escape(c)} <span>{sum(1 for n in items if n.get("category") == c)}</span></button>' for c in cats)}
+            </div>
             <ul class="note-list">
 {chr(10).join(rows)}
             </ul>
         </section>"""
     page("notes.html", "Notes · Ramy Rady",
          "Explanations and practical tips on microwave photonics, silicon photonics, and analog/RF circuit design by Ramy Rady.",
-         body)
+         body, edit=edit_url("_build/notes.json"))
 
     written = ["notes.html"]
     for n in items:
@@ -803,10 +894,12 @@ def build_notes():
         if not tip:
             meta += f" · {max(1, round(words / 220))} min read"
         path = f"note-{n['id']}.html"
+        src_path = f"_build/notes/{n['id']}.html"
+        n["body"] = note_section_edits(n["body"], src_path)
         body = f"""        <article class="wrap note-page">
             <a class="back" href="notes.html">← All notes</a>
             <header class="note-head">
-                <p class="eyebrow">{'Tip' if tip else 'Note'}{' · ' + html.escape(n['section']) if n.get('section') else ''}</p>
+                <p class="eyebrow">{'Tip' if tip else 'Note'}{' · ' + html.escape(n.get('category') or n.get('section', '')) if (n.get('category') or n.get('section')) else ''}</p>
                 <h1>{html.escape(n['title'])}</h1>
                 <p class="note-meta">Ramy Rady · {meta}</p>
             </header>
@@ -822,7 +915,8 @@ def build_notes():
             "datePublished": n["date"],
             "author": {"@type": "Person", "name": "Ramy Rady", "url": D.SITE_URL},
         }
-        page(path, f"{n['title']} · Ramy Rady", html.escape(n.get("summary", "")), body, ld)
+        page(path, f"{n['title']} · Ramy Rady", html.escape(n.get("summary", "")), body, ld,
+             edit=edit_url(src_path), scripts=("notes.js",))
         written.append(path)
     return written
 

@@ -1,0 +1,46 @@
+name: Build and deploy site
+
+# Rebuilds every page from _build/ (data.py, notes.json, notes/*.html) on each push to main,
+# so an edit made in GitHub's web editor goes live without running build.py locally.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Build pages
+        run: python3 _build/build.py
+      - name: Collect the public files
+        run: |
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_build' --exclude '_site' \
+            --exclude '_config.yml' --exclude 'README.md' --exclude 'CNAME.md' \
+            --exclude 'assets/gallery/README.md' ./ _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

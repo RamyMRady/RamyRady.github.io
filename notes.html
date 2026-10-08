@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-    <link rel="stylesheet" href="styles.css?v=7">
+    <link rel="stylesheet" href="styles.css?v=9">
     <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -52,40 +52,80 @@
             </nav>
         </div>
     </header>
+    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes.json#L1" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
     <main id="main">
         <section class="wrap page-head">
             <h1>Notes</h1>
-            <p class="lede">Occasional longer explanations of topics in microwave photonics and analog circuit design, written for engineers who are new to them.</p>
+            <p class="lede">Longer explanations of photonics, RF, SerDes, measurement, and power circuits, written for engineers who are new to them. Pick a category below.</p>
         </section>
         <section class="wrap block">
+            <div class="note-filters" role="group" aria-label="Filter notes by category">
+                <button type="button" class="note-filter" data-cat="all" aria-pressed="true">All <span>7</span></button>
+                <button type="button" class="note-filter" data-cat="photonics" aria-pressed="false">Photonics <span>3</span></button>
+                <button type="button" class="note-filter" data-cat="rf" aria-pressed="false">RF <span>1</span></button>
+                <button type="button" class="note-filter" data-cat="serdes" aria-pressed="false">SerDes <span>1</span></button>
+                <button type="button" class="note-filter" data-cat="measurement" aria-pressed="false">Measurement <span>1</span></button>
+                <button type="button" class="note-filter" data-cat="display-power" aria-pressed="false">Display &amp; power <span>1</span></button>
+            </div>
             <ul class="note-list">
-                <li>
+                <li data-cat="photonics">
                     <time datetime="2026-10">Oct 2026</time>
                     <div>
+                        <p class="note-cat">Photonics</p>
                         <h2><a href="note-ring-auto-tuning.html">Automatic tuning of silicon photonic ring filters</a></h2>
                         <p>How a small control loop finds each ring&#x27;s resonance and holds it there despite fabrication variation and temperature drift.</p>
                         <div class="tags"><span class="tag">silicon photonics</span><span class="tag">tuning</span><span class="tag">control loops</span></div>
                     </div>
                 </li>
-                <li>
+                <li data-cat="display-power">
                     <time datetime="2026-10">Oct 2026</time>
                     <div>
+                        <p class="note-cat">Display &amp; power</p>
+                        <h2><a href="note-display-circuits.html">Circuits for displays: pixel drivers, LEDs, switched-capacitor converters, and LDOs</a></h2>
+                        <p>How OLED and micro-LED pixels turn a stored voltage into light, how to model the LED, and how the panel&#x27;s rails are made and kept quiet.</p>
+                        <div class="tags"><span class="tag">display</span><span class="tag">pixel circuits</span><span class="tag">LED</span><span class="tag">power management</span></div>
+                    </div>
+                </li>
+                <li data-cat="photonics">
+                    <time datetime="2026-10">Oct 2026</time>
+                    <div>
+                        <p class="note-cat">Photonics</p>
                         <h2><a href="note-mzm-driver.html">How a Mach–Zehnder modulator driver sets the limits of a radio-over-fiber link</a></h2>
                         <p>Why Vπ, bias point, and the driver&#x27;s output swing decide most of an analog photonic link&#x27;s gain and dynamic range.</p>
                         <div class="tags"><span class="tag">silicon photonics</span><span class="tag">radio-over-fiber</span><span class="tag">drivers</span></div>
                     </div>
                 </li>
-                <li>
-                    <time datetime="2026-09">Sep 2026</time>
+                <li data-cat="measurement">
+                    <time datetime="2026-10">Oct 2026</time>
                     <div>
-                        <h2><a href="note-noise-figure.html">Noise figure, explained with one receiver chain</a></h2>
-                        <p>The dB arithmetic, the −174 dBm/Hz noise floor, and the Friis formula: why the first stage of a receiver gets most of the design effort.</p>
-                        <div class="tags"><span class="tag">RF</span><span class="tag">noise</span><span class="tag">receivers</span><span class="tag">rules of thumb</span></div>
+                        <p class="note-cat">Measurement</p>
+                        <h2><a href="note-post-silicon-measurement.html">Post-silicon measurement: characterizing chips circuit by circuit</a></h2>
+                        <p>Calibration and de-embedding, then how LNAs, mixers, PLLs, PAs, converters, links, and regulators are measured, including PA reliability and lifetime testing.</p>
+                        <div class="tags"><span class="tag">measurement</span><span class="tag">reliability</span><span class="tag">RF</span><span class="tag">test</span></div>
                     </div>
                 </li>
-                <li>
+                <li data-cat="serdes">
+                    <time datetime="2026-10">Oct 2026</time>
+                    <div>
+                        <p class="note-cat">SerDes</p>
+                        <h2><a href="note-serdes-circuits.html">SerDes design: circuits, standards, and where to start</a></h2>
+                        <p>An electrical I/O transceiver block by block, a map of today&#x27;s standards from PCIe to UCIe, and a learning path of books, papers, and tools.</p>
+                        <div class="tags"><span class="tag">SerDes</span><span class="tag">wireline</span><span class="tag">equalization</span><span class="tag">standards</span></div>
+                    </div>
+                </li>
+                <li data-cat="rf">
+                    <time datetime="2026-09">Sep 2026</time>
+                    <div>
+                        <p class="note-cat">RF</p>
+                        <h2><a href="note-noise-figure.html">RF essentials: noise figure, link budgets, and the numbers worth memorizing</a></h2>
+                        <p>dB arithmetic, power in 50 Ω, noise figure through one receiver chain, sensitivity, and the wavelength, antenna, cable, and propagation numbers every RF engineer should know.</p>
+                        <div class="tags"><span class="tag">RF</span><span class="tag">noise</span><span class="tag">antennas</span><span class="tag">rules of thumb</span></div>
+                    </div>
+                </li>
+                <li data-cat="photonics">
                     <time datetime="2026-08">Aug 2026</time>
                     <div>
+                        <p class="note-cat">Photonics</p>
                         <h2><a href="note-microring.html">Microring resonators for circuit designers</a></h2>
                         <p>Resonance, Q, and free spectral range, described with the LC-tank intuition analog engineers already have.</p>
                         <div class="tags"><span class="tag">silicon photonics</span><span class="tag">resonators</span></div>
@@ -104,6 +144,6 @@
             <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
         </div>
     </footer>
-    <script src="script.js?v=7"></script>
+    <script src="script.js?v=9"></script>
 </body>
 </html>

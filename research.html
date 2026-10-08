@@ -26,7 +26,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
-    <link rel="stylesheet" href="styles.css?v=7">
+    <link rel="stylesheet" href="styles.css?v=9">
     <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
 </head>
 <body>
@@ -52,6 +52,7 @@
             </nav>
         </div>
     </header>
+    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L338" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
     <main id="main">
         <section class="wrap page-head">
             <h1>Research</h1>
@@ -61,7 +62,7 @@
             </nav>
         </section>
         <section class="wrap block" id="talks" aria-labelledby="talks-h">
-            <h2 id="talks-h">Talks</h2>
+            <h2 id="talks-h">Talks<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L153" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
             <div class="talks">
                 <figure class="talk">
                     <div class="video">
@@ -79,7 +80,7 @@
         </section>
         <section class="wrap theme" id="receivers" aria-labelledby="receivers-h">
             <div class="theme-text">
-                <h2 id="receivers-h">Wideband mm-wave CMOS / silicon photonic receivers</h2>
+                <h2 id="receivers-h">Wideband mm-wave CMOS / silicon photonic receivers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L338" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
                 <p>Radios for 5G and beyond must pick a narrow channel out of tens of gigahertz of spectrum while strong interferers sit nearby. Filtering at mm-wave frequencies is lossy and hard to tune in CMOS alone. I moved the filtering into the optical domain: the RF signal is modulated onto light, shaped by reconfigurable silicon photonic filters, and converted back by CMOS electronics.</p>
                 <h3 class="label">Key results</h3>
                 <ul class="results">
@@ -131,7 +132,7 @@
         </section>
         <section class="wrap theme" id="tuning" aria-labelledby="tuning-h">
             <div class="theme-text">
-                <h2 id="tuning-h">Automatic tuning of silicon photonic filters</h2>
+                <h2 id="tuning-h">Automatic tuning of silicon photonic filters<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L338" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
                 <p>Silicon ring resonators shift with fabrication variation, temperature, and thermal crosstalk, so a filter that works on paper rarely works out of the box. I built closed-loop calibration: on-chip monitors, a TIA/ADC/DAC/microcontroller loop, and ML-based algorithms that set heater biases and place the filter's poles and zeros automatically.</p>
                 <h3 class="label">Key results</h3>
                 <ul class="results">
@@ -178,7 +179,7 @@
         </section>
         <section class="wrap theme" id="rof" aria-labelledby="rof-h">
             <div class="theme-text">
-                <h2 id="rof-h">Radio-over-fiber links and microwave photonic drivers</h2>
+                <h2 id="rof-h">Radio-over-fiber links and microwave photonic drivers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L338" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
                 <p>Distributed antenna systems carry mm-wave signals over fiber to remote antenna units. That needs wideband, linear electro-optic conversion at the antenna and efficient CMOS drivers for the modulators. This work spans the remote antenna unit itself and the Mach–Zehnder modulator drivers that feed it.</p>
                 <h3 class="label">Key results</h3>
                 <ul class="results">
@@ -228,7 +229,7 @@
         </section>
         <section class="wrap theme" id="lowpower" aria-labelledby="lowpower-h">
             <div class="theme-text">
-                <h2 id="lowpower-h">Energy-efficient CMOS transceivers</h2>
+                <h2 id="lowpower-h">Energy-efficient CMOS transceivers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L338" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
                 <p>Earlier work focused on how little power a link can use. That includes a short-range transmitter supplied directly from an integrated switched-capacitor DC–DC converter (my M.Sc. thesis), and inverter-based optical receivers for wireline links.</p>
                 <h3 class="label">Key results</h3>
                 <ul class="results">
@@ -271,7 +272,7 @@
             </figure>
         </section>
         <section class="wrap block" aria-labelledby="industry-h">
-            <h2 id="industry-h">Industry work</h2>
+            <h2 id="industry-h">Industry work<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/data.py#L173" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
             <p class="muted">Industry projects are proprietary, so only a summary appears here. See the <a href="resume.html#experience">CV</a> for more.</p>
             <ul class="dated dated-wide">
                 <li><time>May 2025 – Present</time><div><p><b>Apple</b> · SerDes Transceiver Analog/Mixed-Signal Design Engineer</p><p class="muted">Design next-generation high-speed SerDes IP for Apple silicon SoCs.</p></div></li>
@@ -291,6 +292,6 @@
             <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
         </div>
     </footer>
-    <script src="script.js?v=7"></script>
+    <script src="script.js?v=9"></script>
 </body>
 </html>

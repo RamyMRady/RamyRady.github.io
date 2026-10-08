@@ -1,0 +1,26 @@
+<p>Silicon ring resonators make excellent tunable filters, but they don't stay where you put them. Fabrication variation puts every ring at a slightly different wavelength, and temperature moves it by roughly 0.07–0.08 nm per kelvin, which is about a linewidth for every couple of degrees. A chip with several rings needs an automatic way to find each resonance and hold it there. This note describes, at a high level, how I did that for the reconfigurable filters in my Ph.D. work.</p>
+<h2>The hardware</h2>
+<p>Each ring has a thermal phase shifter (a resistive heater) and a small monitor tap that sends part of the ring's light to a photodiode. A 16-channel, 16-bit DAC board that I designed drives the heaters, and a microcontroller reads the photodiodes, runs the search, and steps the tunable laser to the wavelengths of interest.</p>
+<h2>How the search works</h2>
+<ol>
+<li><strong>Coarse search.</strong> Sweep each ring's heater across a wide range and find the setting where its monitor reads highest, which is where the ring sits on resonance.</li>
+<li><strong>Fine search.</strong> Sweep a narrow window around that point with smaller steps.</li>
+<li><strong>Iterate.</strong> Heat from one ring shifts its neighbours, so the whole set is re-tuned in several passes, each with a narrower window, until every ring stops moving.</li>
+</ol>
+<p>Each photodiode reading combines many samples through a median filter, so a single noisy sample cannot pull a ring off resonance. When a monitor signal is too weak to trust, the ring keeps its last good setting instead of jumping somewhere new.</p>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Remember that heater power goes as voltage squared.</strong> A linear DAC sweep moves the resonance slowly at low codes and quickly at high codes, so step sizes that work at one end of the range are wrong at the other.</p></aside>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Tune one ring and you detune its neighbours.</strong> Thermal crosstalk is why a single pass is never enough. Plan for iterative passes from the start.</p></aside>
+<div class="widget" data-widget="tuning"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<h2>What it enabled</h2>
+<p>The same loop configured band-pass and notch responses on demand and kept them stable during measurements. The results are in my papers on automated tuning of silicon photonic filters and on tunable mm-wave photonic receiver front ends, listed on the <a href="publications.html">Publications</a> page.</p>
+<section class="qa">
+<h2 id="questions">Questions &amp; answers</h2>
+<details><summary>Why not store the right heater setting in a lookup table?</summary><p>Because the right setting changes with ambient temperature, with the laser wavelength, with aging, and with what the neighbouring heaters are doing. A table gets you close at power-up; a closed loop keeps you there.</p></details>
+<details><summary>Why filter the photodiode readings?</summary><p>A single noisy sample near the peak can look like a better setting than the true peak. Combining several samples, with a median rather than a mean, rejects outliers so the loop does not chase noise.</p></details>
+<details><summary>Can the loop lock onto the wrong resonance?</summary><p>Yes. A heater can move a ring by more than one free spectral range, and every resonance looks the same to the monitor. Start from a known point, limit the search range to less than one FSR, and track continuously.</p></details>
+<details><summary>Why is heater power, not voltage, what matters?</summary><p>The resonance moves with temperature, which follows the power dissipated in the heater, V<sup>2</sup>/R. Equal voltage steps therefore give small shifts at low voltage and large shifts at high voltage. The figure above plots the response against voltage so you can see it.</p></details>
+<details><summary>Can I get the code or the board design?</summary><p>This page stays at the overview level. Email me at <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a> and say what you are building.</p></details>
+</section>
+<h2>More details</h2>
+<p>This page is an overview. For details on the hardware, the algorithm, or the measured results, email me at <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.</p>
+<p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>

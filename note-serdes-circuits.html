@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SerDes design: circuits, standards, and where to start · Ramy Rady</title>
+    <meta name="description" content="An electrical I/O transceiver block by block, a map of today&#x27;s standards from PCIe to UCIe, and a learning path of books, papers, and tools.">
+    <meta name="author" content="Ramy Rady">
+    <link rel="canonical" href="https://www.ramyrady.com/note-serdes-circuits.html">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ramy Rady">
+    <meta property="og:title" content="SerDes design: circuits, standards, and where to start · Ramy Rady">
+    <meta property="og:description" content="An electrical I/O transceiver block by block, a map of today&#x27;s standards from PCIe to UCIe, and a learning path of books, papers, and tools.">
+    <meta property="og:url" content="https://www.ramyrady.com/note-serdes-circuits.html">
+    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="SerDes design: circuits, standards, and where to start · Ramy Rady">
+    <meta name="twitter:description" content="An electrical I/O transceiver block by block, a map of today&#x27;s standards from PCIe to UCIe, and a learning path of books, papers, and tools.">
+    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+    <link rel="stylesheet" href="styles.css?v=9">
+    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "SerDes design: circuits, standards, and where to start",
+  "description": "An electrical I/O transceiver block by block, a map of today's standards from PCIe to UCIe, and a learning path of books, papers, and tools.",
+  "datePublished": "2026-10",
+  "author": {
+    "@type": "Person",
+    "name": "Ramy Rady",
+    "url": "https://www.ramyrady.com"
+  }
+}
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">Ramy Rady</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="teaching.html">Teaching</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="resume.html">CV</a></li>
+                </ul>
+                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L1" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
+    <main id="main">
+        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">Note · SerDes</p>
+                <h1>SerDes design: circuits, standards, and where to start</h1>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-10">October 2026</time> · 18 min read</p>
+            </header>
+            <div class="note-body">
+<p>A SerDes (serializer–deserializer) moves a wide, slow parallel bus across a few fast wires and recovers every bit at the other end. It is the circuit behind PCIe, Ethernet, USB, DisplayPort, memory interfaces, and chiplet links. This note walks through an electrical I/O transceiver block by block: what each circuit does, the equation that sizes it, and the numbers that are typical today. It also maps the current standards and ends with a learning path: the books, papers, tools, and conferences I would start with.</p>
+<nav class="toc" aria-label="Contents"><p class="toc-label">Contents</p><ol>
+<li><a href="#job">The job and the budget</a></li>
+<li><a href="#standards">Standards map</a></li>
+<li><a href="#modulation">Signaling: NRZ, PAM4, PAM3</a></li>
+<li><a href="#channel">The channel</a></li>
+<li><a href="#tx">Transmitter</a></li>
+<li><a href="#rx">Receiver and equalization</a></li>
+<li><a href="#clocking">Clocking and clock recovery</a></li>
+<li><a href="#support">Calibration, adaptation, and ESD</a></li>
+<li><a href="#verify">How links are verified</a></li>
+<li><a href="#cheatsheet">Design numbers</a></li>
+<li><a href="#learn">Learning path and resources</a></li>
+</ol></nav>
+
+<h2 id="job"><span class="secnum">1</span>The job and the budget<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L16" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>Every link has the same structure: a transmitter (TX) serializes and drives the data, a channel (package, board traces, connectors, cable) distorts it, and a receiver (RX) equalizes, samples, and recovers both the clock and the data.</p>
+<figure>
+<div class="svgwrap">
+<svg viewBox="0 0 640 150" role="img" aria-label="Block diagram of a SerDes link: parallel data, serializer, FFE and driver, channel, CTLE, sampler and DFE, CDR, deserializer, parallel data.">
+<g font-size="12" text-anchor="middle">
+<rect class="fsu sa" x="10" y="45" width="70" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="45" y="64">Parallel</text><text class="ff" x="45" y="79">data</text>
+<rect class="fsu sa" x="95" y="45" width="70" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="130" y="64">Serializer</text><text class="fm" x="130" y="79">MUX tree</text>
+<rect class="fsu sa" x="180" y="45" width="70" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="215" y="64">FFE +</text><text class="ff" x="215" y="79">driver</text>
+<path class="ss fn" d="M255 67 C285 40 305 94 335 67" stroke-width="3"/><text class="fs" x="295" y="35">channel</text><text class="fm" x="295" y="112">loss, reflections,</text><text class="fm" x="295" y="126">crosstalk</text>
+<rect class="fsu sa" x="340" y="45" width="60" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="370" y="64">CTLE</text><text class="fm" x="370" y="79">+ VGA</text>
+<rect class="fsu sa" x="415" y="45" width="70" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="450" y="64">Sampler</text><text class="ff" x="450" y="79">+ DFE</text>
+<rect class="fsu sa" x="500" y="45" width="60" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="530" y="64">Deser.</text><text class="fm" x="530" y="79">DEMUX</text>
+<rect class="fsu sa" x="575" y="45" width="55" height="44" rx="4" stroke-width="1.5"/><text class="ff" x="602" y="64">Parallel</text><text class="ff" x="602" y="79">data</text>
+<rect class="fsu ss" x="415" y="106" width="70" height="30" rx="4" stroke-width="1.5"/><text class="ff" x="450" y="126">CDR</text>
+<rect class="fsu ss" x="95" y="106" width="70" height="30" rx="4" stroke-width="1.5"/><text class="ff" x="130" y="126">TX PLL</text>
+</g>
+<g class="sm" stroke-width="1.4" fill="none"><path d="M80 67H95M165 67H180M250 67H255M335 67H340M400 67H415M485 67H500M560 67H575M450 106V89M130 106V89"/></g>
+</svg>
+</div>
+<figcaption>Figure 1. A SerDes link. The TX PLL clocks the serializer; on the receive side, the clock and data recovery (CDR) loop finds the sampling phase from the data itself.</figcaption>
+</figure>
+<p>Three numbers define the budget:</p>
+<ul class="steps">
+<li><strong>Data rate per lane</strong>, which sets the unit interval (UI): the time for one symbol, <math><mtext>UI</mtext><mo>=</mo><mn>1</mn><mo>/</mo><mtext>baud</mtext></math>. At 112 Gb/s PAM4 (56 GBd) one UI is about 18 ps.</li>
+<li><strong>Bit error rate (BER)</strong>: 10<sup>−12</sup> or better for NRZ links without forward error correction, and about 10<sup>−4</sup> before correction for PAM4 links that use FEC.</li>
+<li><strong>Energy per bit</strong>: a few pJ/bit for long-reach 100G-class lanes, and well under 1 pJ/bit for short die-to-die links.</li>
+</ul>
+<div class="widget" data-widget="lanes"><noscript>This interactive figure needs JavaScript.</noscript></div>
+
+<h2 id="standards"><span class="secnum">2</span>Standards map<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L46" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>The table lists the electrical interfaces a SerDes designer meets most often, with per-lane rates. A standard fixes the rate, the modulation, the channel it must survive, and how compliance is measured; the circuits underneath are similar across families.</p>
+<div class="tw"><table><thead><tr><th>Family</th><th>Generation</th><th>Per-lane rate</th><th>Modulation</th><th>Notes</th></tr></thead><tbody>
+<tr><td rowspan="5"><strong>PCI Express</strong></td><td>1.0 / 2.0</td><td>2.5 / 5 GT/s</td><td>NRZ</td><td>8b/10b coding</td></tr>
+<tr><td>3.0 / 4.0 / 5.0</td><td>8 / 16 / 32 GT/s</td><td>NRZ</td><td>128b/130b coding; 5.0 budgets about 36 dB loss at 16 GHz</td></tr>
+<tr><td>6.0</td><td>64 GT/s</td><td>PAM4</td><td>FLIT mode with lightweight FEC</td></tr>
+<tr><td>7.0</td><td>128 GT/s</td><td>PAM4</td><td>Specification released June 2025</td></tr>
+<tr><td>8.0</td><td>256 GT/s</td><td>PAM4</td><td>Announced August 2025, targeted for 2028</td></tr>
+<tr><td rowspan="5"><strong>Ethernet</strong> (IEEE 802.3, electrical)</td><td>10GBASE-KR</td><td>10.3125 Gb/s</td><td>NRZ</td><td>backplane, 64b/66b</td></tr>
+<tr><td>25GBASE-KR</td><td>25.78125 Gb/s</td><td>NRZ</td><td>802.3by, RS-FEC optional</td></tr>
+<tr><td>50G per lane</td><td>53.125 Gb/s (26.56 GBd)</td><td>PAM4</td><td>802.3cd, RS(544,514) “KP4” FEC</td></tr>
+<tr><td>100G per lane</td><td>106.25 Gb/s (53.125 GBd)</td><td>PAM4</td><td>802.3ck; KR channels about 28 dB at Nyquist</td></tr>
+<tr><td>200G per lane</td><td>212.5 Gb/s (106.25 GBd)</td><td>PAM4</td><td>P802.3dj, completing in 2026</td></tr>
+<tr><td><strong>OIF CEI</strong></td><td>CEI-28G, -56G, -112G, -224G</td><td>28 to 224 Gb/s</td><td>NRZ, PAM4</td><td>Implementation agreements for chip-to-chip, chip-to-module, and backplane reaches</td></tr>
+<tr><td rowspan="3"><strong>USB / Thunderbolt</strong></td><td>USB 3.2 Gen 1 / Gen 2</td><td>5 / 10 Gb/s</td><td>NRZ</td><td></td></tr>
+<tr><td>USB4 (Gen 3)</td><td>20 Gb/s</td><td>NRZ</td><td>two lanes per direction, 40 Gb/s</td></tr>
+<tr><td>USB4 v2, Thunderbolt 5</td><td>about 40 Gb/s</td><td>PAM3</td><td>80 Gb/s per direction; asymmetric mode up to 120 Gb/s</td></tr>
+<tr><td rowspan="4"><strong>Display</strong></td><td>DisplayPort 2.1</td><td>up to 20 Gb/s (UHBR20)</td><td>NRZ</td><td>4 lanes, 128b/132b</td></tr>
+<tr><td>HDMI 2.1 / 2.2</td><td>12 / 24 Gb/s</td><td>NRZ</td><td>4 lanes, FRL mode; 48 and 96 Gb/s total</td></tr>
+<tr><td>MIPI D-PHY v3.0</td><td>up to 9 Gb/s</td><td>NRZ (differential)</td><td>mobile display and camera</td></tr>
+<tr><td>MIPI C-PHY v2.1</td><td>up to 7.5 Gsym/s per trio</td><td>3-wire, 3-phase</td><td>about 2.28 bits per symbol</td></tr>
+<tr><td rowspan="4"><strong>Memory</strong></td><td>DDR5 / LPDDR5X</td><td>up to 8.8 / 10.7 Gb/s per pin</td><td>NRZ, single-ended</td><td>parallel buses with per-pin training</td></tr>
+<tr><td>GDDR6 / GDDR7</td><td>up to ~24 / 32+ Gb/s per pin</td><td>NRZ / PAM3</td><td>GDDR7 (JESD239) uses PAM3</td></tr>
+<tr><td>HBM3E</td><td>~9.6 Gb/s per pin</td><td>NRZ</td><td>1024-bit interface on an interposer</td></tr>
+<tr><td>HBM4</td><td>8 Gb/s per pin</td><td>NRZ</td><td>2048-bit interface, about 2 TB/s per stack (JESD270-4, April 2025)</td></tr>
+<tr><td><strong>Die-to-die</strong></td><td>UCIe 1.x / 2.0 / 3.0</td><td>up to 32 / 32 / 64 GT/s</td><td>NRZ, single-ended</td><td>UCIe 3.0 (August 2025) adds 48 and 64 GT/s; short, unterminated or lightly terminated links</td></tr>
+<tr><td><strong>Storage, converters</strong></td><td>SATA 3, SAS-4, JESD204C</td><td>6, 22.5, up to 32 Gb/s</td><td>NRZ</td><td>JESD204C links data converters to FPGAs and ASICs</td></tr>
+</tbody></table></div>
+<p class="small muted">Rates as published by PCI-SIG, IEEE 802.3, OIF, USB-IF, VESA, HDMI Forum, MIPI Alliance, JEDEC, and the UCIe Consortium, as of October 2026. Check the current specification before you design to one.</p>
+
+<h2 id="modulation"><span class="secnum">3</span>Signaling: NRZ, PAM4, PAM3<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L76" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>NRZ sends one bit per symbol on two levels. PAM4 sends two bits per symbol on four levels, halving the symbol rate for the same bit rate, so the channel's loss at the Nyquist frequency (half the symbol rate) is much lower. The price is that each of its three stacked eyes is one third of the full swing:</p>
+<div class="eq math"><math display="block"><msub><mtext>penalty</mtext><mrow><mi>M</mi><mtext>-PAM</mtext></mrow></msub><mo>=</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mspace width="0.17em"></mspace><mo stretchy="false">(</mo><mi>M</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mspace width="2em"></mspace><mtext>PAM4: 9.5 dB, PAM3: 6.0 dB</mtext></math><span class="label">(1)</span></div>
+<p>PAM4 wins when NRZ at twice the symbol rate would lose more than about 9.5 dB extra in the channel, which is the case for most links above about 50 Gb/s. PAM3 (three levels, 1.5 bits per symbol in practice) sits in between and is used by GDDR7 and USB4 v2.</p>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>PAM4 is less tolerant of nonlinearity.</strong> The four levels must be evenly spaced. Compression in the driver or the receiver front end squeezes the outer eyes, so linearity, measured as the ratio of level mismatch (RLM), becomes a TX specification.</p></aside>
+
+<h2 id="channel"><span class="secnum">4</span>The channel<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L82" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>Board traces lose signal in two ways that both grow with frequency: conductor (skin-effect) loss, which grows as <math><msqrt><mi>f</mi></msqrt></math>, and dielectric loss, which grows as <math><mi>f</mi></math>. A first-order model of insertion loss in dB per unit length is</p>
+<div class="eq math"><math display="block"><mi>α</mi><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo><mo>≈</mo><msub><mi>a</mi><mn>1</mn></msub><msqrt><mi>f</mi></msqrt><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mspace width="0.1em"></mspace><mi>f</mi><mspace width="2em"></mspace><msub><mi>a</mi><mn>2</mn></msub><mo>∝</mo><msqrt><msub><mi>ε</mi><mi>r</mi></msub></msqrt><mspace width="0.17em"></mspace><mi>tan</mi><mi>δ</mi></math><span class="label">(2)</span></div>
+<p>A link is specified by its loss at the Nyquist frequency. Low-loss laminates (dissipation factor <math><mi>tan</mi><mi>δ</mi></math> around 0.002–0.005 compared with about 0.02 for FR-4) are what make long-reach 100G and 200G lanes possible. On top of loss come:</p>
+<ul class="steps">
+<li><strong>Reflections</strong> from impedance discontinuities: vias, connectors, package balls, and via stubs, which create sharp notches at <math><mi>f</mi><mo>=</mo><mi>v</mi><mo>/</mo><mo stretchy="false">(</mo><mn>4</mn><mspace width="0.1em"></mspace><msub><mi>l</mi><mtext>stub</mtext></msub><mo stretchy="false">)</mo></math>. Back-drilling removes stubs.</li>
+<li><strong>Crosstalk</strong>, near-end (NEXT) and far-end (FEXT), from neighbouring lanes.</li>
+<li><strong>Inter-symbol interference (ISI)</strong>: the pulse response spreads over many UIs, so each received sample contains pieces of earlier and later symbols. Equalization exists to undo this.</li>
+</ul>
+
+<h2 id="tx"><span class="secnum">5</span>Transmitter<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L92" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h3>Serializer</h3>
+<p>A tree of 2:1 multiplexers converts the parallel word into one stream. Only the last stage runs at full rate, so most designs use half-rate or quarter-rate clocks: the final mux selects between two inputs on both clock edges. Duty-cycle error in that clock appears directly as jitter on the output.</p>
+<h3>Driver: current mode or voltage mode</h3>
+<div class="tw"><table><thead><tr><th></th><th>Current-mode logic (CML)</th><th>Voltage-mode (source-series terminated, SST)</th></tr></thead><tbody>
+<tr><td>How it works</td><td>Steers a tail current between two 50 Ω loads</td><td>Switches each output between the rails through a resistance that also forms the 50 Ω termination</td></tr>
+<tr><td>Swing</td><td><math><msub><mi>V</mi><mrow><mtext>pp,diff</mtext></mrow></msub><mo>=</mo><msub><mi>I</mi><mtext>tail</mtext></msub><mo>×</mo><mn>50</mn><mtext>&#x2009;Ω</mtext></math> with a 50 Ω far-end load</td><td>up to <math><msub><mi>V</mi><mtext>DD</mtext></msub></math> differential peak-to-peak</td></tr>
+<tr><td>Power for the same swing</td><td>reference</td><td>about <strong>4× lower</strong> supply current</td></tr>
+<tr><td>Strengths</td><td>Good supply rejection, easy high-swing at high speed</td><td>Efficient, scales with CMOS; FFE by segmenting the driver</td></tr>
+</tbody></table></div>
+<h3>Feed-forward equalization (FFE)</h3>
+<p>The TX pre-distorts each symbol with a short FIR filter so that, after the channel, the pulse is narrower:</p>
+<div class="eq math"><math display="block"><mi>y</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>=</mo><msub><mi>c</mi><mrow><mo>−</mo><mn>1</mn></mrow></msub><mi>d</mi><mo stretchy="false">[</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false">]</mo><mo>+</mo><msub><mi>c</mi><mn>0</mn></msub><mi>d</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>+</mo><msub><mi>c</mi><mn>1</mn></msub><mi>d</mi><mo stretchy="false">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">]</mo><mo separator="true">,</mo><mspace width="1.5em"></mspace><mrow><mo>|</mo><msub><mi>c</mi><mrow><mo>−</mo><mn>1</mn></mrow></msub><mo>|</mo></mrow><mo>+</mo><mrow><mo>|</mo><msub><mi>c</mi><mn>0</mn></msub><mo>|</mo></mrow><mo>+</mo><mrow><mo>|</mo><msub><mi>c</mi><mn>1</mn></msub><mo>|</mo></mrow><mo>=</mo><mn>1</mn></math><span class="label">(3)</span></div>
+<p>The taps share a fixed peak swing, so FFE equalizes by attenuating the low frequencies rather than boosting the high ones (“de-emphasis”). A single post-cursor tap <math><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><mo>−</mo><mn>0.25</mn></math> lowers the steady-state level to half the transition level: 6 dB of de-emphasis. At 112 Gb/s and above, the TX is usually a 6–8 bit DAC driven by a digital FIR with more taps.</p>
+
+<h2 id="rx"><span class="secnum">6</span>Receiver and equalization<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L107" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h3>Continuous-time linear equalizer (CTLE)</h3>
+<p>The CTLE is a high-pass shaped amplifier: a source-degenerated differential pair whose degeneration capacitor creates a zero below the poles.</p>
+<div class="eq math"><math display="block"><mi>H</mi><mo stretchy="false">(</mo><mi>s</mi><mo stretchy="false">)</mo><mo>=</mo><msub><mi>A</mi><mn>0</mn></msub><mfrac><mrow><mn>1</mn><mo>+</mo><mi>s</mi><mo>/</mo><msub><mi>ω</mi><mi>z</mi></msub></mrow><mrow><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>s</mi><mo>/</mo><msub><mi>ω</mi><mrow><mi>p</mi><mn>1</mn></mrow></msub><mo stretchy="false">)</mo><mo stretchy="false">(</mo><mn>1</mn><mo>+</mo><mi>s</mi><mo>/</mo><msub><mi>ω</mi><mrow><mi>p</mi><mn>2</mn></mrow></msub><mo stretchy="false">)</mo></mrow></mfrac><mo separator="true">,</mo><mspace width="1.5em"></mspace><mtext>peaking</mtext><mo>≈</mo><mfrac><msub><mi>ω</mi><mrow><mi>p</mi><mn>1</mn></mrow></msub><msub><mi>ω</mi><mi>z</mi></msub></mfrac></math><span class="label">(4)</span></div>
+<p>For a degenerated pair with transconductance <math><msub><mi>g</mi><mi>m</mi></msub></math>, degeneration <math><msub><mi>R</mi><mi>S</mi></msub></math>, and <math><msub><mi>C</mi><mi>S</mi></msub></math>: the zero is at <math><mn>1</mn><mo>/</mo><mo stretchy="false">(</mo><msub><mi>R</mi><mi>S</mi></msub><msub><mi>C</mi><mi>S</mi></msub><mo stretchy="false">)</mo></math> and the peaking is about <math><mn>1</mn><mo>+</mo><msub><mi>g</mi><mi>m</mi></msub><msub><mi>R</mi><mi>S</mi></msub><mo>/</mo><mn>2</mn></math>. A CTLE also boosts high-frequency noise and crosstalk, which is why it is rarely asked for more than 10–15 dB.</p>
+<h3>Decision-feedback equalizer (DFE)</h3>
+<p>Once a symbol is decided, its contribution to later samples is known. The DFE subtracts it:</p>
+<div class="eq math"><math display="block"><mi>z</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>=</mo><mi>x</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></munderover><msub><mi>h</mi><mi>k</mi></msub><mspace width="0.1em"></mspace><mover><mi>d</mi><mo>^</mo></mover><mo stretchy="false">[</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo stretchy="false">]</mo></math><span class="label">(5)</span></div>
+<ul class="steps">
+<li>Because it works on noiseless decisions, a DFE removes post-cursor ISI <strong>without amplifying noise</strong>, unlike a CTLE.</li>
+<li>It cannot remove pre-cursor ISI, and a wrong decision is fed back as extra ISI (error propagation, usually bursts of a few bits).</li>
+<li>The first tap must settle within one UI. Designs meet this with <strong>loop unrolling</strong> (speculation): two comparators precompute the result for each possible previous bit, and a mux picks one.</li>
+</ul>
+<div class="widget" data-widget="eye"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<h3>Samplers and ADC-based receivers</h3>
+<p>The decision is made by a regenerative latch, typically a StrongARM comparator, clocked at the center of the eye. Above about 100 Gb/s, most receivers replace the analog DFE with a time-interleaved ADC of 6–8 bits followed by a DSP that runs an FFE, a short DFE, and sometimes a maximum-likelihood detector. The ADC approach trades power for robustness to very lossy channels and easy adaptation.</p>
+
+<h2 id="clocking"><span class="secnum">7</span>Clocking and clock recovery<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L124" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h3>Transmit clock</h3>
+<p>A PLL multiplies a reference to the line rate (or half or quarter of it). LC-tank VCOs have much lower phase noise than ring oscillators and are used for the fastest lanes; ring oscillators are smaller and tune wider. The PLL's integrated jitter has to fit in a small fraction of the UI: at 112 Gb/s PAM4 a total jitter budget of a few hundred femtoseconds rms is typical.</p>
+<h3>Clock and data recovery (CDR)</h3>
+<p>The receiver has no clock wire; it extracts one from the data transitions.</p>
+<ul class="steps">
+<li><strong>Bang-bang (Alexander) phase detector:</strong> samples at the data center and at the edge. If the edge sample matches the previous bit, the clock is late; if it matches the next bit, it is early. Simple and fast, but its gain depends on jitter, so the loop is nonlinear.</li>
+<li><strong>Phase-interpolator CDR:</strong> mixes quadrature phases of the PLL clock to rotate the sampling phase digitally; a digital loop filter drives it. Common in multi-lane designs that share one PLL.</li>
+<li><strong>Mueller–Müller detector:</strong> works from baud-rate samples alone by balancing the pulse response's first pre- and post-cursors. The natural choice for ADC-based receivers.</li>
+</ul>
+<p>The CDR loop bandwidth (often around the baud rate divided by a few thousand) sets how much low-frequency jitter it tracks. Two specifications check it: <strong>jitter tolerance</strong>, the sinusoidal jitter amplitude the receiver survives versus frequency, and <strong>jitter transfer</strong> for retimers.</p>
+<div class="widget" data-widget="bathtub"><noscript>This interactive figure needs JavaScript.</noscript></div>
+
+<h2 id="support"><span class="secnum">8</span>Calibration, adaptation, and ESD<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L137" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Termination calibration:</strong> on-chip resistors vary by ±20% across process; a replica is compared with an external precision resistor and trimmed, so the 50 Ω termination holds to a few percent.</li>
+<li><strong>Offset calibration:</strong> comparator and CTLE offsets are cancelled at start-up, otherwise they shift the decision threshold and close the eye.</li>
+<li><strong>Adaptation:</strong> FFE, CTLE, and DFE settings are adapted to the channel, usually with sign-sign LMS: <math><msub><mi>c</mi><mi>k</mi></msub><mo>←</mo><msub><mi>c</mi><mi>k</mi></msub><mo>+</mo><mi>μ</mi><mspace width="0.17em"></mspace><mtext>sgn</mtext><mo stretchy="false">(</mo><mi>e</mi><mo stretchy="false">[</mo><mi>n</mi><mo stretchy="false">]</mo><mo stretchy="false">)</mo><mspace width="0.17em"></mspace><mtext>sgn</mtext><mo stretchy="false">(</mo><mi>d</mi><mo stretchy="false">[</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo stretchy="false">]</mo><mo stretchy="false">)</mo></math>, where <math><mi>e</mi></math> is the error between the sample and its ideal level.</li>
+<li><strong>Eye monitors:</strong> an extra sampler sweeps phase and threshold to map the eye inside the chip, which is invaluable when a link fails in a system.</li>
+<li><strong>ESD and pad capacitance:</strong> the ESD diodes and pad add a few hundred femtofarads that limit bandwidth. T-coils (bridged inductors) split that capacitance and cancel much of its effect.</li>
+</ul>
+
+<h2 id="verify"><span class="secnum">9</span>How links are verified<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L146" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Channel simulation:</strong> statistical and bit-by-bit simulation with IBIS-AMI models of the TX and RX and S-parameters of the channel.</li>
+<li><strong>Channel Operating Margin (COM):</strong> the IEEE 802.3 figure of merit that combines channel S-parameters with reference TX and RX models into one signal-to-noise number; a channel passes with COM ≥ 3 dB.</li>
+<li><strong>Lab:</strong> PRBS patterns (PRBS7 for quick checks, PRBS31 for stress), a BERT, a sampling or real-time oscilloscope, jitter injection for tolerance, and on-chip loopback. The note on post-silicon measurement covers this in detail.</li>
+</ul>
+
+<h2 id="cheatsheet"><span class="secnum">10</span>Design numbers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L153" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<div class="tw"><table><thead><tr><th>Quantity</th><th>Rule</th></tr></thead><tbody>
+<tr><td>Unit interval</td><td><math><mtext>UI</mtext><mo>=</mo><mn>1</mn><mo>/</mo><mtext>baud</mtext></math>; 25 Gb/s NRZ → 40 ps; 112 Gb/s PAM4 → 17.9 ps</td></tr>
+<tr><td>Nyquist frequency</td><td>baud / 2; the fastest pattern 1010… is a sine at this frequency</td></tr>
+<tr><td>PAM eye penalty</td><td><math><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo stretchy="false">(</mo><mi>M</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></math>: PAM4 9.5 dB, PAM3 6 dB</td></tr>
+<tr><td>Q for BER</td><td>BER 10<sup>−12</sup> ↔ Q ≈ 7.0; 10<sup>−15</sup> ↔ Q ≈ 7.9</td></tr>
+<tr><td>Total jitter</td><td><math><mtext>TJ</mtext><mo>=</mo><mtext>DJ</mtext><mo>+</mo><mn>2</mn><mi>Q</mi><mspace width="0.1em"></mspace><msub><mi>σ</mi><mtext>RJ</mtext></msub></math>; RJ counts ≈ 14× its rms value at 10<sup>−12</sup></td></tr>
+<tr><td>Delay on FR-4</td><td>≈ 6–7 ps/mm, so one 18 ps UI fits in about 3 mm of trace</td></tr>
+<tr><td>Driver efficiency</td><td>voltage-mode ≈ ¼ of the current of CML for the same swing</td></tr>
+<tr><td>FFE de-emphasis</td><td><math><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo stretchy="false">(</mo><mn>1</mn><mo>/</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mn>2</mn><mrow><mo>|</mo><msub><mi>c</mi><mn>1</mn></msub><mo>|</mo></mrow><mo stretchy="false">)</mo><mo stretchy="false">)</mo></math> dB for a 2-tap FFE</td></tr>
+</tbody></table></div>
+
+<h2 id="learn"><span class="secnum">11</span>Learning path and resources<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L165" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>This is the list I would hand to someone new to the field, in roughly the order I would read it.</p>
+<h3>A learning order that works</h3>
+<ol>
+<li><strong>The channel.</strong> Loss, reflections, crosstalk, and why a 100 Gb/s pulse doesn't survive a backplane.</li>
+<li><strong>Modulation and equalization.</strong> NRZ and PAM4, then CTLE, FFE, and DFE, and what each one can and cannot fix.</li>
+<li><strong>Clocking and clock recovery.</strong> PLLs, jitter, and how the receiver finds the right moment to sample.</li>
+<li><strong>Circuits.</strong> Transmitter drivers, receiver front ends, samplers, and ADC-based receivers.</li>
+<li><strong>Link budgets and standards.</strong> How everything above turns into a pass or fail against a specification.</li>
+</ol>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Model the link before you design a circuit.</strong> A few hours with a link simulator, sweeping channel loss and equalizer settings, builds more intuition than a week of transistor-level simulation. Every resource below makes more sense once you have seen an eye close and open again.</p></aside>
+<h3>Start here: overviews</h3>
+<ul>
+<li>M. Horowitz, C.-K. K. Yang, and S. Sidiropoulos, “High-speed electrical signaling: overview and limitations,” <em>IEEE Micro</em>, 1998. Short, and still the best single overview of why links are hard.</li>
+<li>V. Stojanović and M. Horowitz, “Modeling and analysis of high-speed links,” <em>IEEE CICC</em>, 2003. How to think about a link as a system, including noise and jitter budgets.</li>
+<li>S. Palermo, <a href="https://people.engr.tamu.edu/spalermo/ecen720.html" target="_blank" rel="noopener">ECEN 720 “High-Speed Links Circuits and Systems” lecture notes</a>, Texas A&amp;M University. A full course that walks from channels to equalizers and CDRs, with references at the end of each lecture.</li>
+<li>Magazine columns: B. Razavi’s “A Circuit for All Seasons” and A. Sheikholeslami’s “Circuit Intuitions” in <em>IEEE Solid-State Circuits Magazine</em>. Short, readable explanations of one building block at a time.</li>
+</ul>
+<h3>Books</h3>
+<div class="tw"><table><thead><tr><th>Book</th><th>Best for</th></tr></thead><tbody>
+<tr><td>W. J. Dally and J. W. Poulton, <em>Digital Systems Engineering</em>, Cambridge University Press, 1998</td><td>Signaling, noise, timing, and the system view of links</td></tr>
+<tr><td>B. Razavi, <em>Design of Integrated Circuits for Optical Communications</em>, 2nd ed., Wiley, 2012</td><td>TIAs, limiting amplifiers, CDRs, drivers; useful for electrical links too</td></tr>
+<tr><td>B. Razavi, <em>Design of CMOS Phase-Locked Loops</em>, Cambridge University Press, 2020</td><td>PLLs and oscillators from first principles</td></tr>
+<tr><td>B. Razavi, <em>Design of Analog CMOS Integrated Circuits</em>, 2nd ed., McGraw-Hill, 2017</td><td>The analog foundation everything else assumes</td></tr>
+<tr><td>F. M. Gardner, <em>Phaselock Techniques</em>, 3rd ed., Wiley, 2005</td><td>Loop dynamics, acquisition, and phase-detector theory</td></tr>
+<tr><td>M. P. Li, <em>Jitter, Noise, and Signal Integrity at High-Speed</em>, Prentice Hall, 2007</td><td>Jitter decomposition, BER, and how specifications are written</td></tr>
+<tr><td>E. Bogatin, <em>Signal and Power Integrity — Simplified</em>, 3rd ed., Prentice Hall, 2018</td><td>An intuitive introduction to channels, impedance, and S-parameters</td></tr>
+<tr><td>H. Johnson and M. Graham, <em>High-Speed Digital Design: A Handbook of Black Magic</em>, Prentice Hall, 1993</td><td>Practical board-level signal integrity</td></tr>
+</tbody></table></div>
+<h3>Key papers: equalization</h3>
+<ul>
+<li>J. L. Zerbe et al., “Equalization and clock recovery for a 2.5–10-Gb/s 2-PAM/4-PAM backplane transceiver cell,” <em>IEEE JSSC</em>, 2003. A complete transceiver with both NRZ and PAM4, explained end to end.</li>
+<li>J. F. Bulzacchelli et al., “A 10-Gb/s 5-tap DFE/4-tap FFE transceiver in 90-nm CMOS technology,” <em>IEEE JSSC</em>, 2006. A clear example of FFE and DFE working together, including how the DFE’s first-tap timing is met.</li>
+</ul>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>An open eye on screen is not a working link.</strong> A simulated eye shows a few thousand bits, but links are specified at error rates around 10<sup>−12</sup> or lower before FEC. Use statistical eye analysis or bathtub curves to see what happens in the tails.</p></aside>
+<h3>Key papers: clocking and clock recovery</h3>
+<ul>
+<li>J. D. H. Alexander, “Clock recovery from random binary signals,” <em>Electronics Letters</em>, 1975. The bang-bang phase detector still used in most CDRs.</li>
+<li>K. H. Mueller and M. Müller, “Timing recovery in digital synchronous data receivers,” <em>IEEE Transactions on Communications</em>, 1976. The baud-rate phase detector behind many ADC- and DSP-based receivers.</li>
+<li>J. Savoj and B. Razavi, “A 10-Gb/s CMOS clock and data recovery circuit with a half-rate linear phase detector,” <em>IEEE JSSC</em>, 2001.</li>
+<li>J. Lee, K. S. Kundert, and B. Razavi, “Analysis and modeling of bang-bang clock and data recovery circuits,” <em>IEEE JSSC</em>, 2004. How to predict jitter tolerance and jitter generation for a nonlinear loop.</li>
+<li>A. Hajimiri and T. H. Lee, “A general theory of phase noise in electrical oscillators,” <em>IEEE JSSC</em>, 1998.</li>
+<li>K. Kundert’s papers on jitter and PLL noise at <a href="https://designers-guide.org" target="_blank" rel="noopener">The Designer’s Guide Community</a>. Free and practical.</li>
+</ul>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Learn the jitter vocabulary early.</strong> Random versus deterministic jitter, the dual-Dirac model, and jitter transfer versus jitter tolerance appear in every specification. Li’s book and the standards’ own jitter sections are the quickest way in.</p></aside>
+<h3>Standards documents</h3>
+<p>Standards turn all of this into numbers. Reading the electrical sections, even partially, shows what a real design has to meet.</p>
+<ul>
+<li><strong>OIF Common Electrical I/O (CEI) implementation agreements</strong> (<a href="https://www.oiforum.com" target="_blank" rel="noopener">oiforum.com</a>). Free to download, and the clearest specifications for chip-to-chip and chip-to-module links.</li>
+<li><strong>IEEE 802.3 Ethernet</strong> (<a href="https://www.ieee802.org/3/" target="_blank" rel="noopener">ieee802.org/3</a>). The 100G- and 200G-per-lane electrical specifications, plus public task-force presentations that explain why each limit was chosen.</li>
+<li><strong>PCI Express base specification</strong> (<a href="https://pcisig.com" target="_blank" rel="noopener">pcisig.com</a>). Available to PCI-SIG members; many conference tutorials summarize the electrical layer.</li>
+</ul>
+<h3>Tools for building intuition</h3>
+<ul>
+<li><strong><a href="https://github.com/capn-freako/PyBERT" target="_blank" rel="noopener">PyBERT</a></strong>. An open-source Python link simulator with CTLE, FFE, DFE, and CDR models. The fastest way to see equalization at work.</li>
+<li><strong>Channel Operating Margin (COM)</strong>. The IEEE 802.3 reference MATLAB code that turns a channel into a pass or fail figure. Running it on public channels shows how standards judge a link.</li>
+<li><strong>Public channel data</strong>. IEEE 802.3 task forces post measured backplane and cable S-parameters that you can load into PyBERT, COM, or your own scripts.</li>
+<li><strong><a href="https://scikit-rf.org" target="_blank" rel="noopener">scikit-rf</a></strong>. A Python library for reading, plotting, and cascading S-parameters.</li>
+</ul>
+<h3>Where new work appears</h3>
+<ul>
+<li><strong>Conferences:</strong> <a href="https://www.isscc.org" target="_blank" rel="noopener">ISSCC</a> (wireline sessions, tutorials, and short courses), the <a href="https://www.vlsisymposium.org" target="_blank" rel="noopener">Symposium on VLSI Technology and Circuits</a>, <a href="https://www.ieee-cicc.org" target="_blank" rel="noopener">CICC</a>, <a href="https://www.esserc.org" target="_blank" rel="noopener">ESSERC</a> (formerly ESSCIRC), and <a href="https://www.designcon.com" target="_blank" rel="noopener">DesignCon</a> for the signal-integrity side. <a href="https://www.ofcconference.org" target="_blank" rel="noopener">OFC</a> covers optical links.</li>
+<li><strong>Journal:</strong> the <a href="https://sscs.ieee.org/publications/ieee-journal-of-solid-state-circuits" target="_blank" rel="noopener"><em>IEEE Journal of Solid-State Circuits</em></a>, which publishes extended versions of the best conference papers.</li>
+</ul>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Read conference papers backwards.</strong> Start with the measurement table and the die photo to see what was achieved, then read the architecture section to see how. The comparison table with prior work is a ready-made literature review.</p></aside>
+<section class="qa">
+<h2 id="questions">Questions &amp; answers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L231" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<details><summary>Why not just use a CTLE with more peaking instead of a DFE?</summary><p>A CTLE boosts noise and crosstalk along with the signal at high frequency, so past 10–15 dB of peaking the SNR stops improving. A DFE cancels post-cursor ISI using clean decisions and adds no noise, which is why long-reach receivers combine a moderate CTLE with a DFE or a DSP.</p></details>
+<details><summary>What limits how fast a DFE can run?</summary><p>The first tap: the decision for bit <em>n</em> has to be fed back and subtracted before bit <em>n</em>+1 is sampled, all within one UI. Loop unrolling removes the first tap from the critical path at the cost of doubling the comparators (four times for PAM4).</p></details>
+<details><summary>Why does PAM4 need FEC when NRZ often does not?</summary><p>With a 9.5 dB eye penalty, PAM4 links run at raw error rates around 10<sup>−5</sup> to 10<sup>−4</sup>. A Reed–Solomon code such as RS(544,514) corrects those errors to well below 10<sup>−12</sup>, at the cost of a few percent overhead and about 100 ns of latency.</p></details>
+<details><summary>How should I choose the CDR loop bandwidth?</summary><p>Wide enough to track low-frequency jitter and spread-spectrum clocking in the incoming data, narrow enough to filter high-frequency jitter and keep the loop stable with its latency. Most standards define a jitter-tolerance mask that sets the lower limit directly.</p></details>
+<details><summary>Can I try these ideas without lab equipment?</summary><p>Yes. Move the sliders in the eye diagram above, then use PyBERT with a public channel file from the IEEE 802.3 archives. You can see the effect of every equalizer on a realistic channel in minutes.</p></details>
+<details><summary>I come from RF design. What transfers, and what is new?</summary><p>Transmission lines, S-parameters, matching, noise and linearity all transfer directly. What is new is thinking in the time domain: pulse responses, inter-symbol interference, jitter budgets, and bit error rates. Start with the overview papers in section 11, then the equalization papers.</p></details>
+<details><summary>Do I need the full standards documents?</summary><p>Not to start. Public overviews, the OIF implementation agreements, and the IEEE 802.3 electrical clauses are enough to learn how compliance is defined. Get the full documents when you design to one specific standard.</p></details>
+</section>
+
+<h2 id="further-reading">Further reading<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/serdes-circuits.html#L241" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ol class="refs">
+<li>M. Horowitz, C.-K. K. Yang, and S. Sidiropoulos, “High-speed electrical signaling: overview and limitations,” <em>IEEE Micro</em>, vol. 18, no. 1, pp. 12–24, 1998. <a href="https://doi.org/10.1109/40.653013" target="_blank" rel="noopener">doi:10.1109/40.653013</a></li>
+<li>J. L. Zerbe et al., “Equalization and clock recovery for a 2.5–10-Gb/s 2-PAM/4-PAM backplane transceiver cell,” <em>IEEE J. Solid-State Circuits</em>, vol. 38, no. 12, 2003. <a href="https://doi.org/10.1109/JSSC.2003.818572" target="_blank" rel="noopener">doi:10.1109/JSSC.2003.818572</a></li>
+<li>J. F. Bulzacchelli et al., “A 10-Gb/s 5-tap DFE/4-tap FFE transceiver in 90-nm CMOS technology,” <em>IEEE J. Solid-State Circuits</em>, vol. 41, no. 12, 2006. <a href="https://doi.org/10.1109/JSSC.2006.884342" target="_blank" rel="noopener">doi:10.1109/JSSC.2006.884342</a></li>
+<li>K. H. Mueller and M. Müller, “Timing recovery in digital synchronous data receivers,” <em>IEEE Trans. Commun.</em>, vol. 24, no. 5, 1976. <a href="https://doi.org/10.1109/TCOM.1976.1093326" target="_blank" rel="noopener">doi:10.1109/TCOM.1976.1093326</a></li>
+<li>S. Palermo, ECEN 720: High-Speed Links Circuits and Systems, Texas A&amp;M University. <a href="https://people.engr.tamu.edu/spalermo/ecen720.html" target="_blank" rel="noopener">Course page</a></li>
+<li>IEEE P802.3dj Task Force (200 Gb/s per lane). <a href="https://ieee802.org/3/dj/" target="_blank" rel="noopener">ieee802.org/3/dj</a>; UCIe specifications: <a href="https://www.uciexpress.org/specifications" target="_blank" rel="noopener">uciexpress.org</a></li>
+<li>PyBERT, an open-source SerDes channel simulator. <a href="https://github.com/capn-freako/PyBERT" target="_blank" rel="noopener">github.com/capn-freako/PyBERT</a></li>
+</ol>
+<p>If you are starting out in SerDes design and want to talk through where to begin, email me at <a href="mailto:engramyrady@gmail.com">engramyrady@gmail.com</a>.</p>
+<p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>
+            </div>
+        </article>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>© 2026 Ramy Rady</p>
+            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
+        </div>
+        <div class="wrap site-status">
+            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 07 October 2026</p>
+            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
+        </div>
+    </footer>
+    <script src="script.js?v=9"></script>
+    <script src="notes.js?v=9" defer></script>
+</body>
+</html>

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post-silicon measurement: characterizing chips circuit by circuit · Ramy Rady</title>
+    <meta name="description" content="Calibration and de-embedding, then how LNAs, mixers, PLLs, PAs, converters, links, and regulators are measured, including PA reliability and lifetime testing.">
+    <meta name="author" content="Ramy Rady">
+    <link rel="canonical" href="https://www.ramyrady.com/note-post-silicon-measurement.html">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16x16.png">
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ramy Rady">
+    <meta property="og:title" content="Post-silicon measurement: characterizing chips circuit by circuit · Ramy Rady">
+    <meta property="og:description" content="Calibration and de-embedding, then how LNAs, mixers, PLLs, PAs, converters, links, and regulators are measured, including PA reliability and lifetime testing.">
+    <meta property="og:url" content="https://www.ramyrady.com/note-post-silicon-measurement.html">
+    <meta property="og:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Post-silicon measurement: characterizing chips circuit by circuit · Ramy Rady">
+    <meta name="twitter:description" content="Calibration and de-embedding, then how LNAs, mixers, PLLs, PAs, converters, links, and regulators are measured, including PA reliability and lifetime testing.">
+    <meta name="twitter:image" content="https://www.ramyrady.com/assets/og-image.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600&display=swap">
+    <link rel="stylesheet" href="styles.css?v=9">
+    <script>try{var t=localStorage.getItem('theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Post-silicon measurement: characterizing chips circuit by circuit",
+  "description": "Calibration and de-embedding, then how LNAs, mixers, PLLs, PAs, converters, links, and regulators are measured, including PA reliability and lifetime testing.",
+  "datePublished": "2026-10",
+  "author": {
+    "@type": "Person",
+    "name": "Ramy Rady",
+    "url": "https://www.ramyrady.com"
+  }
+}
+    </script>
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">Ramy Rady</a>
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+                <span class="sr-only">Menu</span><span class="bar"></span><span class="bar"></span>
+            </button>
+            <nav id="site-nav" class="site-nav" aria-label="Main">
+                <ul>
+                <li><a href="index.html">About</a></li>
+                <li><a href="research.html">Research</a></li>
+                <li><a href="publications.html">Publications</a></li>
+                <li><a href="teaching.html">Teaching</a></li>
+                <li><a href="notes.html">Notes</a></li>
+                <li><a href="resume.html">CV</a></li>
+                </ul>
+                <button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+                    <span class="icon-sun"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0-5 1 3h-2l1-3Zm0 20-1-3h2l-1 3ZM2 12l3-1v2l-3-1Zm20 0-3 1v-2l3 1ZM4.9 4.9l2.8 1.4-1.4 1.4-1.4-2.8Zm14.2 14.2-2.8-1.4 1.4-1.4 1.4 2.8Zm0-14.2-1.4 2.8-1.4-1.4 2.8-1.4ZM4.9 19.1l1.4-2.8 1.4 1.4-2.8 1.4Z"/></svg></span><span class="icon-moon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.7 14.7A8.5 8.5 0 0 1 9.3 3.3 8.5 8.5 0 1 0 20.7 14.7Z"/></svg></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+    <div class="edit-bar" hidden><span>Edit mode</span><a href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L1" target="_blank" rel="noopener">✎ Edit this page</a><a href="?edit=off">Exit</a></div>
+    <main id="main">
+        <article class="wrap note-page">
+            <a class="back" href="notes.html">← All notes</a>
+            <header class="note-head">
+                <p class="eyebrow">Note · Measurement</p>
+                <h1>Post-silicon measurement: characterizing chips circuit by circuit</h1>
+                <p class="note-meta">Ramy Rady · <time datetime="2026-10">October 2026</time> · 14 min read</p>
+            </header>
+            <div class="note-body">
+<p>Simulation tells you what a circuit should do; measurement tells you what it does. Post-silicon work turns a box of new chips into numbers you can trust: first that the chip is alive, then how each block performs across process, voltage, and temperature, and finally whether it will keep performing for years. This note is a practical guide to that work, organized circuit by circuit, with the equation behind each measurement and the mistakes that most often spoil it. It draws on the measurement material taught in university RF and mixed-signal courses and on the instrument makers' application notes listed at the end.</p>
+<nav class="toc" aria-label="Contents"><p class="toc-label">Contents</p><ol>
+<li><a href="#flow">The flow: bring-up to qualification</a></li>
+<li><a href="#setup">Fixtures, calibration, and de-embedding</a></li>
+<li><a href="#instruments">The instruments</a></li>
+<li><a href="#lna">LNAs and receivers</a></li>
+<li><a href="#mixer">Mixers</a></li>
+<li><a href="#osc">Oscillators and PLLs</a></li>
+<li><a href="#pa">Power amplifiers, reliability, and lifetime</a></li>
+<li><a href="#adc">Data converters</a></li>
+<li><a href="#serdes">High-speed links</a></li>
+<li><a href="#pmic">LDOs, converters, and references</a></li>
+<li><a href="#photonic">Optical and photonic circuits</a></li>
+<li><a href="#stats">Statistics, production test, and qualification</a></li>
+<li><a href="#practice">Lab habits that save weeks</a></li>
+</ol></nav>
+
+<h2 id="flow"><span class="secnum">1</span>The flow: bring-up to qualification<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L18" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<div class="tw"><table><thead><tr><th>Stage</th><th>Question</th><th>Typical work</th></tr></thead><tbody>
+<tr><td><strong>Bring-up</strong></td><td>Is it alive?</td><td>Current-limited power-up, supply currents against simulation, register read/write, clocks present, basic functions</td></tr>
+<tr><td><strong>Characterization</strong></td><td>How well does it work, everywhere?</td><td>Full specifications across supply (±5–10%), temperature (−40 to 125 °C or the product range), and process corners or split lots</td></tr>
+<tr><td><strong>Correlation</strong></td><td>Does it match the models?</td><td>Compare with post-layout simulation; feed differences back to models and the next design</td></tr>
+<tr><td><strong>Production test</strong></td><td>Is this unit good?</td><td>Short tests on automatic test equipment (ATE) with guard bands, built-in self-test, loopback</td></tr>
+<tr><td><strong>Qualification</strong></td><td>Will it last?</td><td>Accelerated stress (HTOL, temperature cycling, humidity), ESD and latch-up, failure analysis</td></tr>
+</tbody></table></div>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Write the test plan before tape-out.</strong> Every specification needs a way to measure it: a test mode, a probe pad, a calibration structure, a loopback path. Adding them after silicon is impossible, and measuring without them is often impossible too.</p></aside>
+
+<h2 id="setup"><span class="secnum">2</span>Fixtures, calibration, and de-embedding<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L28" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>You never measure the chip alone; you measure the chip plus cables, probes or board, and package. Calibration moves the reference plane to where you want it.</p>
+<ul class="steps">
+<li><strong>On-wafer:</strong> ground-signal-ground (GSG) probes on a probe station, calibrated on an impedance standard substrate with SOLT, LRRM, or TRL (Engen and Hoer, reference 4). TRL needs no perfectly known load, which is why it is preferred at mm-wave.</li>
+<li><strong>De-embedding:</strong> on-chip pads add capacitance and the lines to the device add series impedance. Measuring dummy “open” and “short” structures and subtracting them (Koolen et al., reference 5) brings the reference plane to the device itself.</li>
+<li><strong>Packaged parts:</strong> an evaluation board with controlled-impedance lines; de-embed the board with 2x-thru or matched fixture structures.</li>
+</ul>
+<div class="tw"><table><thead><tr><th>Connector</th><th>Usable to about</th></tr></thead><tbody>
+<tr><td>SMA</td><td>18 GHz (precision versions 26.5 GHz)</td></tr>
+<tr><td>3.5 mm</td><td>26.5 GHz</td></tr>
+<tr><td>2.92 mm (K)</td><td>40 GHz</td></tr>
+<tr><td>2.4 mm</td><td>50 GHz</td></tr>
+<tr><td>1.85 mm (V)</td><td>67 GHz</td></tr>
+<tr><td>1.0 mm</td><td>110 GHz</td></tr>
+</tbody></table></div>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Mating an SMA with a 2.92 mm or 3.5 mm connector is fine; mating any of them with a damaged one is not.</strong> A bent or worn center pin ruins every measurement through that cable and can destroy a precision port. Inspect, gauge, and torque connectors with a torque wrench.</p></aside>
+
+<h2 id="instruments"><span class="secnum">3</span>The instruments<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L45" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<div class="tw"><table><thead><tr><th>Instrument</th><th>Measures</th></tr></thead><tbody>
+<tr><td>Source-measure unit, DMM</td><td>Supply currents, I–V curves, DC operating points, leakage</td></tr>
+<tr><td>Vector network analyzer (VNA)</td><td>S-parameters: gain, matching, isolation, stability; with options, noise figure and compression</td></tr>
+<tr><td>Spectrum analyzer</td><td>Output power, harmonics, intermodulation, spurs, adjacent-channel power</td></tr>
+<tr><td>Signal source analyzer</td><td>Phase noise and jitter of oscillators and PLLs</td></tr>
+<tr><td>Noise source + analyzer</td><td>Noise figure (Y-factor)</td></tr>
+<tr><td>Real-time and sampling oscilloscopes</td><td>Waveforms, eye diagrams, jitter decomposition</td></tr>
+<tr><td>Bit error rate tester (BERT)</td><td>BER, bathtub curves, jitter tolerance</td></tr>
+<tr><td>Power meter</td><td>Absolute RF power (the reference for everything else)</td></tr>
+</tbody></table></div>
+
+<h2 id="lna"><span class="secnum">4</span>LNAs and receivers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L57" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h3>S-parameters and stability</h3>
+<p>Measure all four S-parameters across a band much wider than the operating band, because an amplifier can oscillate far from where it is used. Check unconditional stability with the Rollett factor or, more directly, the μ factor:</p>
+<div class="eq math"><math display="block"><mi>K</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>|</mo><msub><mi>S</mi><mn>11</mn></msub><mo>|</mo></mrow><mn>2</mn></msup><mo>−</mo><msup><mrow><mo>|</mo><msub><mi>S</mi><mn>22</mn></msub><mo>|</mo></mrow><mn>2</mn></msup><mo>+</mo><msup><mrow><mo>|</mo><mi>Δ</mi><mo>|</mo></mrow><mn>2</mn></msup></mrow><mrow><mn>2</mn><mrow><mo>|</mo><msub><mi>S</mi><mn>12</mn></msub><msub><mi>S</mi><mn>21</mn></msub><mo>|</mo></mrow></mrow></mfrac><mo>&gt;</mo><mn>1</mn><mo separator="true">,</mo><mspace width="1em"></mspace><mrow><mo>|</mo><mi>Δ</mi><mo>|</mo></mrow><mo>&lt;</mo><mn>1</mn><mo separator="true">;</mo><mspace width="1.5em"></mspace><mi>μ</mi><mo>=</mo><mfrac><mrow><mn>1</mn><mo>−</mo><msup><mrow><mo>|</mo><msub><mi>S</mi><mn>11</mn></msub><mo>|</mo></mrow><mn>2</mn></msup></mrow><mrow><mrow><mo>|</mo><msub><mi>S</mi><mn>22</mn></msub><mo>−</mo><mi>Δ</mi><msubsup><mi>S</mi><mn>11</mn><mo>*</mo></msubsup><mo>|</mo></mrow><mo>+</mo><mrow><mo>|</mo><msub><mi>S</mi><mn>12</mn></msub><msub><mi>S</mi><mn>21</mn></msub><mo>|</mo></mrow></mrow></mfrac><mo>&gt;</mo><mn>1</mn></math><span class="label">(1)</span></div>
+<p>where <math><mi>Δ</mi><mo>=</mo><msub><mi>S</mi><mn>11</mn></msub><msub><mi>S</mi><mn>22</mn></msub><mo>−</mo><msub><mi>S</mi><mn>12</mn></msub><msub><mi>S</mi><mn>21</mn></msub></math>.</p>
+<h3>Noise figure</h3>
+<p>The Y-factor method switches a calibrated noise source between “cold” (off, about 290 K) and “hot” (on, with an excess noise ratio ENR) and measures the output noise power in each state:</p>
+<div class="eq math"><math display="block"><mi>Y</mi><mo>=</mo><mfrac><msub><mi>N</mi><mtext>hot</mtext></msub><msub><mi>N</mi><mtext>cold</mtext></msub></mfrac><mo separator="true">,</mo><mspace width="2em"></mspace><mi>F</mi><mo>=</mo><mfrac><mtext>ENR</mtext><mrow><mi>Y</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mspace width="1.5em"></mspace><mo stretchy="false">(</mo><mtext>linear,</mtext><mspace width="0.3em"></mspace><msub><mi>T</mi><mtext>cold</mtext></msub><mo>=</mo><msub><mi>T</mi><mn>0</mn></msub><mo stretchy="false">)</mo></math><span class="label">(2)</span></div>
+<div class="widget" data-widget="yfactor"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<p>The analyzer's own noise is removed with a second-stage correction (Friis, in reverse). For very low noise figures, the cold-source method on a VNA avoids the noise source's mismatch change between hot and cold states. The background is in the <a href="note-noise-figure.html">noise figure note</a>.</p>
+<h3>Linearity</h3>
+<ul class="steps">
+<li><strong>1 dB compression (P1dB):</strong> sweep input power and find where gain has dropped 1 dB.</li>
+<li><strong>Third-order intercept (IIP3):</strong> two equal tones at <math><msub><mi>f</mi><mn>1</mn></msub></math>, <math><msub><mi>f</mi><mn>2</mn></msub></math> produce products at <math><mn>2</mn><msub><mi>f</mi><mn>1</mn></msub><mo>−</mo><msub><mi>f</mi><mn>2</mn></msub></math> and <math><mn>2</mn><msub><mi>f</mi><mn>2</mn></msub><mo>−</mo><msub><mi>f</mi><mn>1</mn></msub></math>. With <math><mi>Δ</mi><mi>P</mi></math> the difference between the output fundamental and the output IM3 in dB, <math><mtext>IIP3</mtext><mo>=</mo><msub><mi>P</mi><mtext>in</mtext></msub><mo>+</mo><mi>Δ</mi><mi>P</mi><mo>/</mo><mn>2</mn></math>. Check that IM3 rises 3 dB per dB of input; if not, you are measuring the analyzer or the source.</li>
+</ul>
+<aside class="callout pitfall"><p class="callout-label">Pitfall</p><p><strong>Your test setup has an IP3 too.</strong> Two signal generators coupled into each other, or a spectrum analyzer mixer driven too hard, produce intermodulation that looks like the chip's. Isolate the sources (isolators or a hybrid combiner) and confirm that adding attenuation before the analyzer does not change the measured IM3 level relative to the tones.</p></aside>
+
+<h2 id="mixer"><span class="secnum">5</span>Mixers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L74" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Conversion gain</strong> from RF to IF across RF, LO, and IF frequencies and LO power.</li>
+<li><strong>Noise figure:</strong> state whether it is single-sideband or double-sideband; DSB is about 3 dB lower for the same mixer.</li>
+<li><strong>Isolation:</strong> LO-to-RF (LO leaking out of the antenna), LO-to-IF, and RF-to-IF.</li>
+<li><strong>Linearity:</strong> IIP3 and, for direct-conversion receivers, IIP2, which sets how strongly a blocker's envelope appears at DC.</li>
+<li><strong>Image rejection</strong> for image-reject architectures, set by I/Q gain and phase balance.</li>
+</ul>
+
+<h2 id="osc"><span class="secnum">6</span>Oscillators and PLLs<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L83" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>Phase noise <math><mi>ℒ</mi><mo stretchy="false">(</mo><mi>Δ</mi><mi>f</mi><mo stretchy="false">)</mo></math> is the single-sideband noise power in 1 Hz at offset <math><mi>Δ</mi><mi>f</mi></math>, relative to the carrier, in dBc/Hz. Integrating it gives rms jitter, and the standard figure of merit normalizes for frequency and power:</p>
+<div class="eq math"><math display="block"><msub><mi>σ</mi><mi>t</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi><msub><mi>f</mi><mn>0</mn></msub></mrow></mfrac><msqrt><mn>2</mn><msubsup><mo>∫</mo><msub><mi>f</mi><mn>1</mn></msub><msub><mi>f</mi><mn>2</mn></msub></msubsup><msup><mn>10</mn><mrow><mi>ℒ</mi><mo stretchy="false">(</mo><mi>f</mi><mo stretchy="false">)</mo><mo>/</mo><mn>10</mn></mrow></msup><mspace width="0.17em"></mspace><mi>d</mi><mi>f</mi></msqrt><mo separator="true">,</mo><mspace width="1.5em"></mspace><mtext>FOM</mtext><mo>=</mo><mo>−</mo><mi>ℒ</mi><mo stretchy="false">(</mo><mi>Δ</mi><mi>f</mi><mo stretchy="false">)</mo><mo>+</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mfrac><msub><mi>f</mi><mn>0</mn></msub><mrow><mi>Δ</mi><mi>f</mi></mrow></mfrac><mo>−</mo><mn>10</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mfrac><msub><mi>P</mi><mtext>DC</mtext></msub><mrow><mn>1</mn><mtext>&#x2009;mW</mtext></mrow></mfrac></math><span class="label">(3)</span></div>
+<ul class="steps">
+<li>Always state the integration limits <math><msub><mi>f</mi><mn>1</mn></msub></math>–<math><msub><mi>f</mi><mn>2</mn></msub></math> with a jitter number; 10 kHz–100 MHz and 12 kHz–20 MHz are both common, and they give different answers.</li>
+<li>Also measure tuning range and gain (MHz/V), frequency pushing (versus supply) and pulling (versus load), PLL lock time, reference spurs, and fractional spurs.</li>
+<li>The reference and the instrument have phase noise too. The instrument's floor must be well below what you are measuring; cross-correlation analyzers lower it.</li>
+</ul>
+
+<h2 id="pa"><span class="secnum">7</span>Power amplifiers, reliability, and lifetime<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L92" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<h3>Performance</h3>
+<div class="eq math"><math display="block"><msub><mi>η</mi><mtext>D</mtext></msub><mo>=</mo><mfrac><msub><mi>P</mi><mtext>out</mtext></msub><msub><mi>P</mi><mtext>DC</mtext></msub></mfrac><mo separator="true">,</mo><mspace width="2em"></mspace><mtext>PAE</mtext><mo>=</mo><mfrac><mrow><msub><mi>P</mi><mtext>out</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext>in</mtext></msub></mrow><msub><mi>P</mi><mtext>DC</mtext></msub></mfrac></math><span class="label">(4)</span></div>
+<ul class="steps">
+<li><strong>Continuous wave:</strong> output power, gain, drain efficiency, and PAE versus input power and frequency; harmonics.</li>
+<li><strong>AM-AM and AM-PM:</strong> gain and phase versus input amplitude, the inputs to digital predistortion.</li>
+<li><strong>Modulated signals:</strong> adjacent-channel leakage ratio (ACLR) and error vector magnitude (EVM) with the real standard's signal, at the average power and peak-to-average ratio it will see.</li>
+<li><strong>Load-pull:</strong> tuners present different load impedances to map output power and efficiency contours, so you know where the optimum is and how far your match is from it.</li>
+<li><strong>Thermal:</strong> junction temperature from thermal resistance, <math><msub><mi>T</mi><mi>j</mi></msub><mo>=</mo><msub><mi>T</mi><mtext>case</mtext></msub><mo>+</mo><msub><mi>θ</mi><mtext>jc</mtext></msub><mo stretchy="false">(</mo><msub><mi>P</mi><mtext>DC</mtext></msub><mo>+</mo><msub><mi>P</mi><mtext>in</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext>out</mtext></msub><mo stretchy="false">)</mo></math>. Every reliability model depends on it.</li>
+</ul>
+<h3>Ruggedness</h3>
+<p>A PA must survive a bad antenna: a phone held against metal, or a disconnected antenna. A ruggedness test drives the PA at maximum output into a load mismatch, commonly a voltage standing-wave ratio of 10:1, rotated through all phases, at high supply voltage, then checks that its performance has not changed.</p>
+<h3>What wears a PA out</h3>
+<div class="tw"><table><thead><tr><th>Mechanism</th><th>Driven by</th><th>Where it bites in a PA</th></tr></thead><tbody>
+<tr><td>Hot-carrier injection (HCI)</td><td>High drain voltage <em>while</em> current flows</td><td>Class A/AB stages; cascode devices at large swings. Shifts threshold and lowers gain (Hu et al., reference 7)</td></tr>
+<tr><td>Gate-oxide breakdown (TDDB)</td><td>Oxide field over time</td><td>Peaks of gate-drain voltage in switching PAs. Under RF stress, the rms oxide field matters more than its peak (Larcher et al., reference 8)</td></tr>
+<tr><td>Bias temperature instability (NBTI, PBTI)</td><td>Gate bias and temperature</td><td>Threshold drift, mostly in PMOS; partly recovers when stress is removed</td></tr>
+<tr><td>Electromigration (EM)</td><td>Current density and temperature</td><td>Output-stage metal and vias carrying large RF currents</td></tr>
+<tr><td>Compound-semiconductor mechanisms</td><td>Field, temperature</td><td>GaN: gate degradation and current collapse; GaAs/SiGe HBTs: rising base current and falling current gain</td></tr>
+</tbody></table></div>
+<h3>How lifetime is measured</h3>
+<p>Nobody waits ten years. Devices are stressed harder than in use, at higher temperature, voltage, or RF drive, while a key parameter is logged. A common failure criterion for a PA is a 1 dB drop in output power or gain. The time to failure at stress is then translated to use conditions with acceleration models. For temperature, the Arrhenius model:</p>
+<div class="eq math"><math display="block"><mtext>AF</mtext><mo>=</mo><mi>exp</mi><mo>&#x2061;</mo><mrow><mo>[</mo><mfrac><msub><mi>E</mi><mi>a</mi></msub><mi>k</mi></mfrac><mrow><mo>(</mo><mfrac><mn>1</mn><msub><mi>T</mi><mtext>use</mtext></msub></mfrac><mo>−</mo><mfrac><mn>1</mn><msub><mi>T</mi><mtext>stress</mtext></msub></mfrac><mo>)</mo></mrow><mo>]</mo></mrow><mo separator="true">,</mo><mspace width="2em"></mspace><mi>k</mi><mo>=</mo><mn>8.617</mn><mo>×</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>5</mn></mrow></msup><mtext>&#x2009;eV/K</mtext></math><span class="label">(5)</span></div>
+<p>and for electromigration, Black's equation (reference 6), which adds current density:</p>
+<div class="eq math"><math display="block"><mtext>MTTF</mtext><mo>=</mo><mi>A</mi><mspace width="0.17em"></mspace><msup><mi>J</mi><mrow><mo>−</mo><mi>n</mi></mrow></msup><mspace width="0.17em"></mspace><mi>exp</mi><mo>&#x2061;</mo><mrow><mo>(</mo><mfrac><msub><mi>E</mi><mi>a</mi></msub><mrow><mi>k</mi><mi>T</mi></mrow></mfrac><mo>)</mo></mrow><mo separator="true">,</mo><mspace width="2em"></mspace><mi>n</mi><mo>≈</mo><mn>2</mn></math><span class="label">(6)</span></div>
+<div class="widget" data-widget="arrhenius"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<ul class="steps">
+<li><strong>Use several stress levels</strong> (at least three temperatures or voltages) so the activation energy or voltage exponent is measured, not assumed. Reported GaN HEMT activation energies range from a fraction of an eV to over 2 eV depending on the mechanism and bias (reference 9).</li>
+<li><strong>Use enough parts</strong> and fit the times to failure with a Weibull or lognormal distribution. Report a low percentile (time to 0.1% failures), not only the median.</li>
+<li><strong>Stress with RF, not just DC.</strong> The voltage and current waveforms decide which mechanism dominates: in a switching (class-E) PA the drain voltage is high only while the current is near zero, so hot carriers matter less and oxide stress matters more. DC stress at the same average power can predict the wrong lifetime.</li>
+<li><strong>Check that acceleration does not change the mechanism.</strong> Too much stress can trigger a failure that never happens in use. Failure analysis of stressed parts confirms the mechanism.</li>
+</ul>
+
+<h2 id="adc"><span class="secnum">8</span>Data converters<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L125" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Static:</strong> INL and DNL from a code-density (histogram) test with a slow ramp or a sine input, as defined in IEEE Std 1241 (reference 10).</li>
+<li><strong>Dynamic:</strong> FFT of a sine input gives SNR, SNDR, THD, and SFDR. Effective number of bits:</li>
+</ul>
+<div class="eq math"><math display="block"><mtext>ENOB</mtext><mo>=</mo><mfrac><mrow><mtext>SNDR</mtext><mo>−</mo><mn>1.76</mn></mrow><mn>6.02</mn></mfrac><mo separator="true">,</mo><mspace width="2em"></mspace><msub><mtext>SNR</mtext><mtext>jitter</mtext></msub><mo>=</mo><mo>−</mo><mn>20</mn><mspace width="0.17em"></mspace><msub><mi>log</mi><mn>10</mn></msub><mo>&#x2061;</mo><mo stretchy="false">(</mo><mn>2</mn><mi>π</mi><msub><mi>f</mi><mtext>in</mtext></msub><msub><mi>σ</mi><mi>j</mi></msub><mo stretchy="false">)</mo></math><span class="label">(7)</span></div>
+<ul class="steps">
+<li><strong>Coherent sampling:</strong> choose <math><msub><mi>f</mi><mtext>in</mtext></msub><mo>=</mo><mo stretchy="false">(</mo><mi>J</mi><mo>/</mo><mi>N</mi><mo stretchy="false">)</mo><msub><mi>f</mi><mi>s</mi></msub></math> with <math><mi>J</mi></math> odd and coprime to the FFT length <math><mi>N</mi></math>, so every code is exercised and no window is needed.</li>
+<li>The jitter limit in eq. (7) is why a 10 GHz input needs a clock with less than about 50 fs of jitter for 50 dB SNR. Measure with a clean source and a band-pass filter on the input; the generator's harmonics are often worse than the converter's.</li>
+</ul>
+
+<h2 id="serdes"><span class="secnum">9</span>High-speed links<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L136" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Transmitter:</strong> output swing, rise and fall times, return loss, FFE levels, and for PAM4 the level linearity (RLM); jitter decomposed into random (RJ) and deterministic parts (DJ: data-dependent, periodic, duty-cycle).</li>
+<li><strong>Receiver:</strong> BER with PRBS patterns through reference channels; sensitivity; jitter tolerance, sweeping the frequency and amplitude of injected sinusoidal jitter against the standard's mask.</li>
+<li><strong>Bathtub curves</strong> extrapolate BER versus sampling phase to 10<sup>−12</sup> and beyond without waiting days. With the dual-Dirac model, <math><mtext>TJ</mtext><mo stretchy="false">(</mo><mtext>BER</mtext><mo stretchy="false">)</mo><mo>=</mo><mtext>DJ</mtext><mo>+</mo><mn>2</mn><mi>Q</mi><mo stretchy="false">(</mo><mtext>BER</mtext><mo stretchy="false">)</mo><mspace width="0.1em"></mspace><msub><mi>σ</mi><mtext>RJ</mtext></msub></math> (IEEE Std 2414, reference 11).</li>
+</ul>
+<div class="widget" data-widget="bathtub"><noscript>This interactive figure needs JavaScript.</noscript></div>
+<aside class="callout tip"><p class="callout-label">Tip</p><p><strong>Count errors, not time.</strong> To claim BER below 10<sup>−12</sup> with 95% confidence and zero errors, you need about 3 × 10<sup>12</sup> bits: 3 / BER. At 25 Gb/s that is two minutes; at 1 Gb/s it is almost an hour.</p></aside>
+
+<h2 id="pmic"><span class="secnum">10</span>LDOs, converters, and references<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L145" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Load and line regulation:</strong> output change versus load current and input voltage, in steady state.</li>
+<li><strong>Load transient:</strong> step the load with a fast electronic load or an on-board MOSFET and resistor; measure undershoot, overshoot, and settling with a short ground spring on the probe. A long ground lead adds inductive ringing that is not in the circuit.</li>
+<li><strong>PSRR:</strong> inject a sine on the input (with an injector transformer or a modulated supply) and measure the ratio of input to output ripple versus frequency.</li>
+<li><strong>Efficiency</strong> of switching converters versus load, with input and output power measured by separate meters at the pins, not by the supply's readout.</li>
+<li><strong>Bandgap references:</strong> output versus temperature, reported with the box method, <math><mtext>TC</mtext><mo>=</mo><mfrac><mrow><msub><mi>V</mi><mtext>max</mtext></msub><mo>−</mo><msub><mi>V</mi><mtext>min</mtext></msub></mrow><mrow><msub><mi>V</mi><mtext>nom</mtext></msub><mo stretchy="false">(</mo><msub><mi>T</mi><mtext>max</mtext></msub><mo>−</mo><msub><mi>T</mi><mtext>min</mtext></msub><mo stretchy="false">)</mo></mrow></mfrac><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup></math> ppm/°C; plus noise and line regulation. Measure many parts: the spread matters more than one curve.</li>
+</ul>
+
+<h2 id="photonic"><span class="secnum">11</span>Optical and photonic circuits<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L154" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Photodiodes and receivers:</strong> responsivity (A/W), bandwidth with a lightwave component analyzer, dark current, and sensitivity: the optical modulation amplitude (OMA) needed for the target BER.</li>
+<li><strong>Modulators and transmitters:</strong> extinction ratio, OMA, electro-optic bandwidth, V<sub>π</sub>, and for PAM4 the transmitter dispersion and eye closure (TDECQ).</li>
+<li><strong>Rings and filters:</strong> wavelength sweeps with a tunable laser and power meter; thermal tuning efficiency (nm/mW); see the notes on <a href="note-microring.html">microrings</a> and <a href="note-ring-auto-tuning.html">ring auto-tuning</a>.</li>
+<li><strong>Coupling loss</strong> to fiber changes with alignment and polarization; measure reference structures (loop-back waveguides) on every chip.</li>
+</ul>
+
+<h2 id="stats"><span class="secnum">12</span>Statistics, production test, and qualification<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L162" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<p>One good chip proves the design can work; a population shows whether it works. Report mean and standard deviation across parts, and the process capability index against each limit:</p>
+<div class="eq math"><math display="block"><msub><mi>C</mi><mtext>pk</mtext></msub><mo>=</mo><mfrac><mrow><mi>min</mi><mo>&#x2061;</mo><mo stretchy="false">(</mo><mtext>USL</mtext><mo>−</mo><mi>μ</mi><mo separator="true">,</mo><mspace width="0.3em"></mspace><mi>μ</mi><mo>−</mo><mtext>LSL</mtext><mo stretchy="false">)</mo></mrow><mrow><mn>3</mn><mi>σ</mi></mrow></mfrac></math><span class="label">(8)</span></div>
+<p>A <math><msub><mi>C</mi><mtext>pk</mtext></msub></math> of 1.33 or more is a common target. Production test then checks each part quickly on ATE, with guard bands that cover the tester's own accuracy, often using built-in self-test and loopback to avoid expensive instruments.</p>
+<div class="tw"><table><thead><tr><th>Qualification stress</th><th>Standard</th><th>Typical condition</th></tr></thead><tbody>
+<tr><td>High-temperature operating life (HTOL)</td><td>JESD22-A108, within JESD47</td><td>1000 h at T<sub>j</sub> ≥ 125 °C, 3 lots × 77 parts, zero failures</td></tr>
+<tr><td>Temperature cycling</td><td>JESD22-A104</td><td>Hundreds to thousands of cycles, for example −55 to 125 °C</td></tr>
+<tr><td>Humidity (HAST, THB)</td><td>JESD22-A110, A101</td><td>Biased at high temperature and humidity</td></tr>
+<tr><td>ESD, human-body model</td><td>ANSI/ESDA/JEDEC JS-001</td><td>Often ±2 kV</td></tr>
+<tr><td>ESD, charged-device model</td><td>ANSI/ESDA/JEDEC JS-002</td><td>Often 250–500 V</td></tr>
+<tr><td>Latch-up</td><td>JESD78</td><td>Current injection and overvoltage at temperature</td></tr>
+</tbody></table></div>
+<p>With the Arrhenius figure above: 1000 h at 125 °C with <math><msub><mi>E</mi><mi>a</mi></msub><mo>=</mo><mn>0.7</mn></math> eV is about 78,000 h, or roughly 9 years, at 55 °C.</p>
+
+<h2 id="practice"><span class="secnum">13</span>Lab habits that save weeks<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L176" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ul class="steps">
+<li><strong>Measure something known first:</strong> a thru, a reference amplifier, a calibration structure. If that is wrong, nothing after it is right.</li>
+<li><strong>Record everything:</strong> chip ID, board, supplies, temperature, instrument settings, calibration date, and cable set. Scripts with logged settings beat screenshots.</li>
+<li><strong>Power up current-limited</strong> and in a planned sequence. Check currents against simulation before applying signals.</li>
+<li><strong>Let things warm up</strong> (instruments and the chip) and wait for thermal settling after every change of bias.</li>
+<li><strong>Change one thing at a time,</strong> and repeat a measurement on a second chip before believing a surprise.</li>
+</ul>
+
+<section class="qa">
+<h2 id="questions">Questions &amp; answers<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L186" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<details><summary>Should I measure on-wafer or packaged?</summary><p>On-wafer for device and block characterization at high frequency, where the package would hide what you want to see, and for fast iteration. Packaged for system-level performance, thermal behavior, and anything the customer will see. Most projects need both, with test structures designed for each.</p></details>
+<details><summary>My measured noise figure is better than simulation. Should I celebrate?</summary><p>Check first. Common causes are an uncorrected analyzer noise contribution, a wrong ENR table, mismatch between the noise source's hot and cold states, or a gain error that inflates Y. Re-measure with a different noise source or the cold-source method.</p></details>
+<details><summary>How many parts and lots do I need for a lifetime claim?</summary><p>Qualification standards such as JESD47 specify sample sizes (for HTOL, typically 3 lots of 77 parts with zero failures). For modeling a wear-out mechanism, you need enough failures at each of several stress levels to fit a distribution, often 10–20 parts per condition.</p></details>
+<details><summary>Why does RF stress give a different lifetime than DC stress?</summary><p>Because each mechanism responds to a different combination of voltage and current at the same instant. Under RF, the device swings through states it never sees at DC; for oxide wear, the rms field across the oxide is what counts (reference 8). Stress with waveforms that match operation.</p></details>
+<details><summary>Where can I learn this from a course?</summary><p>MIT OpenCourseWare 6.776 (reference 1) covers the circuits and the noise and phase-noise background; the Keysight application notes (references 2 and 3) are the standard practical guides to noise figure and spectrum analysis, and Stanford's EE133 hosts the noise figure note for its lab.</p></details>
+</section>
+
+<h2 id="further-reading">Further reading<a class="edit-link" href="https://github.dev/RamyMRady/RamyRady.github.io/blob/main/_build/notes/post-silicon-measurement.html#L194" target="_blank" rel="noopener" hidden aria-label="Edit this section" title="Edit this section">✎<span class="edit-text">Edit</span></a></h2>
+<ol class="refs">
+<li>M. Perrott, 6.776 High Speed Communication Circuits, MIT OpenCourseWare, 2005. <a href="https://ocw.mit.edu/courses/6-776-high-speed-communication-circuits-spring-2005/" target="_blank" rel="noopener">ocw.mit.edu</a></li>
+<li>Keysight Technologies, “Fundamentals of RF and Microwave Noise Figure Measurements,” Application Note 57-1 (5952-8255E). <a href="https://web.stanford.edu/class/ee133/appnotes/5952-8255E.pdf" target="_blank" rel="noopener">PDF hosted by Stanford EE133</a></li>
+<li>Keysight Technologies, “Spectrum Analysis Basics,” Application Note 150 (5952-0292). <a href="https://www.keysight.com/us/en/assets/7018-06714/application-notes/5952-0292.pdf" target="_blank" rel="noopener">PDF</a></li>
+<li>G. F. Engen and C. A. Hoer, “Thru-reflect-line: an improved technique for calibrating the dual six-port automatic network analyzer,” <em>IEEE Trans. Microw. Theory Techn.</em>, vol. 27, no. 12, 1979. <a href="https://doi.org/10.1109/TMTT.1979.1129778" target="_blank" rel="noopener">doi:10.1109/TMTT.1979.1129778</a></li>
+<li>M. C. A. M. Koolen, J. A. M. Geelen, and M. P. J. G. Versleijen, “An improved de-embedding technique for on-wafer high-frequency characterization,” <em>Proc. IEEE BCTM</em>, 1991. <a href="https://doi.org/10.1109/BIPOL.1991.160985" target="_blank" rel="noopener">doi:10.1109/BIPOL.1991.160985</a></li>
+<li>J. R. Black, “Electromigration—a brief survey and some recent results,” <em>IEEE Trans. Electron Devices</em>, vol. 16, no. 4, 1969. <a href="https://doi.org/10.1109/T-ED.1969.16754" target="_blank" rel="noopener">doi:10.1109/T-ED.1969.16754</a></li>
+<li>C. Hu et al., “Hot-electron-induced MOSFET degradation—model, monitor, and improvement,” <em>IEEE J. Solid-State Circuits</em>, vol. 20, no. 1, 1985. <a href="https://doi.org/10.1109/JSSC.1985.1052306" target="_blank" rel="noopener">doi:10.1109/JSSC.1985.1052306</a></li>
+<li>L. Larcher, D. Sanzogni, R. Brama, A. Mazzanti, and F. Svelto, “Oxide breakdown after RF stress: experimental analysis and effects on power amplifier operation,” <em>Proc. IEEE IRPS</em>, 2006. <a href="https://doi.org/10.1109/RELPHY.2006.251229" target="_blank" rel="noopener">doi:10.1109/RELPHY.2006.251229</a></li>
+<li>Chakraborty and Kim, “Reliability assessment of on-wafer AlGaN/GaN HEMTs: the impact of electric field stress on the mean time to failure,” <em>Micromachines</em>, vol. 14, 1833, 2023. <a href="https://doi.org/10.3390/mi14101833" target="_blank" rel="noopener">doi:10.3390/mi14101833</a></li>
+<li>IEEE Std 1241-2010, <em>IEEE Standard for Terminology and Test Methods for Analog-to-Digital Converters</em>. <a href="https://doi.org/10.1109/IEEESTD.2011.5692956" target="_blank" rel="noopener">doi:10.1109/IEEESTD.2011.5692956</a></li>
+<li>IEEE Std 2414-2020, <em>IEEE Standard for Jitter and Phase Noise</em>. <a href="https://doi.org/10.1109/IEEESTD.2021.9364950" target="_blank" rel="noopener">doi:10.1109/IEEESTD.2021.9364950</a></li>
+<li>JEDEC JESD47, <em>Stress-Test-Driven Qualification of Integrated Circuits</em>, and the JESD22 test methods it references (jedec.org).</li>
+</ol>
+<p class="endnote">Have a question? Press <strong>Ask</strong> next to any heading, or select any sentence and choose <strong>Ask about this</strong>. Corrections are welcome the same way.</p>
+            </div>
+        </article>
+    </main>
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>© 2026 Ramy Rady</p>
+            <p><a href="mailto:engramyrady@gmail.com">Email</a> · <a href="https://scholar.google.com/citations?user=sBTMlW4AAAAJ&hl=en" target="_blank" rel="noopener">Google Scholar</a> · <a href="https://www.linkedin.com/in/ramyrady/" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://www.researchgate.net/profile/Ramy-Rady-2" target="_blank" rel="noopener">ResearchGate</a> · <a href="https://orcid.org/0000-0001-6108-3645" target="_blank" rel="noopener">ORCID</a></p>
+        </div>
+        <div class="wrap site-status">
+            <p class="status-live"><span class="live-dot" aria-hidden="true"></span> Site live · updated 07 October 2026</p>
+            <p class="status-count" hidden><span class="count-value"></span> <span class="count-label">visits</span></p>
+        </div>
+    </footer>
+    <script src="script.js?v=9"></script>
+    <script src="notes.js?v=9" defer></script>
+</body>
+</html>
