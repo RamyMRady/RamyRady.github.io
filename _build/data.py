@@ -6,7 +6,7 @@ Google Scholar, or the publisher record behind each DOI. Edit here, then run:
 
 SITE_URL = "https://www.ramyrady.com"
 UPDATED = "2026-09-17"          # sitemap <lastmod>
-CV_UPDATED = "August 2025"      # date printed on assets/Ramy_Rady_CV.pdf
+CV_UPDATED = "October 2026"      # date printed on assets/Ramy_Rady_CV.pdf
 
 PERSON = {
     "name": "Ramy Rady",
