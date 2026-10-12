@@ -64,9 +64,9 @@ BIO = [
 # (date label, sort key, html)
 NEWS = [
     ("2026", "2026-06", 'Invited feature in <em>IEEE Microwave Magazine</em> on microwave silicon photonic drivers and Mach–Zehnder modulators for radio-over-fiber links. <a href="publications.html#entesari2026mmm">Paper</a>'),
-    ("May 2025", "2025-05", "Joined Apple's Silicon Engineering Group as a SerDes analog/mixed-signal design engineer."),
     ("Jan 2025", "2025-01", 'Preprint on gigahertz directional light modulation with electro-optic metasurfaces posted to arXiv. <a href="https://arxiv.org/abs/2501.06102" target="_blank" rel="noopener">arXiv</a>'),
     ("Jul 2024", "2024-07", 'Ultra-wideband mm-wave remote antenna unit for radio-over-fiber systems published in <em>Optics Express</em>. <a href="publications.html#rady2024oe">Paper</a>'),
+    ("May 2024", "2024-05c", "Joined Apple's Silicon Engineering Group as a SerDes analog/mixed-signal design engineer."),
     ("May 2024", "2024-05", "Completed my Ph.D. at Texas A&amp;M University."),
     ("May 2024", "2024-05b", 'Hybrid-integrated heterodyning software-defined radio receiver published in <em>IEEE TMTT</em>. <a href="publications.html#rady2024tmtt">Paper</a>'),
     ("Feb 2024", "2024-02", "Received the ISSCC 2024 Student Travel Grant."),
@@ -172,7 +172,7 @@ MEDIA = [
 
 EXPERIENCE = [
     {
-        "when": "May 2025 – Present", "org": "Apple", "unit": "Silicon Engineering Group · Cupertino, CA",
+        "when": "May 2024 – Present", "org": "Apple", "unit": "Silicon Engineering Group · Cupertino, CA",
         "role": "SerDes Transceiver Analog/Mixed-Signal Design Engineer",
         "points": [
             "Design next-generation high-speed SerDes IP for Apple silicon SoCs.",
