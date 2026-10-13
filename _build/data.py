@@ -178,7 +178,7 @@ EXPERIENCE = [
             "Design next-generation high-speed SerDes IP for Apple silicon SoCs.",
             "Own transistor-level design, simulation, and validation of analog front-end (AFE) and digital circuits.",
             "Work with PHY, packaging, and system teams to optimize performance and power.",
-            "Own signoff with Synopsys NanoTime static timing analysis (STA) and EM/IR checks for custom-digital datapaths.",
+            "Own static timing analysis (STA) signoff using Synopsys NanoTime and EM/IR checks for custom-digital datapaths.",
         ],
     },
     {
